@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Mpp\ReferentialBundle;
+namespace Mpp\ApicilClientBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class MppApicilBundle extends Bundle
+class MppApicilClientBundle extends Bundle
 {
 }

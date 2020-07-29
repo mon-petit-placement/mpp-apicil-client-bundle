@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Mpp\ReferentialBundle\DependencyInjection;
+namespace Mpp\ApicilClientBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-class MppApicilExtension extends Extension
+class MppApicilClientExtension extends Extension
 {
     /**
      * @param array $configs

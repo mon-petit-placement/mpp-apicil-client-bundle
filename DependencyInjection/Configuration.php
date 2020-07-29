@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Mpp\ReferentialBundle\DependencyInjection;
+namespace Mpp\ApicilClientBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class Configuration implements ConfigurationInterface
 {
-    const CONFIGURATION_ROOT = 'mpp_apicil';
+    const CONFIGURATION_ROOT = 'mpp_apicil_client';
 
     public function getConfigTreeBuilder()
     {
