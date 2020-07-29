@@ -1,5 +1,5 @@
 {
-    "name": "mpp/apicil-bundle",
+    "name": "mpp/apicil-client-bundle",
     "type": "symfony-bundle",
     "description": "Symfony ApiCil Bundle",
     "keywords": ["referential", "json", "yaml", "api"],

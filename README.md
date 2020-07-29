@@ -6,5 +6,5 @@ Installation:
 
 To install this bundle, simply run the following command:
 ```
-$ composer require mpp/apicil-bundle
+$ composer require mpp/apicil-client-bundle
 ```
