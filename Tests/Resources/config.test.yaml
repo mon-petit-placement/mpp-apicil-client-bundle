@@ -1,0 +1,24 @@
+eight_points_guzzle:
+    clients:
+        mpp_apicil_test:
+            base_url: '%env(APICIL_BASE_URL)%'
+            options:
+                auth:
+                    - '%env(APICIL_USERNAME)%'
+                    - '%env(APICIL_PASSWORD)%'
+                timeout: 30
+                http_errors: true
+
+framework:
+    property_info:
+        enabled: true
+
+mpp_apicil_client:
+    http_client: 'eight_points_guzzle.client.mpp_apicil_test'
+
+services:
+    Mpp\ApicilClientBundle\Client\ApicilClientDomainRegistry:
+        public: true
+    Mpp\ApicilClientBundle\Client\ApicilClientDomainRegistryInterface:
+        alias: 'Mpp\ApicilClientBundle\Client\ApicilClientDomainRegistry'
+        public: true
