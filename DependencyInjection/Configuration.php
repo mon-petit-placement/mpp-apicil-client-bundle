@@ -1,6 +1,5 @@
 <?php
 
-declare(strict_types=1);
 
 namespace Mpp\ApicilClientBundle\DependencyInjection;
 
@@ -17,7 +16,7 @@ class Configuration implements ConfigurationInterface
 
         $treeBuilder->getRootNode()
             ->children()
-                ->arrayNode('data')->end()
+                ->scalarNode('http_client')->isRequired()->cannotBeEmpty()->end()
             ->end()
         ;
 

@@ -1,0 +1,53 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Mpp\ApicilClientBundle\:
+        resource: '../../*'
+        exclude: '../../{Entity,Repository,Tests,vendor}'
+
+    # Client
+    _instanceof:
+        Mpp\ApicilClientBundle\Client\ApicilClientDomainInterface:
+            tags: ['mpp_apicil_client.domain']
+            bind:
+                $logger: '@logger'
+                $serializer: '@serializer'
+
+    Mpp\ApicilClientBundle\Client\ApicilClientDomainRegistry: ~
+    Mpp\ApicilClientBundle\Client\ApicilClientDomainRegistryInterface: '@Mpp\ApicilClientBundle\Client\ApicilClientDomainRegistry'
+
+    Mpp\ApicilClientBundle\Client\ApicilAccClient: ~
+    Mpp\ApicilClientBundle\Client\ApicilAccClientInterface: '@Mpp\ApicilClientBundle\Client\ApicilAccClient'
+
+    Mpp\ApicilClientBundle\Client\ApicilArbitrationClient: ~
+    Mpp\ApicilClientBundle\Client\ApicilArbitrationClientInterface: '@Mpp\ApicilClientBundle\Client\ApicilArbitrationClient'
+
+    Mpp\ApicilClientBundle\Client\ApicilBrokerClient: ~
+    Mpp\ApicilClientBundle\Client\ApicilBrokerClientInterface: '@Mpp\ApicilClientBundle\Client\ApicilBrokerClient'
+
+    Mpp\ApicilClientBundle\Client\ApicilContractClient: ~
+    Mpp\ApicilClientBundle\Client\ApicilContractClientInterface: '@Mpp\ApicilClientBundle\Client\ApicilContractClient'
+
+    Mpp\ApicilClientBundle\Client\ApicilKycClient: ~
+    Mpp\ApicilClientBundle\Client\ApicilKycClientInterface: '@Mpp\ApicilClientBundle\Client\ApicilKycClient'
+
+    Mpp\ApicilClientBundle\Client\ApicilManagementClient: ~
+    Mpp\ApicilClientBundle\Client\ApicilManagementClientInterface: '@Mpp\ApicilClientBundle\Client\ApicilManagementClient'
+
+    Mpp\ApicilClientBundle\Client\ApicilPartialRepurchaseClient: ~
+    Mpp\ApicilClientBundle\Client\ApicilPartialRepurchaseClientInterface: '@Mpp\ApicilClientBundle\Client\ApicilPartialRepurchaseClient'
+
+    Mpp\ApicilClientBundle\Client\ApicilPaymentClient: ~
+    Mpp\ApicilClientBundle\Client\ApicilPaymentClientInterface: '@Mpp\ApicilClientBundle\Client\ApicilPaymentClient'
+
+    Mpp\ApicilClientBundle\Client\ApicilProjectClient: ~
+    Mpp\ApicilClientBundle\Client\ApicilProjectClientInterface: '@Mpp\ApicilClientBundle\Client\ApicilProjectClient'
+
+    Mpp\ApicilClientBundle\Client\ApicilTotalRepurchaseClient: ~
+    Mpp\ApicilClientBundle\Client\ApicilTotalRepurchaseClientInterface: '@Mpp\ApicilClientBundle\Client\ApicilTotalRepurchaseClient'
+
+    Mpp\ApicilClientBundle\Client\ApicilTradingAccountClient: ~
+    Mpp\ApicilClientBundle\Client\ApicilTradingAccountClientInterface: '@Mpp\ApicilClientBundle\Client\ApicilTradingAccountClient'
