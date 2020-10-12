@@ -1,9 +1,9 @@
 # Symfony Bundle to interact with Apicil API
 
-<img src="https://img.shields.io/badge/Total%20methods%20from%20documentation-267-blue"/>  
-<img src="https://img.shields.io/badge/Methods%20added-100%25%20(267%2F267)-green"/>  
-<img src="https://img.shields.io/badge/Methods%20implemented-99%25%20(266%2F267)-yellowgreen"/>  
-<img src="https://img.shields.io/badge/Methods%20tested-15%25%20(40%2F267)-red"/>  
+<img src="https://img.shields.io/badge/Total%20methods%20from%20documentation-267-blue"/>
+<img src="https://img.shields.io/badge/Methods%20added-100%25%20(267%2F267)-green"/>
+<img src="https://img.shields.io/badge/Methods%20implemented-99%25%20(266%2F267)-yellowgreen"/>
+<img src="https://img.shields.io/badge/Methods%20tested-15%25%20(40%2F267)-red"/>
 <img src="https://img.shields.io/badge/Documentation-60%25-yellow"/>
 
 ## Installation
@@ -17,6 +17,7 @@ $ composer require mpp/apicil-client-bundle
 
 First create a guzzle client:
 ```yaml
+// config/packages/eight_point_guzzle.yaml
 eight_points_guzzle:
     clients:
         my_apicil_client:
@@ -28,15 +29,15 @@ eight_points_guzzle:
 ```
 
 Then configure this client to be used by the bundle:
-
 ```yaml
+// config/packages/mpp_apicil_client.yaml
 mpp_apicil_client:
     http_client: 'eight_points_guzzle.client.my_apicil_client'
 ```
 
 Make sure to have enabled the serializer & property info component in symfony configuration (for serialization/deserialization):
-
 ```yaml
+// config/packages/framework.yaml
 framework:
     serializer:
         enabled: true
@@ -174,7 +175,6 @@ Here is the mapping of client for each specification name
 #### How to get a specific client domain ?
 
 Here is a sample controller on how to get a specific client domain:
-
 ```php
 <?php
 
