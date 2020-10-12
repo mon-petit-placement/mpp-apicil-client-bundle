@@ -21,7 +21,7 @@
       "symfony/dependency-injection": "^4.0",
       "symfony/framework-bundle": "^4.0",
       "symfony/options-resolver": "^4.0",
-      "symfony/property-info": "4.0",
+      "symfony/property-info": "^4.0",
       "symfony/serializer": "^4.0",
       "ext-json": "*"
     },
