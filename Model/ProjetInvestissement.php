@@ -2,10 +2,22 @@
 
 namespace Mpp\ApicilClientBundle\Model;
 
+use Symfony\Component\OptionsResolver\Exception\AccessException;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
+use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
+use Symfony\Component\OptionsResolver\Exception\NoSuchOptionException;
+use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
+use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
+use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
 class ProjetInvestissement
 {
+    public const TYPE_SIGNATURE_ELECTRONIQUE = 'ELECTRONIQUE';
+    public const TYPE_SIGNATURE_PAPIER = 'PAPIER';
+
     /**
-     * @var connaissanceClient|null
+     * @var ConnaissanceClient
      */
     private $connaissanceClient;
 
@@ -15,7 +27,7 @@ class ProjetInvestissement
     private $courtierId;
 
     /**
-     * @var produit|null
+     * @var Produit
      */
     private $produit;
 
@@ -25,9 +37,14 @@ class ProjetInvestissement
     private $profilGestion;
 
     /**
-     * @var souscription|null
+     * @var Souscription
      */
     private $souscription;
+
+    /**
+     * @var string
+     */
+    private $typeSignature;
 
     /**
      * @var array|null
@@ -35,19 +52,88 @@ class ProjetInvestissement
     private $typesSouscription;
 
     /**
-     * @return connaissanceClient|null
+     * @param OptionsResolver $resolver
      */
-    public function getConnaissanceClient(): ?connaissanceClient
+    public static function configureData(OptionsResolver $resolver)
+    {
+        $resolver
+            ->setRequired('connaissanceClient')->setAllowedTypes('connaissanceClient', ['array', ConnaissanceClient::class])->setNormalizer('connaissanceClient', function (Options $options, $value) {
+                if ($value instanceof ConnaissanceClient) {
+                    return $value;
+                }
+
+                return ConnaissanceClient::createFromArray($value);
+            })
+            ->setDefault('courtierId', null)->setAllowedTypes('courtierId', ['int', 'null'])
+            ->setRequired('produit')->setAllowedTypes('produit', ['array', Produit::class])->setNormalizer('produit', function (Options $options, $value) {
+                if ($value instanceof Produit) {
+                    return $value;
+                }
+
+                return Produit::createFromArray($value);
+            })
+            ->setDefault('profilGestion', null)->setAllowedTypes('profilGestion', ['array', ProfilGestionDto::class, 'null'])->setNormalizer('profilGestion', function (Options $options, $value) {
+                if ($value instanceof ProfilGestionDto || null === $value) {
+                    return $value;
+                }
+
+                return ProfilGestionDto::createFromArray($value);
+            })
+            ->setRequired('souscription')->setAllowedTypes('souscription', ['array', Souscription::class])->setNormalizer('souscription', function (Options $options, $value) {
+                if ($value instanceof Souscription) {
+                    return $value;
+                }
+
+                return Souscription::createFromArray($value);
+            })
+            ->setRequired('typeSignature')->setAllowedValues('typeSignature', [self::TYPE_SIGNATURE_ELECTRONIQUE, self::TYPE_SIGNATURE_PAPIER])
+            ->setDefault('typesSouscription', null)->setAllowedTypes('typesSouscription', ['array', 'null'])
+        ;
+    }
+
+    /**
+     * @param array $options
+     *
+     * @return self
+     *
+     * @throws UndefinedOptionsException If an option name is undefined
+     * @throws InvalidOptionsException   If an option doesn't fulfill the language specified validation rules
+     * @throws MissingOptionsException   If a required option is missing
+     * @throws OptionDefinitionException If there is a cyclic dependency between lazy options and/or normalizers
+     * @throws NoSuchOptionException     If a lazy option reads an unavailable option
+     * @throws AccessException           If called from a lazy option or normalizer
+     */
+    public static function createFromArray(array $options): self
+    {
+        $resolver = new OptionsResolver();
+        self::configureData($resolver);
+        $resolvedOptions = $resolver->resolve($options);
+
+        return (new self())
+            ->setConnaissanceClient($resolvedOptions['connaissanceClient'])
+            ->setCourtierId($resolvedOptions['courtierId'])
+            ->setProduit($resolvedOptions['produit'])
+            ->setProfilGestion($resolvedOptions['profilGestion'])
+            ->setSouscription($resolvedOptions['souscription'])
+            ->setTypeSignature($resolvedOptions['typeSignature'])
+            ->setTypesSouscription($resolvedOptions['typesSouscription'])
+        ;
+    }
+
+    /**
+     * @return ConnaissanceClient
+     */
+    public function getConnaissanceClient(): ConnaissanceClient
     {
         return $this->connaissanceClient;
     }
 
     /**
-     * @param connaissanceClient|null $connaissanceClient
+     * @param ConnaissanceClient $connaissanceClient
      *
      * @return self
      */
-    public function setConnaissanceClient(?connaissanceClient $connaissanceClient): self
+    public function setConnaissanceClient(ConnaissanceClient $connaissanceClient): self
     {
         $this->connaissanceClient = $connaissanceClient;
 
@@ -75,19 +161,19 @@ class ProjetInvestissement
     }
 
     /**
-     * @return produit|null
+     * @return Produit
      */
-    public function getProduit(): ?produit
+    public function getProduit(): produit
     {
         return $this->produit;
     }
 
     /**
-     * @param produit|null $produit
+     * @param Produit $produit
      *
      * @return self
      */
-    public function setProduit(?produit $produit): self
+    public function setProduit(Produit $produit): self
     {
         $this->produit = $produit;
 
@@ -115,21 +201,41 @@ class ProjetInvestissement
     }
 
     /**
-     * @return souscription|null
+     * @return Souscription
      */
-    public function getSouscription(): ?souscription
+    public function getSouscription(): Souscription
     {
         return $this->souscription;
     }
 
     /**
-     * @param souscription|null $souscription
+     * @param Souscription $souscription
      *
      * @return self
      */
-    public function setSouscription(?souscription $souscription): self
+    public function setSouscription(Souscription $souscription): self
     {
         $this->souscription = $souscription;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTypeSignature(): string
+    {
+        return $this->typeSignature;
+    }
+
+    /**
+     * @param string $typeSignature
+     *
+     * @return self
+     */
+    public function setTypeSignature(string $typeSignature): self
+    {
+        $this->typeSignature = $typeSignature;
 
         return $this;
     }

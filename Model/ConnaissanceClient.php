@@ -2,10 +2,19 @@
 
 namespace Mpp\ApicilClientBundle\Model;
 
+use Symfony\Component\OptionsResolver\Exception\AccessException;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
+use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
+use Symfony\Component\OptionsResolver\Exception\NoSuchOptionException;
+use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
+use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
+use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
 class ConnaissanceClient
 {
     /**
-     * @var ClientDto|null
+     * @var ClientDto
      */
     private $client;
 
@@ -20,7 +29,7 @@ class ConnaissanceClient
     private $conjoint;
 
     /**
-     * @var CoordonneesDto|null
+     * @var CoordonneesDto
      */
     private $coordonnees;
 
@@ -35,24 +44,99 @@ class ConnaissanceClient
     private $foyer;
 
     /**
+     * @var int|null
+     */
+    private $personneIdExterne;
+
+    /**
      * @var bool|null
      */
     private $professionSensible;
 
     /**
-     * @return ClientDto|null
+     * @param OptionsResolver $resolver
      */
-    public function getClient(): ?ClientDto
+    public static function configureData(OptionsResolver $resolver)
+    {
+        $resolver
+            ->setRequired('client')->setAllowedTypes('client', ['array', ClientDto::class])->setNormalizer('client', function (Options $options, $value) {
+                if ($value instanceof ClientDto) {
+                    return $value;
+                }
+
+                return ClientDto::createFromArray($value);
+            })
+            ->setDefault('commentaire', null)->setAllowedTypes('commentaire', ['string', 'null'])
+            ->setDefault('conjoint', null)->setAllowedTypes('conjoint', ['array', ConjointDto::class, 'null'])->setNormalizer('conjoint', function (Options $options, $value) {
+                if ($value instanceof ConjointDto || null == $value) {
+                    return $value;
+                }
+
+                return ConjointDto::createFromArray($value);
+            })
+            ->setDefault('coordonnees', null)->setAllowedTypes('coordonnees',['array', CoordonneesDto::class, 'null'])->setNormalizer('coordonnees', function (Options $options, $value) {
+                if ($value instanceof CoordonneesDto || null == $value) {
+                    return $value;
+                }
+
+                return CoordonneesDto::createFromArray($value);
+            })
+            ->setDefault('foyer', null)->setAllowedTypes('foyer',['array', Foyer::class, 'null'])->setNormalizer('foyer', function (Options $options, $value) {
+                if ($value instanceof Foyer || null == $value) {
+                    return $value;
+                }
+
+                return Foyer::createFromArray($value);
+            })
+            ->setDefault('personneIdExterne', null)->setAllowedTypes('personneIdExterne', ['int', 'null'])
+            ->setDefault('professionSensible', null)->setAllowedTypes('professionSensible', ['bool', 'null'])
+        ;
+    }
+
+    /**
+     * @param array $options
+     *
+     * @return self
+     *
+     * @throws UndefinedOptionsException If an option name is undefined
+     * @throws InvalidOptionsException   If an option doesn't fulfill the language specified validation rules
+     * @throws MissingOptionsException   If a required option is missing
+     * @throws OptionDefinitionException If there is a cyclic dependency between lazy options and/or normalizers
+     * @throws NoSuchOptionException     If a lazy option reads an unavailable option
+     * @throws AccessException           If called from a lazy option or normalizer
+     */
+    public static function createFromArray(array $options): self
+    {
+        $resolver = new OptionsResolver();
+        self::configureData($resolver);
+        $resolvedOptions = $resolver->resolve($options);
+
+        return (new self())
+            ->setClient($resolvedOptions['client'])
+            ->setCommentaire($resolvedOptions['commentaire'])
+            ->setConjoint($resolvedOptions['conjoint'])
+            ->setCoordonnees($resolvedOptions['coordonnees'])
+            ->setDateSignatureClient($resolvedOptions['dateSignatureClient'])
+            ->setFoyer($resolvedOptions['foyer'])
+            ->setPersonneIdExterne($resolvedOptions['personneIdExterne'])
+            ->setProfessionSensible($resolvedOptions['professionSensible'])
+        ;
+    }
+
+    /**
+     * @return ClientDto
+     */
+    public function getClient(): ClientDto
     {
         return $this->client;
     }
 
     /**
-     * @param ClientDto|null $client
+     * @param ClientDto $client
      *
      * @return self
      */
-    public function setClient(?ClientDto $client): self
+    public function setClient(ClientDto $client): self
     {
         $this->client = $client;
 
@@ -100,19 +184,19 @@ class ConnaissanceClient
     }
 
     /**
-     * @return CoordonneesDto|null
+     * @return CoordonneesDto
      */
-    public function getCoordonnees(): ?CoordonneesDto
+    public function getCoordonnees(): CoordonneesDto
     {
         return $this->coordonnees;
     }
 
     /**
-     * @param CoordonneesDto|null $coordonnees
+     * @param CoordonneesDto $coordonnees
      *
      * @return self
      */
-    public function setCoordonnees(?CoordonneesDto $coordonnees): self
+    public function setCoordonnees(CoordonneesDto $coordonnees): self
     {
         $this->coordonnees = $coordonnees;
 
@@ -155,6 +239,26 @@ class ConnaissanceClient
     public function setFoyer(?Foyer $foyer): self
     {
         $this->foyer = $foyer;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getPersonneIdExterne(): ?int
+    {
+        return $this->personneIdExterne;
+    }
+
+    /**
+     * @param int|null $personneIdExterne
+     *
+     * @return self
+     */
+    public function setPersonneIdExterne(?int $personneIdExterne): self
+    {
+        $this->personneIdExterne = $personneIdExterne;
 
         return $this;
     }
