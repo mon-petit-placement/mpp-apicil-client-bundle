@@ -14,12 +14,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class Foyer
 {
     /**
-     * @var array
+     * @var array|null
      */
     private $patrimoine;
 
     /**
-     * @var array
+     * @var array|null
      */
     private $revenus;
 
@@ -29,7 +29,11 @@ class Foyer
     public static function configureData(OptionsResolver $resolver)
     {
         $resolver
-            ->setDefault('patrimoine', [])->setAllowedTypes('patrimoine', ['array'])->setNormalizer('reponses', function (Options $options, $value) {
+            ->setDefault('patrimoine', null)->setAllowedTypes('patrimoine', ['array', 'null'])->setNormalizer('reponses', function (Options $options, $value) {
+                if (null === $value) {
+                    return $value;
+                }
+
                 foreach ($value as &$reponse) {
                     if ($reponse instanceof PatrimoineDto) {
                         continue;
@@ -40,7 +44,11 @@ class Foyer
 
                 return $value;
             })
-            ->setDefault('revenus', [])->setAllowedTypes('revenus', ['array'])->setNormalizer('reponses', function (Options $options, $value) {
+            ->setDefault('revenus', null)->setAllowedTypes('revenus', ['array', 'null'])->setNormalizer('reponses', function (Options $options, $value) {
+                if (null === $value) {
+                    return $value;
+                }
+
                 foreach ($value as &$reponse) {
                     if ($reponse instanceof RevenusDto) {
                         continue;
@@ -79,19 +87,19 @@ class Foyer
     }
 
     /**
-     * @return array
+     * @return array|null
      */
-    public function getPatrimoine(): array
+    public function getPatrimoine(): ?array
     {
         return $this->patrimoine;
     }
 
     /**
-     * @param array $patrimoine
+     * @param array|null $patrimoine
      *
      * @return self
      */
-    public function setPatrimoine(array $patrimoine): self
+    public function setPatrimoine(?array $patrimoine): self
     {
         $this->patrimoine = $patrimoine;
 
@@ -99,7 +107,7 @@ class Foyer
     }
 
     /**
-     * @return array
+     * @return array|null
      */
     public function getRevenus(): ?array
     {
@@ -107,11 +115,11 @@ class Foyer
     }
 
     /**
-     * @param array $revenus
+     * @param array|null $revenus
      *
      * @return self
      */
-    public function setRevenus(array $revenus): self
+    public function setRevenus(?array $revenus): self
     {
         $this->revenus = $revenus;
 

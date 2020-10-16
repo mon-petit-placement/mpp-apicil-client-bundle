@@ -116,7 +116,7 @@ class EtatCivilDto
 
                 return PaysDto::createFromArray($value);
             })
-            ->setDefault('personnesACharge', [])->setAllowedTypes('personnesACharge', ['array'])->setNormalizer('personnesACharge', function (Options $options, $value) {
+            ->setDefault('personnesACharge', null)->setAllowedTypes('personnesACharge', ['array'])->setNormalizer('personnesACharge', function (Options $options, $value) {
                 foreach ($value as &$reponse) {
                     if ($reponse instanceof PersonneAChargeDto) {
                         continue;

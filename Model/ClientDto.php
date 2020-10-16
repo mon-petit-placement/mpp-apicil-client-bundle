@@ -131,7 +131,11 @@ class ClientDto
             })
             ->setDefault('numeroIdentificationFiscalUS', null)->setAllowedTypes('numeroIdentificationFiscalUS', ['string', 'null'])
             ->setDefault('residentFiscalOuCitoyenUs', null)->setAllowedTypes('residentFiscalOuCitoyenUs', ['bool', 'null'])
-            ->setDefault('patrimoine', [])->setAllowedTypes('patrimoine', ['array'])->setNormalizer('reponses', function (Options $options, $value) {
+            ->setDefault('patrimoine', null)->setAllowedTypes('patrimoine', ['array', 'null'])->setNormalizer('reponses', function (Options $options, $value) {
+                if (null === $value) {
+                    return $value;
+                }
+
                 foreach ($value as &$reponse) {
                     if ($reponse instanceof PatrimoineDto) {
                         continue;
@@ -142,7 +146,11 @@ class ClientDto
 
                 return $value;
             })
-            ->setDefault('revenus', [])->setAllowedTypes('revenus', ['array'])->setNormalizer('reponses', function (Options $options, $value) {
+            ->setDefault('revenus', null)->setAllowedTypes('revenus', ['array', 'null'])->setNormalizer('reponses', function (Options $options, $value) {
+                if (null === $value) {
+                    return $value;
+                }
+
                 foreach ($value as &$reponse) {
                     if ($reponse instanceof RevenusDto) {
                         continue;
@@ -153,7 +161,6 @@ class ClientDto
 
                 return $value;
             })
-
         ;
     }
 
