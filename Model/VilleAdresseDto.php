@@ -10,12 +10,12 @@ use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
 use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class SituationActuelleDto
+class VilleAdresseDto
 {
     /**
-     * @var string
+     * @var string|null
      */
-    private $code;
+    private $libelle;
 
     /**
      * @param OptionsResolver $resolver
@@ -23,7 +23,7 @@ class SituationActuelleDto
     public static function configureData(OptionsResolver $resolver)
     {
         $resolver
-            ->setRequired('code')->setAllowedTypes('code', ['string'])
+            ->setDefault('libelle', null)->setAllowedTypes('libelle', ['string', 'null'])
         ;
     }
 
@@ -46,26 +46,26 @@ class SituationActuelleDto
         $resolvedOptions = $resolver->resolve($options);
 
         return (new self())
-            ->setCode($resolvedOptions['code'])
+            ->setLibelle($resolvedOptions['libelle'])
         ;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCode(): string
+    public function getLibelle(): ?string
     {
-        return $this->code;
+        return $this->libelle;
     }
 
     /**
-     * @param string $code
+     * @param string|null $libelle
      *
      * @return self
      */
-    public function setCode(string $code): self
+    public function setLibelle(?string $libelle): self
     {
-        $this->code = $code;
+        $this->libelle = $libelle;
 
         return $this;
     }

@@ -8,23 +8,17 @@ use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 use Symfony\Component\OptionsResolver\Exception\NoSuchOptionException;
 use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
 use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class SituationActuelleDto
+class DepensesDto
 {
-    /**
-     * @var string
-     */
-    private $code;
-
     /**
      * @param OptionsResolver $resolver
      */
     public static function configureData(OptionsResolver $resolver)
     {
-        $resolver
-            ->setRequired('code')->setAllowedTypes('code', ['string'])
-        ;
+        return;
     }
 
     /**
@@ -45,28 +39,6 @@ class SituationActuelleDto
         self::configureData($resolver);
         $resolvedOptions = $resolver->resolve($options);
 
-        return (new self())
-            ->setCode($resolvedOptions['code'])
-        ;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCode(): string
-    {
-        return $this->code;
-    }
-
-    /**
-     * @param string $code
-     *
-     * @return self
-     */
-    public function setCode(string $code): self
-    {
-        $this->code = $code;
-
-        return $this;
+        return new self();
     }
 }

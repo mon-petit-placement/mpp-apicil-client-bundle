@@ -10,12 +10,12 @@ use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
 use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class SituationActuelleDto
+class CapaciteEpargne
 {
     /**
-     * @var string
+     * @var float
      */
-    private $code;
+    private $montant;
 
     /**
      * @param OptionsResolver $resolver
@@ -23,7 +23,7 @@ class SituationActuelleDto
     public static function configureData(OptionsResolver $resolver)
     {
         $resolver
-            ->setRequired('code')->setAllowedTypes('code', ['string'])
+            ->setDefault('montant', null)->setAllowedTypes('montant', ['float', 'null'])
         ;
     }
 
@@ -46,26 +46,26 @@ class SituationActuelleDto
         $resolvedOptions = $resolver->resolve($options);
 
         return (new self())
-            ->setCode($resolvedOptions['code'])
+            ->setMontant($resolvedOptions['montant'])
         ;
     }
 
     /**
-     * @return string
+     * @return float|null
      */
-    public function getCode(): string
+    public function getMontant(): ?float
     {
-        return $this->code;
+        return $this->montant;
     }
 
     /**
-     * @param string $code
+     * @param float|null $montant
      *
      * @return self
      */
-    public function setCode(string $code): self
+    public function setMontant(?float $montant): self
     {
-        $this->code = $code;
+        $this->montant = $montant;
 
         return $this;
     }

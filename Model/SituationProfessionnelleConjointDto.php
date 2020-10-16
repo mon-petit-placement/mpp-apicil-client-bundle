@@ -2,6 +2,15 @@
 
 namespace Mpp\ApicilClientBundle\Model;
 
+use Symfony\Component\OptionsResolver\Exception\AccessException;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
+use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
+use Symfony\Component\OptionsResolver\Exception\NoSuchOptionException;
+use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
+use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
+use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
 class SituationProfessionnelleConjointDto
 {
     /**
@@ -43,6 +52,83 @@ class SituationProfessionnelleConjointDto
      * @var bool|null
      */
     private $travailleurNonSalarie;
+
+    /**
+     * @param OptionsResolver $resolver
+     */
+    public static function configureData(OptionsResolver $resolver)
+    {
+        $resolver
+            ->setDefault('categorieSocioProfessionnelle', null)->setAllowedTypes('categorieSocioProfessionnelle', ['array', CategorieSocioProfessionnelleDto::class, 'null'])->setNormalizer('categorieSocioProfessionnelle', function (Options $options, $value) {
+                if ($value instanceof CategorieSocioProfessionnelleDto || null === $value) {
+                    return $value;
+                }
+
+                return CategorieSocioProfessionnelleDto::createFromArray($value);
+            })
+            ->setDefault('informationsPPE', null)->setAllowedTypes('informationsPPE', ['array', InformationsPPEDto::class, 'null'])->setNormalizer('informationsPPE', function (Options $options, $value) {
+                if ($value instanceof InformationsPPEDto || null === $value) {
+                    return $value;
+                }
+
+                return InformationsPPEDto::createFromArray($value);
+            })
+            ->setDefault('lienPPE', null)->setAllowedTypes('lienPPE', ['array', LienPPEDto::class, 'null'])->setNormalizer('lienPPE', function (Options $options, $value) {
+                if ($value instanceof LienPPEDto || null === $value) {
+                    return $value;
+                }
+
+                return LienPPEDto::createFromArray($value);
+            })
+            ->setDefault('nomEntreprise', null)->setAllowedTypes('nomEntreprise', ['string', 'null'])
+            ->setDefault('professionActuelle', null)->setAllowedTypes('professionActuelle', ['string', 'null'])
+            ->setDefault('secteurActivite', null)->setAllowedTypes('secteurActivite', ['array', SecteurActiviteDto::class, 'null'])->setNormalizer('secteurActivite', function (Options $options, $value) {
+                if ($value instanceof SecteurActiviteDto || null === $value) {
+                    return $value;
+                }
+
+                return SecteurActiviteDto::createFromArray($value);
+            })
+            ->setDefault('situationActuelle', null)->setAllowedTypes('situationActuelle', ['array', SituationActuelleDto::class, 'null'])->setNormalizer('situationActuelle', function (Options $options, $value) {
+                if ($value instanceof SituationActuelleDto || null === $value) {
+                    return $value;
+                }
+
+                return SituationActuelleDto::createFromArray($value);
+            })
+            ->setDefault('travailleurNonSalarie', null)->setAllowedTypes('travailleurNonSalarie', ['bool', 'null'])
+        ;
+    }
+
+    /**
+     * @param array $options
+     *
+     * @return self
+     *
+     * @throws UndefinedOptionsException If an option name is undefined
+     * @throws InvalidOptionsException   If an option doesn't fulfill the language specified validation rules
+     * @throws MissingOptionsException   If a required option is missing
+     * @throws OptionDefinitionException If there is a cyclic dependency between lazy options and/or normalizers
+     * @throws NoSuchOptionException     If a lazy option reads an unavailable option
+     * @throws AccessException           If called from a lazy option or normalizer
+     */
+    public static function createFromArray(array $options): self
+    {
+        $resolver = new OptionsResolver();
+        self::configureData($resolver);
+        $resolvedOptions = $resolver->resolve($options);
+
+        return (new self())
+            ->setCategorieSocioProfessionnelle($resolvedOptions['categorieSocioProfessionnelle'])
+            ->setInformationsPPE($resolvedOptions['informationsPPE'])
+            ->setLienPPE($resolvedOptions['lienPPE'])
+            ->setNomEntreprise($resolvedOptions['nomEntreprise'])
+            ->setProfessionActuelle($resolvedOptions['professionActuelle'])
+            ->setSecteurActivite($resolvedOptions['secteurActivite'])
+            ->setSituationActuelle($resolvedOptions['situationActuelle'])
+            ->setTravailleurNonSalarie($resolvedOptions['travailleurNonSalarie'])
+        ;
+    }
 
     /**
      * @return CategorieSocioProfessionnelleDto|null
