@@ -2,30 +2,34 @@
 
 namespace Mpp\ApicilClientBundle\Model;
 
+use Symfony\Component\OptionsResolver\Exception\AccessException;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
+use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
+use Symfony\Component\OptionsResolver\Exception\NoSuchOptionException;
+use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
+use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
+use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
 class EtatCivilDto
 {
     /**
-     * @var CiviliteDto|null
+     * @var CiviliteDto
      */
     private $civilite;
 
     /**
-     * @var \DateTime|null
+     * @var \DateTime
      */
     private $dateNaissance;
 
     /**
-     * @var DepartementDto|null
-     */
-    private $departementNaissance;
-
-    /**
-     * @var NationaliteDto|null
+     * @var NationaliteDto
      */
     private $nationalite;
 
     /**
-     * @var string|null
+     * @var string
      */
     private $nom;
 
@@ -37,10 +41,15 @@ class EtatCivilDto
     /**
      * @var int|null
      */
+    private $nombreEnfants;
+
+    /**
+     * @var int
+     */
     private $nombrePersonnesACharge;
 
     /**
-     * @var PaysDto|null
+     * @var PaysDto
      */
     private $pays;
 
@@ -50,7 +59,7 @@ class EtatCivilDto
     private $personnesACharge;
 
     /**
-     * @var string|null
+     * @var string
      */
     private $prenom;
 
@@ -60,29 +69,137 @@ class EtatCivilDto
     private $regimeMatrimonial;
 
     /**
-     * @var SituationFamilialeDto|null
+     * @var SituationFamilialeDto
      */
     private $situationFamiliale;
 
     /**
-     * @var VilleNaissanceDto|null
+     * @var VilleNaissanceDto
      */
     private $villeNaissance;
 
     /**
-     * @return CiviliteDto|null
+     * @param OptionsResolver $resolver
      */
-    public function getCivilite(): ?CiviliteDto
+    public static function configureData(OptionsResolver $resolver)
+    {
+        $resolver
+            ->setRequired('civilite')->setAllowedTypes('civilite', ['array', CiviliteDto::class])->setNormalizer('civilite', function (Options $options, $value) {
+                if ($value instanceof CiviliteDto) {
+                    return $value;
+                }
+
+                return CiviliteDto::createFromArray($value);
+            })
+            ->setRequired('dateNaissance')->setAllowedTypes('dateNaissance', [\DateTime::class, 'string'])->setNormalizer('dateNaissance', function (Options $options, $value) {
+                if (is_string($value)) {
+                    return \DateTime::createFromFormat('Y-m-d', $value);
+                }
+
+                return $value;
+            })
+            ->setRequired('nationalite')->setAllowedTypes('nationalite', ['array', NationaliteDto::class])->setNormalizer('nationalite', function (Options $options, $value) {
+                if ($value instanceof NationaliteDto) {
+                    return $value;
+                }
+
+                return NationaliteDto::createFromArray($value);
+            })
+            ->setRequired('nom')->setAllowedTypes('nom', ['string'])
+            ->setDefault('nomNaissance', null)->setAllowedTypes('nomNaissance', ['string', 'null'])
+            ->setDefault('nombreEnfants', null)->setAllowedTypes('nombreEnfants', ['int', 'null'])
+            ->setRequired('nombrePersonnesACharge')->setAllowedTypes('nombrePersonnesACharge', ['int'])
+            ->setRequired('pays')->setAllowedTypes('pays', ['array', PaysDto::class])->setNormalizer('pays', function (Options $options, $value) {
+                if ($value instanceof PaysDto) {
+                    return $value;
+                }
+
+                return PaysDto::createFromArray($value);
+            })
+            ->setDefault('personnesACharge', [])->setAllowedTypes('personnesACharge', ['array'])->setNormalizer('personnesACharge', function (Options $options, $value) {
+                foreach ($value as &$reponse) {
+                    if ($reponse instanceof PersonneAChargeDto) {
+                        continue;
+                    }
+
+                    $reponse = PersonneAChargeDto::createFromArray($reponse);
+                }
+
+                return $value;
+            })
+            ->setRequired('prenom')->setAllowedTypes('prenom', ['string'])
+            ->setDefault('regimeMatrimonial', null)->setAllowedTypes('regimeMatrimonial', ['array', RegimeMatrimonialDto::class, 'null'])->setNormalizer('regimeMatrimonial', function (Options $options, $value) {
+                if ($value instanceof RegimeMatrimonialDto || null === $value) {
+                    return $value;
+                }
+
+                return RegimeMatrimonialDto::createFromArray($value);
+            })
+            ->setRequired('situationFamiliale')->setAllowedTypes('situationFamiliale', ['array', SituationFamilialDto::class])->setNormalizer('situationFamiliale', function (Options $options, $value) {
+                if ($value instanceof SituationFamilialDto) {
+                    return $value;
+                }
+
+                return SituationFamilialDto::createFromArray($value);
+            })
+            ->setRequired('villeNaissance')->setAllowedTypes('villeNaissance', ['array', VilleNaissanceDto::class])->setNormalizer('villeNaissance', function (Options $options, $value) {
+                if ($value instanceof VilleNaissanceDto) {
+                    return $value;
+                }
+
+                return VilleNaissanceDto::createFromArray($value);
+            })
+        ;
+    }
+
+    /**
+     * @param array $options
+     *
+     * @return self
+     *
+     * @throws UndefinedOptionsException If an option name is undefined
+     * @throws InvalidOptionsException   If an option doesn't fulfill the language specified validation rules
+     * @throws MissingOptionsException   If a required option is missing
+     * @throws OptionDefinitionException If there is a cyclic dependency between lazy options and/or normalizers
+     * @throws NoSuchOptionException     If a lazy option reads an unavailable option
+     * @throws AccessException           If called from a lazy option or normalizer
+     */
+    public static function createFromArray(array $options): self
+    {
+        $resolver = new OptionsResolver();
+        self::configureData($resolver);
+        $resolvedOptions = $resolver->resolve($options);
+
+        return (new self())
+            ->setCivilite($resolvedOptions['civilite'])
+            ->setDateNaissance($resolvedOptions['dateNaissance'])
+            ->setNom($resolvedOptions['nom'])
+            ->setNomNaissance($resolvedOptions['nomNaissance'])
+            ->setNombreEnfants($resolvedOptions['nombreEnfants'])
+            ->setNombrePersonnesACharge($resolvedOptions['nombrePersonnesACharge'])
+            ->setPays($resolvedOptions['pays'])
+            ->setPersonnesACharge($resolvedOptions['personnesACharge'])
+            ->setPrenom($resolvedOptions['prenom'])
+            ->setRegimeMatrimonial($resolvedOptions['regimeMatrimonial'])
+            ->setSituationFamiliale($resolvedOptions['situationFamiliale'])
+            ->setVilleNaissance($resolvedOptions['villeNaissance'])
+        ;
+    }
+
+    /**
+     * @return CiviliteDto
+     */
+    public function getCivilite(): CiviliteDto
     {
         return $this->civilite;
     }
 
     /**
-     * @param CiviliteDto|null $civilite
+     * @param CiviliteDto $civilite
      *
      * @return self
      */
-    public function setCivilite(?CiviliteDto $civilite): self
+    public function setCivilite(CiviliteDto $civilite): self
     {
         $this->civilite = $civilite;
 
@@ -90,19 +207,19 @@ class EtatCivilDto
     }
 
     /**
-     * @return \DateTime|null
+     * @return \DateTime
      */
-    public function getDateNaissance(): ?\DateTime
+    public function getDateNaissance(): \DateTime
     {
         return $this->dateNaissance;
     }
 
     /**
-     * @param \DateTime|null $dateNaissance
+     * @param \DateTime $dateNaissance
      *
      * @return self
      */
-    public function setDateNaissance(?\DateTime $dateNaissance): self
+    public function setDateNaissance(\DateTime $dateNaissance): self
     {
         $this->dateNaissance = $dateNaissance;
 
@@ -110,39 +227,19 @@ class EtatCivilDto
     }
 
     /**
-     * @return DepartementDto|null
+     * @return NationaliteDto
      */
-    public function getDepartementNaissance(): ?DepartementDto
-    {
-        return $this->departementNaissance;
-    }
-
-    /**
-     * @param DepartementDto|null $departementNaissance
-     *
-     * @return self
-     */
-    public function setDepartementNaissance(?DepartementDto $departementNaissance): self
-    {
-        $this->departementNaissance = $departementNaissance;
-
-        return $this;
-    }
-
-    /**
-     * @return NationaliteDto|null
-     */
-    public function getNationalite(): ?NationaliteDto
+    public function getNationalite(): NationaliteDto
     {
         return $this->nationalite;
     }
 
     /**
-     * @param NationaliteDto|null $nationalite
+     * @param NationaliteDto $nationalite
      *
      * @return self
      */
-    public function setNationalite(?NationaliteDto $nationalite): self
+    public function setNationalite(NationaliteDto $nationalite): self
     {
         $this->nationalite = $nationalite;
 
@@ -150,19 +247,19 @@ class EtatCivilDto
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getNom(): ?string
+    public function getNom(): string
     {
         return $this->nom;
     }
 
     /**
-     * @param string|null $nom
+     * @param string $nom
      *
      * @return self
      */
-    public function setNom(?string $nom): self
+    public function setNom(string $nom): self
     {
         $this->nom = $nom;
 
@@ -192,17 +289,37 @@ class EtatCivilDto
     /**
      * @return int|null
      */
-    public function getNombrePersonnesACharge(): ?int
+    public function getNombreEnfants(): ?int
+    {
+        return $this->nombreEnfants;
+    }
+
+    /**
+     * @param int|null $nombreEnfants
+     *
+     * @return self
+     */
+    public function setNombreEnfants(?int $nombreEnfants): self
+    {
+        $this->nombreEnfants = $nombreEnfants;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNombrePersonnesACharge(): int
     {
         return $this->nombrePersonnesACharge;
     }
 
     /**
-     * @param int|null $nombrePersonnesACharge
+     * @param int $nombrePersonnesACharge
      *
      * @return self
      */
-    public function setNombrePersonnesACharge(?int $nombrePersonnesACharge): self
+    public function setNombrePersonnesACharge(int $nombrePersonnesACharge): self
     {
         $this->nombrePersonnesACharge = $nombrePersonnesACharge;
 
@@ -210,19 +327,19 @@ class EtatCivilDto
     }
 
     /**
-     * @return PaysDto|null
+     * @return PaysDto
      */
-    public function getPays(): ?PaysDto
+    public function getPays(): PaysDto
     {
         return $this->pays;
     }
 
     /**
-     * @param PaysDto|null $pays
+     * @param PaysDto $pays
      *
      * @return self
      */
-    public function setPays(?PaysDto $pays): self
+    public function setPays(PaysDto $pays): self
     {
         $this->pays = $pays;
 
@@ -250,19 +367,19 @@ class EtatCivilDto
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getPrenom(): ?string
+    public function getPrenom(): string
     {
         return $this->prenom;
     }
 
     /**
-     * @param string|null $prenom
+     * @param string $prenom
      *
      * @return self
      */
-    public function setPrenom(?string $prenom): self
+    public function setPrenom(string $prenom): self
     {
         $this->prenom = $prenom;
 
@@ -290,19 +407,19 @@ class EtatCivilDto
     }
 
     /**
-     * @return SituationFamilialeDto|null
+     * @return SituationFamilialeDto
      */
-    public function getSituationFamiliale(): ?SituationFamilialeDto
+    public function getSituationFamiliale(): SituationFamilialeDto
     {
         return $this->situationFamiliale;
     }
 
     /**
-     * @param SituationFamilialeDto|null $situationFamiliale
+     * @param SituationFamilialeDto $situationFamiliale
      *
      * @return self
      */
-    public function setSituationFamiliale(?SituationFamilialeDto $situationFamiliale): self
+    public function setSituationFamiliale(SituationFamilialeDto $situationFamiliale): self
     {
         $this->situationFamiliale = $situationFamiliale;
 
@@ -310,19 +427,19 @@ class EtatCivilDto
     }
 
     /**
-     * @return VilleNaissanceDto|null
+     * @return VilleNaissanceDto
      */
-    public function getVilleNaissance(): ?VilleNaissanceDto
+    public function getVilleNaissance(): VilleNaissanceDto
     {
         return $this->villeNaissance;
     }
 
     /**
-     * @param VilleNaissanceDto|null $villeNaissance
+     * @param VilleNaissanceDto $villeNaissance
      *
      * @return self
      */
-    public function setVilleNaissance(?VilleNaissanceDto $villeNaissance): self
+    public function setVilleNaissance(VilleNaissanceDto $villeNaissance): self
     {
         $this->villeNaissance = $villeNaissance;
 

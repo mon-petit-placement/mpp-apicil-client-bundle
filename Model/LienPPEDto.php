@@ -2,25 +2,34 @@
 
 namespace Mpp\ApicilClientBundle\Model;
 
+use Symfony\Component\OptionsResolver\Exception\AccessException;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
+use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
+use Symfony\Component\OptionsResolver\Exception\NoSuchOptionException;
+use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
+use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
+use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
 class LienPPEDto
 {
     /**
-     * @var FonctionPPEDto|null
+     * @var FonctionPPEDto
      */
     private $fonction;
 
     /**
-     * @var NatureLienDto|null
+     * @var NatureLienDto
      */
     private $natureLien;
 
     /**
-     * @var string|null
+     * @var string
      */
     private $nom;
 
     /**
-     * @var PaysDto|null
+     * @var PaysDto
      */
     private $paysExerce;
 
@@ -30,24 +39,85 @@ class LienPPEDto
     private $ppeFonctionAutre;
 
     /**
-     * @var string|null
+     * @var string
      */
     private $prenom;
 
     /**
-     * @return FonctionPPEDto|null
+     * @param OptionsResolver $resolver
      */
-    public function getFonction(): ?FonctionPPEDto
+    public static function configureData(OptionsResolver $resolver)
+    {
+        $resolver
+            ->setRequired('fonction')->setAllowedTypes('fonction', ['array', FonctionPPEDto::class])->setNormalizer('fonction', function (Options $options, $value) {
+                if ($value instanceof FonctionPPEDto) {
+                    return $value;
+                }
+
+                return FonctionPPEDto::createFromArray($value);
+            })
+            ->setRequired('natureLien')->setAllowedTypes('natureLien', ['array', NatureLienDto::class])->setNormalizer('natureLien', function (Options $options, $value) {
+                if ($value instanceof NatureLienDto) {
+                    return $value;
+                }
+
+                return NatureLienDto::createFromArray($value);
+            })
+            ->setRequired('nom')->setAllowedTypes('nom', ['string'])
+            ->setRequired('paysExerce')->setAllowedTypes('paysExerce', ['array', PaysDto::class])->setNormalizer('paysExerce', function (Options $options, $value) {
+                if ($value instanceof PaysDto) {
+                    return $value;
+                }
+
+                return PaysDto::createFromArray($value);
+            })
+            ->setDefault('ppeFonctionAutre', null)->setAllowedTypes('ppeFonctionAutre', ['string', 'null'])
+            ->setRequired('prenom')->setAllowedTypes('prenom', ['string'])
+        ;
+    }
+
+    /**
+     * @param array $options
+     *
+     * @return self
+     *
+     * @throws UndefinedOptionsException If an option name is undefined
+     * @throws InvalidOptionsException   If an option doesn't fulfill the language specified validation rules
+     * @throws MissingOptionsException   If a required option is missing
+     * @throws OptionDefinitionException If there is a cyclic dependency between lazy options and/or normalizers
+     * @throws NoSuchOptionException     If a lazy option reads an unavailable option
+     * @throws AccessException           If called from a lazy option or normalizer
+     */
+    public static function createFromArray(array $options): self
+    {
+        $resolver = new OptionsResolver();
+        self::configureData($resolver);
+        $resolvedOptions = $resolver->resolve($options);
+
+        return (new self())
+            ->setFonction($resolvedOptions['fonction'])
+            ->setNatureLien($resolvedOptions['natureLien'])
+            ->setNom($resolvedOptions['nom'])
+            ->setPaysExerce($resolvedOptions['paysExerce'])
+            ->setPpeFonctionAutre($resolvedOptions['ppeFonctionAutre'])
+            ->setPrenom($resolvedOptions['prenom'])
+        ;
+    }
+
+    /**
+     * @return FonctionPPEDto
+     */
+    public function getFonction(): FonctionPPEDto
     {
         return $this->fonction;
     }
 
     /**
-     * @param FonctionPPEDto|null $fonction
+     * @param FonctionPPEDto $fonction
      *
      * @return self
      */
-    public function setFonction(?FonctionPPEDto $fonction): self
+    public function setFonction(FonctionPPEDto $fonction): self
     {
         $this->fonction = $fonction;
 
@@ -55,19 +125,19 @@ class LienPPEDto
     }
 
     /**
-     * @return NatureLienDto|null
+     * @return NatureLienDto
      */
-    public function getNatureLien(): ?NatureLienDto
+    public function getNatureLien(): NatureLienDto
     {
         return $this->natureLien;
     }
 
     /**
-     * @param NatureLienDto|null $natureLien
+     * @param NatureLienDto $natureLien
      *
      * @return self
      */
-    public function setNatureLien(?NatureLienDto $natureLien): self
+    public function setNatureLien(NatureLienDto $natureLien): self
     {
         $this->natureLien = $natureLien;
 
@@ -75,19 +145,19 @@ class LienPPEDto
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getNom(): ?string
+    public function getNom(): string
     {
         return $this->nom;
     }
 
     /**
-     * @param string|null $nom
+     * @param string $nom
      *
      * @return self
      */
-    public function setNom(?string $nom): self
+    public function setNom(string $nom): self
     {
         $this->nom = $nom;
 
@@ -95,19 +165,19 @@ class LienPPEDto
     }
 
     /**
-     * @return PaysDto|null
+     * @return PaysDto
      */
-    public function getPaysExerce(): ?PaysDto
+    public function getPaysExerce(): PaysDto
     {
         return $this->paysExerce;
     }
 
     /**
-     * @param PaysDto|null $paysExerce
+     * @param PaysDto $paysExerce
      *
      * @return self
      */
-    public function setPaysExerce(?PaysDto $paysExerce): self
+    public function setPaysExerce(PaysDto $paysExerce): self
     {
         $this->paysExerce = $paysExerce;
 
@@ -135,19 +205,19 @@ class LienPPEDto
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getPrenom(): ?string
+    public function getPrenom(): string
     {
         return $this->prenom;
     }
 
     /**
-     * @param string|null $prenom
+     * @param string $prenom
      *
      * @return self
      */
-    public function setPrenom(?string $prenom): self
+    public function setPrenom(string $prenom): self
     {
         $this->prenom = $prenom;
 

@@ -2,6 +2,15 @@
 
 namespace Mpp\ApicilClientBundle\Model;
 
+use Symfony\Component\OptionsResolver\Exception\AccessException;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
+use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
+use Symfony\Component\OptionsResolver\Exception\NoSuchOptionException;
+use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
+use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
+use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
 class EtatCivilConjointDto
 {
     /**
@@ -43,6 +52,88 @@ class EtatCivilConjointDto
      * @var VilleNaissanceDto|null
      */
     private $villeNaissance;
+
+    /**
+     * @param OptionsResolver $resolver
+     */
+    public static function configureData(OptionsResolver $resolver)
+    {
+        $resolver
+            ->setDefault('civilite', null)->setAllowedTypes('civilite', ['array', CiviliteDto::class, 'null'])->setNormalizer('civilite', function (Options $options, $value) {
+                if ($value instanceof CiviliteDto || null === $value) {
+                    return $value;
+                }
+
+                return CiviliteDto::createFromArray($value);
+            })
+            ->setDefault('dateNaissance', null)->setAllowedTypes('dateNaissance', [\DateTime::class, 'string', null])->setNormalizer('dateNaissance', function (Options $options, $value) {
+                if ($value instanceof \DateTime ||  null === $value) {
+                    return $value;
+                }
+
+                return \DateTime::createFromFormat('Y-m-d', $value);
+            })
+            ->setDefault('departementNaissance', null)->setAllowedTypes('departementNaissance', ['array', DepartementDto::class, 'null'])->setNormalizer('departementNaissance', function (Options $options, $value) {
+                if ($value instanceof DepartementDto || null === $value) {
+                    return $value;
+                }
+
+                return DepartementDto::createFromArray($value);
+            })
+            ->setDefault('nationalite', null)->setAllowedTypes('nationalite', ['array', NationaliteDto::class, 'null'])->setNormalizer('nationalite', function (Options $options, $value) {
+                if ($value instanceof NationaliteDto || null === $value) {
+                    return $value;
+                }
+
+                return NationaliteDto::createFromArray($value);
+            })
+            ->setDefault('nom', null)->setAllowedTypes('nom', ['string', 'null'])
+            ->setDefault('pays', null)->setAllowedTypes('pays', ['array', PaysDto::class, 'null'])->setNormalizer('pays', function (Options $options, $value) {
+                if ($value instanceof PaysDto || null === $value) {
+                    return $value;
+                }
+
+                return PaysDto::createFromArray($value);
+            })
+            ->setDefault('prenom', null)->setAllowedTypes('prenom', ['string', 'null'])
+            ->setDefault('villeNaissance', null)->setAllowedTypes('villeNaissance', ['array', VilleNaissanceDto::class, 'null'])->setNormalizer('villeNaissance', function (Options $options, $value) {
+                if ($value instanceof VilleNaissanceDto || null === $value) {
+                    return $value;
+                }
+
+                return VilleNaissanceDto::createFromArray($value);
+            })
+        ;
+    }
+
+    /**
+     * @param array $options
+     *
+     * @return self
+     *
+     * @throws UndefinedOptionsException If an option name is undefined
+     * @throws InvalidOptionsException   If an option doesn't fulfill the language specified validation rules
+     * @throws MissingOptionsException   If a required option is missing
+     * @throws OptionDefinitionException If there is a cyclic dependency between lazy options and/or normalizers
+     * @throws NoSuchOptionException     If a lazy option reads an unavailable option
+     * @throws AccessException           If called from a lazy option or normalizer
+     */
+    public static function createFromArray(array $options): self
+    {
+        $resolver = new OptionsResolver();
+        self::configureData($resolver);
+        $resolvedOptions = $resolver->resolve($options);
+
+        return (new self())
+            ->setCivilite($resolvedOptions['civilite'])
+            ->setDateNaissance($resolvedOptions['dateNaissance'])
+            ->setDepartementNaissance($resolvedOptions['departementNaissance'])
+            ->setNom($resolvedOptions['nom'])
+            ->setPays($resolvedOptions['pays'])
+            ->setPrenom($resolvedOptions['prenom'])
+            ->setVilleNaissance($resolvedOptions['villeNaissance'])
+        ;
+    }
 
     /**
      * @return CiviliteDto|null

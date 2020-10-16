@@ -36,7 +36,7 @@ class QuestionnaireStructuresReponses
                 }
 
                 foreach ($value as &$reponse) {
-                    if ($reponse instanceof ReponseDTO) {
+                    if ($reponse instanceof ReponseDto) {
                         continue;
                     }
 
