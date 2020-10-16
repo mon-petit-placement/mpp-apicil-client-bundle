@@ -4,6 +4,15 @@ declare(strict_types=1);
 
 namespace Mpp\ApicilClientBundle\Model;
 
+use Symfony\Component\OptionsResolver\Exception\AccessException;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
+use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
+use Symfony\Component\OptionsResolver\Exception\NoSuchOptionException;
+use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
+use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
+use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
 class ClauseBeneficiaireDto
 {
     public const CHOIX_BENEFICIAIRE_CONJOINT = 'conjoint';
@@ -51,6 +60,49 @@ class ClauseBeneficiaireDto
      * @var string|null
      */
     private $libelle;
+
+    /**
+     * @param OptionsResolver $resolver
+     */
+    public static function configureData(OptionsResolver $resolver)
+    {
+        $resolver
+            ->setDefault('choixBeneficiaire', null)->setAllowedValues('choixBeneficiaire', [self::CHOIX_BENEFICIAIRE_CONJOINT, self::CHOIX_BENEFICIAIRE_ENFANTS, self::CHOIX_BENEFICIAIRE_HERITIERS, self::CHOIX_BENEFICIAIRE_MANUSCRITE, self::CHOIX_BENEFICIAIRE_NOTAIRE])
+            ->setDefault('clauseBeneficiaireLibre', null)->setAllowedTypes('clauseBeneficiaireLibre', ['string', 'null'])
+            ->setDefault('codePostalNotaire', null)->setAllowedTypes('clauseBeneficiaireLibre', ['string', 'null'])
+            ->setDefault('nomNotaire', null)->setAllowedTypes('clauseBeneficiaireLibre', ['string', 'null'])
+            ->setDefault('prenomNotaire', null)->setAllowedTypes('clauseBeneficiaireLibre', ['string', 'null'])
+            ->setDefault('villeNotaire', null)->setAllowedTypes('clauseBeneficiaireLibre', ['string', 'null'])
+        ;
+    }
+
+    /**
+     * @param array $options
+     *
+     * @return self
+     *
+     * @throws UndefinedOptionsException If an option name is undefined
+     * @throws InvalidOptionsException   If an option doesn't fulfill the language specified validation rules
+     * @throws MissingOptionsException   If a required option is missing
+     * @throws OptionDefinitionException If there is a cyclic dependency between lazy options and/or normalizers
+     * @throws NoSuchOptionException     If a lazy option reads an unavailable option
+     * @throws AccessException           If called from a lazy option or normalizer
+     */
+    public static function createFromArray(array $options): self
+    {
+        $resolver = new OptionsResolver();
+        self::configureData($resolver);
+        $resolvedOptions = $resolver->resolve($options);
+
+        return (new self())
+            ->setChoixBeneficiaire($resolvedOptions['choixBeneficiaire'])
+            ->setClauseBeneficiaireLibre($resolvedOptions['clauseBeneficiaireLibre'])
+            ->setCodePostalNotaire($resolvedOptions['codePostalNotaire'])
+            ->setNomNotaire($resolvedOptions['nomNotaire'])
+            ->setPrenomNotaire($resolvedOptions['prenomNotaire'])
+            ->setVilleNotaire($resolvedOptions['villeNotaire'])
+        ;
+    }
 
     /**
      * @return string|null
@@ -145,7 +197,7 @@ class ClauseBeneficiaireDto
      *
      * @return self
      */
-    public function setPrenomNotaire(?string $prenomNotaire): self
+    public function setPrenomNotaire(?string $prenomNotairesetCodePostalNotaire): self
     {
         $this->prenomNotaire = $prenomNotaire;
 

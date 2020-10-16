@@ -11,17 +11,17 @@ use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class VilleDto
+class SouscriptionRetraiteDto
 {
     /**
-     * @var string
+     * @var SouscriptionPerinDto|null
      */
-    private $code;
+    private $souscriptionPerin;
 
     /**
-     * @var string
+     * @var SouscriptionPerpDto|null
      */
-    private $libelle;
+    private $souscriptionPerp;
 
     /**
      * @param OptionsResolver $resolver
@@ -29,8 +29,20 @@ class VilleDto
     public static function configureData(OptionsResolver $resolver)
     {
         $resolver
-            ->setRequired('code')->setAllowedTypes('code', ['string'])
-            ->setRequired('libelle')->setAllowedTypes('libelle', ['string'])
+            ->setDefault('souscriptionPerin', null)->setAllowedTypes('souscriptionPerin', ['array', SouscriptionPerin::class, 'null'])->setNormalizer('souscriptionPerin', function (Options $options, $value) {
+                if ($value instanceof SouscriptionPerin || null === $value) {
+                    return $value;
+                }
+
+                return SouscriptionPerin::createFromArray($value);
+            })
+            ->setDefault('souscriptionPerp', null)->setAllowedTypes('souscriptionPerp', ['array', SouscriptionPerp::class, 'null'])->setNormalizer('souscriptionPerp', function (Options $options, $value) {
+                if ($value instanceof SouscriptionPerp || null === $value) {
+                    return $value;
+                }
+
+                return SouscriptionPerp::createFromArray($value);
+            })
         ;
     }
 
@@ -53,47 +65,47 @@ class VilleDto
         $resolvedOptions = $resolver->resolve($options);
 
         return (new self())
-            ->setCode($resolvedOptions['code'])
-            ->setLibelle($resolvedOptions['libelle'])
+            ->setSouscriptionPerinDto($resolvedOptions['souscriptionPerin'])
+            ->setSouscriptionPerpDto($resolvedOptions['souscriptionPerp'])
         ;
     }
 
     /**
-     * @return string
+     * @return SouscriptionPerinDto|null
      */
-    public function getCode(): string
+    public function getSouscriptionPerinDto(): ?SouscriptionPerinDto
     {
-        return $this->code;
+        return $this->souscriptionPerin;
     }
 
     /**
-     * @param string $code
+     * @param SouscriptionPerinDto|null $souscriptionPerin
      *
      * @return self
      */
-    public function setCode(string $code): self
+    public function setSouscriptionPerinDto(?SouscriptionPerinDto $souscriptionPerin): self
     {
-        $this->code = $code;
+        $this->souscriptionPerin = $souscriptionPerin;
 
         return $this;
     }
 
     /**
-     * @return string
+     * @return SouscriptionPerpDto|null
      */
-    public function getLibelle(): string
+    public function getSouscriptionPerpDto(): ?SouscriptionPerpDto
     {
-        return $this->libelle;
+        return $this->souscriptionPerp;
     }
 
     /**
-     * @param string $libelle
+     * @param SouscriptionPerpDto|null $souscriptionPerp
      *
      * @return self
      */
-    public function setLibelle(string $libelle): self
+    public function setSouscriptionPerpDto(?SouscriptionPerpDto $souscriptionPerp): self
     {
-        $this->libelle = $libelle;
+        $this->souscriptionPerp = $souscriptionPerp;
 
         return $this;
     }

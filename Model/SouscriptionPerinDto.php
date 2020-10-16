@@ -11,17 +11,22 @@ use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class VilleDto
+class SouscriptionPerinDto
 {
     /**
-     * @var string
+     * @var int
      */
-    private $code;
+    private $ageDepartRetraite;
 
     /**
-     * @var string
+     * @var bool|null
      */
-    private $libelle;
+    private $deductionVi;
+
+    /**
+     * @var bool|null
+     */
+    private $deductionVp;
 
     /**
      * @param OptionsResolver $resolver
@@ -29,8 +34,9 @@ class VilleDto
     public static function configureData(OptionsResolver $resolver)
     {
         $resolver
-            ->setRequired('code')->setAllowedTypes('code', ['string'])
-            ->setRequired('libelle')->setAllowedTypes('libelle', ['string'])
+            ->setRequired('ageDepartRetraite')->setAllowedTypes('ageDepartRetraite', ['int'])
+            ->setDefault('deductionVi', null)->setAllowedTypes('deductionVi', ['bool', 'null'])
+            ->setDefault('deductionVp', null)->setAllowedTypes('deductionVp', ['bool', 'null'])
         ;
     }
 
@@ -53,47 +59,68 @@ class VilleDto
         $resolvedOptions = $resolver->resolve($options);
 
         return (new self())
-            ->setCode($resolvedOptions['code'])
-            ->setLibelle($resolvedOptions['libelle'])
+            ->setAgeDepartRetraite($resolvedOptions['ageDepartRetraite'])
+            ->setDeductionVi($resolvedOptions['deductionVi'])
+            ->setDeductionVp($resolvedOptions['deductionVp'])
         ;
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getCode(): string
+    public function getAgeDepartRetraite(): int
     {
-        return $this->code;
+        return $this->ageDepartRetraite;
     }
 
     /**
-     * @param string $code
+     * @param int $ageDepartRetraite
      *
      * @return self
      */
-    public function setCode(string $code): self
+    public function setAgeDepartRetraite(int $ageDepartRetraite): self
     {
-        $this->code = $code;
+        $this->ageDepartRetraite = $ageDepartRetraite;
 
         return $this;
     }
 
     /**
-     * @return string
+     * @return bool|null
      */
-    public function getLibelle(): string
+    public function getDeductionVi(): ?bool
     {
-        return $this->libelle;
+        return $this->deductionVi;
     }
 
     /**
-     * @param string $libelle
+     * @param bool|null $deductionVi
      *
      * @return self
      */
-    public function setLibelle(string $libelle): self
+    public function setDeductionVi(?bool $deductionVi): self
     {
-        $this->libelle = $libelle;
+        $this->deductionVi = $deductionVi;
+
+        return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getDeductionVp(): ?bool
+    {
+        return $this->deductionVp;
+    }
+
+    /**
+     * @param bool|null $deductionVp
+     *
+     * @return self
+     */
+    public function setDeductionVp(?bool $deductionVp): self
+    {
+        $this->deductionVp = $deductionVp;
 
         return $this;
     }

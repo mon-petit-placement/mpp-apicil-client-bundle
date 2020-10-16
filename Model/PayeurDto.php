@@ -2,10 +2,19 @@
 
 namespace Mpp\ApicilClientBundle\Model;
 
+use Symfony\Component\OptionsResolver\Exception\AccessException;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
+use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
+use Symfony\Component\OptionsResolver\Exception\NoSuchOptionException;
+use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
+use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
+use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
 class PayeurDto
 {
     /**
-     * @var \DateTime|null
+     * @var \DateTime
      */
     private $dateNaissance;
 
@@ -15,7 +24,7 @@ class PayeurDto
     private $lienSiAutre;
 
     /**
-     * @var LienParenteDto|null
+     * @var LienParenteDto
      */
     private $lienSouscripteur;
 
@@ -25,29 +34,90 @@ class PayeurDto
     private $lieuNaissance;
 
     /**
-     * @var string|null
+     * @var string
      */
     private $nom;
 
     /**
-     * @var string|null
+     * @var string
      */
     private $prenom;
 
     /**
-     * @return \DateTime|null
+     * @param OptionsResolver $resolver
      */
-    public function getDateNaissance(): ?\DateTime
+    public static function configureData(OptionsResolver $resolver)
+    {
+        $resolver
+            ->setRequired('dateNaissance')->setAllowedTypes('dateNaissance', ['string', \DateTime::class])->setNormalizer('dateNaissance', function (Options $options, $value) {
+                if (is_string($value)) {
+                    return $value;
+                }
+
+                return $value->format('Y-m-d');
+            })
+            ->setDefault('lienSiAutre', null)->setAllowedTypes('lienSiAutre', ['string', null])
+            ->setRequired('lienSouscripteur')->setAllowedTypes('lienSouscripteur', ['array', LienParenteDto::class])->setNormalizer('lienSouscripteur', function (Options $options, $value) {
+                if ($value instanceof LienParenteDto) {
+                    return $value;
+                }
+
+                return LienParenteDto::createFromArray($value);
+            })
+            ->setDefault('lieuNaissance', null)->setAllowedTypes('lieuNaissance', ['array', VilleDto::class, 'null'])->setNormalizer('lieuNaissance', function (Options $options, $value) {
+                if ($value instanceof VilleDto || null === $value) {
+                    return $value;
+                }
+
+                return VilleDto::createFromArray($value);
+            })
+            ->setRequired('nom')->setAllowedTypes('nom', ['string'])
+            ->setRequired('prenom')->setAllowedTypes('prenom', ['string'])
+        ;
+    }
+
+    /**
+     * @param array $options
+     *
+     * @return self
+     *
+     * @throws UndefinedOptionsException If an option name is undefined
+     * @throws InvalidOptionsException   If an option doesn't fulfill the language specified validation rules
+     * @throws MissingOptionsException   If a required option is missing
+     * @throws OptionDefinitionException If there is a cyclic dependency between lazy options and/or normalizers
+     * @throws NoSuchOptionException     If a lazy option reads an unavailable option
+     * @throws AccessException           If called from a lazy option or normalizer
+     */
+    public static function createFromArray(array $options): self
+    {
+        $resolver = new OptionsResolver();
+        self::configureData($resolver);
+        $resolvedOptions = $resolver->resolve($options);
+
+        return (new self())
+            ->setDateNaissance($resolvedOptions['dateNaissance'])
+            ->setLienSiAutre($resolvedOptions['lienSiAutre'])
+            ->setLienSouscripteur($resolvedOptions['lienSouscripteur'])
+            ->setLieuNaissance($resolvedOptions['lieuNaissance'])
+            ->setNom($resolvedOptions['nom'])
+            ->setPrenom($resolvedOptions['prenom'])
+        ;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDateNaissance(): \DateTime
     {
         return $this->dateNaissance;
     }
 
     /**
-     * @param \DateTime|null $dateNaissance
+     * @param \DateTime $dateNaissance
      *
      * @return self
      */
-    public function setDateNaissance(?\DateTime $dateNaissance): self
+    public function setDateNaissance(\DateTime $dateNaissance): self
     {
         $this->dateNaissance = $dateNaissance;
 
@@ -75,19 +145,19 @@ class PayeurDto
     }
 
     /**
-     * @return LienParenteDto|null
+     * @return LienParenteDto
      */
-    public function getLienSouscripteur(): ?LienParenteDto
+    public function getLienSouscripteur(): LienParenteDto
     {
         return $this->lienSouscripteur;
     }
 
     /**
-     * @param LienParenteDto|null $lienSouscripteur
+     * @param LienParenteDto $lienSouscripteur
      *
      * @return self
      */
-    public function setLienSouscripteur(?LienParenteDto $lienSouscripteur): self
+    public function setLienSouscripteur(LienParenteDto $lienSouscripteur): self
     {
         $this->lienSouscripteur = $lienSouscripteur;
 
@@ -115,19 +185,19 @@ class PayeurDto
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getNom(): ?string
+    public function getNom(): string
     {
         return $this->nom;
     }
 
     /**
-     * @param string|null $nom
+     * @param string $nom
      *
      * @return self
      */
-    public function setNom(?string $nom): self
+    public function setNom(string $nom): self
     {
         $this->nom = $nom;
 
@@ -135,19 +205,19 @@ class PayeurDto
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getPrenom(): ?string
+    public function getPrenom(): string
     {
         return $this->prenom;
     }
 
     /**
-     * @param string|null $prenom
+     * @param string $prenom
      *
      * @return self
      */
-    public function setPrenom(?string $prenom): self
+    public function setPrenom(string $prenom): self
     {
         $this->prenom = $prenom;
 

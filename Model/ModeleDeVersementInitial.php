@@ -2,19 +2,28 @@
 
 namespace Mpp\ApicilClientBundle\Model;
 
+use Symfony\Component\OptionsResolver\Exception\AccessException;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
+use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
+use Symfony\Component\OptionsResolver\Exception\NoSuchOptionException;
+use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
+use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
+use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
 class ModeleDeVersementInitial
 {
-    public const MODEPAIEMENT_C = 'C';
-    public const MODEPAIEMENT_P = 'P';
-    public const MODEPAIEMENT_V = 'V';
+    public const MODE_PAIEMENT_C = 'C';
+    public const MODE_PAIEMENT_P = 'P';
+    public const MODE_PAIEMENT_V = 'V';
 
     /**
-     * @var string|null
+     * @var string
      */
     private $modePaiement;
 
     /**
-     * @var float|null
+     * @var float
      */
     private $montant;
 
@@ -44,19 +53,104 @@ class ModeleDeVersementInitial
     private $tauxDerogatoire;
 
     /**
-     * @return string|null
+     * @param OptionsResolver $resolver
      */
-    public function getModePaiement(): ?string
+    public static function configureData(OptionsResolver $resolver)
+    {
+        $resolver
+            ->setRequired('modePaiement')->setAllowedValues('modePaiement', [self::MODE_PAIEMENT_P, self::MODE_PAIEMENT_C, self::MODE_PAIEMENT_V])
+            ->setRequired('montant')->setAllowedTypes('montant', ['float'])
+            ->setDefault('origineDesFonds', null)->setAllowedTypes('origineDesFonds', ['array', OrigineDesFondsDto::class, 'null'])->setNormalizer('origineDesFonds', function (Options $options, $value) {
+                if ($value instanceof OrigineDesFondsDto || null === $value) {
+                    return $value;
+                }
+
+                return OrigineDesFondsDto::createFromArray($value);
+            })
+            ->setDefault('payeur', null)->setAllowedTypes('payeur', ['array', PayeurDto::class, 'null'])->setNormalizer('payeur', function (Options $options, $value) {
+                if ($value instanceof PayeurDto || null === $value) {
+                    return $value;
+                }
+
+                return PayeurDto::createFromArray($value);
+            })
+            ->setDefault('portefeuille', null)->setAllowedTypes('portefeuille', ['array', 'null'])->setNormalizer('portefeuille', function (Options $options, $value) {
+                if (null === $value) {
+                    return $value;
+                }
+
+                foreach ($value as &$portefeuille) {
+                    if ($portefeuille instanceof PortefeuilleDto) {
+                        continue;
+                    }
+
+                    $portefeuille = PortefeuilleDto::createFromArray($portefeuille);
+                }
+
+                return $value;
+            })
+            ->setDefault('reponsesSupportStructure', null)->setAllowedTypes('reponsesSupportStructure', ['array', 'null'])->setNormalizer('reponsesSupportStructure', function (Options $options, $value) {
+                if (null === $value) {
+                    return $value;
+                }
+
+                foreach ($value as &$questionnaireStructuresReponse) {
+                    if ($questionnaireStructuresReponse instanceof QuestionnaireStructuresReponse) {
+                        continue;
+                    }
+
+                    $questionnaireStructuresReponse = PortefeuilleDto::createFromArray($questionnaireStructuresReponse);
+                }
+
+                return $value;
+            })
+            ->setDefault('tauxDerogatoire', null)->setAllowedTypes('tauxDerogatoire', ['float'])
+        ;
+    }
+
+    /**
+     * @param array $options
+     *
+     * @return self
+     *
+     * @throws UndefinedOptionsException If an option name is undefined
+     * @throws InvalidOptionsException   If an option doesn't fulfill the language specified validation rules
+     * @throws MissingOptionsException   If a required option is missing
+     * @throws OptionDefinitionException If there is a cyclic dependency between lazy options and/or normalizers
+     * @throws NoSuchOptionException     If a lazy option reads an unavailable option
+     * @throws AccessException           If called from a lazy option or normalizer
+     */
+    public static function createFromArray(array $options): self
+    {
+        $resolver = new OptionsResolver();
+        self::configureData($resolver);
+        $resolvedOptions = $resolver->resolve($options);
+
+        return (new self())
+            ->setModePaiement($resolvedOptions['modePaiement'])
+            ->setMontant($resolvedOptions['montant'])
+            ->setOrigineDesFonds($resolvedOptions['origineDesFonds'])
+            ->setPayeur($resolvedOptions['payeur'])
+            ->setPortefeuille($resolvedOptions['portefeuille'])
+            ->setReponsesSupportStructure($resolvedOptions['reponsesSupportStructure'])
+            ->setTauxDerogatoire($resolvedOptions['tauxDerogatoire'])
+        ;
+    }
+
+    /**
+     * @return string
+     */
+    public function getModePaiement(): string
     {
         return $this->modePaiement;
     }
 
     /**
-     * @param string|null $modePaiement
+     * @param string $modePaiement
      *
      * @return self
      */
-    public function setModePaiement(?string $modePaiement): self
+    public function setModePaiement(string $modePaiement): self
     {
         $this->modePaiement = $modePaiement;
 
@@ -64,19 +158,19 @@ class ModeleDeVersementInitial
     }
 
     /**
-     * @return float|null
+     * @return float
      */
-    public function getMontant(): ?float
+    public function getMontant(): float
     {
         return $this->montant;
     }
 
     /**
-     * @param float|null $montant
+     * @param float $montant
      *
      * @return self
      */
-    public function setMontant(?float $montant): self
+    public function setMontant(float $montant): self
     {
         $this->montant = $montant;
 
