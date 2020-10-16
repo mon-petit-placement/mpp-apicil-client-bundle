@@ -2,25 +2,39 @@
 
 namespace Mpp\ApicilClientBundle\Model;
 
+use Symfony\Component\OptionsResolver\Exception\AccessException;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
+use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
+use Symfony\Component\OptionsResolver\Exception\NoSuchOptionException;
+use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
+use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
+use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
 class ModeleDeVersement
 {
-    public const MODEINVESTISSEMENT_CHOIX = 'CHOIX';
-    public const MODEINVESTISSEMENT_PRORATA = 'PRORATA';
+    public const PERIODICITE_MENSUELLE = 'Mensuelle';
+    public const PERIODICITE_TRIMESTRIELLE = 'Trimestrielle';
+    public const PERIODICITE_SEMESTRIELLE = 'Semestrielle';
+    public const PERIODICITE_ANNUELLE = 'Annuelle';
 
-    public const MODEPAIEMENT_C = 'C';
-    public const MODEPAIEMENT_P = 'P';
-    public const MODEPAIEMENT_V = 'V';
+    public const MODE_INVESTISSEMENT_CHOIX = 'CHOIX';
+    public const MODE_INVESTISSEMENT_PRORATA = 'PRORATA';
 
-    public const TYPEVERSEMENT_COMPLEMENTAIRE = 'COMPLEMENTAIRE';
-    public const TYPEVERSEMENT_PROGRAMME = 'PROGRAMME';
+    public const MODE_PAIEMENT_C = 'C';
+    public const MODE_PAIEMENT_P = 'P';
+    public const MODE_PAIEMENT_V = 'V';
+
+    public const TYPE_VERSEMENT_COMPLEMENTAIRE = 'COMPLEMENTAIRE';
+    public const TYPE_VERSEMENT_PROGRAMME = 'PROGRAMME';
 
     /**
-     * @var float|null
+     * @var float
      */
     private $montant;
 
     /**
-     * @var string|null
+     * @var string
      */
     private $periodicite;
 
@@ -40,7 +54,7 @@ class ModeleDeVersement
     private $tauxDerogatoire;
 
     /**
-     * @var bool|null
+     * @var bool
      */
     private $vpRepartitionSpecifique;
 
@@ -95,19 +109,90 @@ class ModeleDeVersement
     private $typeVersement;
 
     /**
-     * @return float|null
+     * @param OptionsResolver $resolver
      */
-    public function getMontant(): ?float
+    public static function configureData(OptionsResolver $resolver)
+    {
+        $resolver
+            ->setRequired('montant')->setAllowedTypes('montant', ['float'])
+            ->setDefault('periodicite', null)->setAllowedValues('periodicite', [self::PERIODICITE_MENSUELLE, self::PERIODICITE_TRIMESTRIELLE, self::PERIODICITE_SEMESTRIELLE, self::PERIODICITE_ANNUELLE])
+            ->setDefault('portefeuille', null)->setAllowedTypes('portefeuille', ['array', 'null'])->setNormalizer('portefeuille', function (Options $options, $value) {
+                if (null === $value) {
+                    return $value;
+                }
+
+                foreach ($value as &$portefeuille) {
+                    if ($portefeuille instanceof PortefeuilleDto) {
+                        continue;
+                    }
+
+                    $portefeuille = PortefeuilleDto::createFromArray($portefeuille);
+                }
+
+                return $value;
+            })
+            ->setDefault('reponsesSupportStructure', null)->setAllowedTypes('reponsesSupportStructure', ['array', 'null'])->setNormalizer('reponsesSupportStructure', function (Options $options, $value) {
+                if (null === $value) {
+                    return $value;
+                }
+
+                foreach ($value as &$questionnaireStructuresReponse) {
+                    if ($questionnaireStructuresReponse instanceof QuestionnaireStructuresReponse) {
+                        continue;
+                    }
+
+                    $questionnaireStructuresReponse = PortefeuilleDto::createFromArray($questionnaireStructuresReponse);
+                }
+
+                return $value;
+            })
+            ->setDefault('tauxDerogatoire', null)->setAllowedTypes('tauxDerogatoire', ['float'])
+            ->setRequired('vpRepartitionSpecifique')->setAllowedTypes('vpRepartitionSpecifique', ['bool'])
+        ;
+    }
+
+    /**
+     * @param array $options
+     *
+     * @return self
+     *
+     * @throws UndefinedOptionsException If an option name is undefined
+     * @throws InvalidOptionsException   If an option doesn't fulfill the language specified validation rules
+     * @throws MissingOptionsException   If a required option is missing
+     * @throws OptionDefinitionException If there is a cyclic dependency between lazy options and/or normalizers
+     * @throws NoSuchOptionException     If a lazy option reads an unavailable option
+     * @throws AccessException           If called from a lazy option or normalizer
+     */
+    public static function createFromArray(array $options): self
+    {
+        $resolver = new OptionsResolver();
+        self::configureData($resolver);
+        $resolvedOptions = $resolver->resolve($options);
+
+        return (new self())
+            ->setMontant($resolvedOptions['montant'])
+            ->setPeriodicite($resolvedOptions['periodicite'])
+            ->setPortefeuille($resolvedOptions['portefeuille'])
+            ->setReponsesSupportStructure($resolvedOptions['reponsesSupportStructure'])
+            ->setTauxDerogatoire($resolvedOptions['tauxDerogatoire'])
+            ->setVpRepartitionSpecifique($resolvedOptions['vpRepartitionSpecifique'])
+        ;
+    }
+
+    /**
+     * @return float
+     */
+    public function getMontant(): float
     {
         return $this->montant;
     }
 
     /**
-     * @param float|null $montant
+     * @param float $montant
      *
      * @return self
      */
-    public function setMontant(?float $montant): self
+    public function setMontant(float $montant): self
     {
         $this->montant = $montant;
 
@@ -115,19 +200,19 @@ class ModeleDeVersement
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getPeriodicite(): ?string
+    public function getPeriodicite(): string
     {
         return $this->periodicite;
     }
 
     /**
-     * @param string|null $periodicite
+     * @param string $periodicite
      *
      * @return self
      */
-    public function setPeriodicite(?string $periodicite): self
+    public function setPeriodicite(string $periodicite): self
     {
         $this->periodicite = $periodicite;
 
@@ -195,19 +280,19 @@ class ModeleDeVersement
     }
 
     /**
-     * @return bool|null
+     * @return bool
      */
-    public function getVpRepartitionSpecifique(): ?bool
+    public function getVpRepartitionSpecifique(): bool
     {
         return $this->vpRepartitionSpecifique;
     }
 
     /**
-     * @param bool|null $vpRepartitionSpecifique
+     * @param bool $vpRepartitionSpecifique
      *
      * @return self
      */
-    public function setVpRepartitionSpecifique(?bool $vpRepartitionSpecifique): self
+    public function setVpRepartitionSpecifique(bool $vpRepartitionSpecifique): self
     {
         $this->vpRepartitionSpecifique = $vpRepartitionSpecifique;
 

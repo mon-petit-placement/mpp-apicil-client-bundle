@@ -87,7 +87,21 @@ class ProjetInvestissement
                 return Souscription::createFromArray($value);
             })
             ->setRequired('typeSignature')->setAllowedValues('typeSignature', [self::TYPE_SIGNATURE_ELECTRONIQUE, self::TYPE_SIGNATURE_PAPIER])
-            ->setDefault('typesSouscription', null)->setAllowedTypes('typesSouscription', ['array', 'null'])
+            ->setDefault('typesSouscription', null)->setAllowedTypes('typesSouscription', ['array', 'null'])->setNormalizer('typesSouscription', function (Options $options, $value) {
+                if (null === $value) {
+                    return $value;
+                }
+
+                foreach ($value as &$type) {
+                    if ($type instanceof TypeDto) {
+                        continue;
+                    }
+
+                    $type = TypeDto::createFromArray($type);
+                }
+
+                return $value;
+            })
         ;
     }
 
