@@ -49,12 +49,12 @@ class PayeurDto
     public static function configureData(OptionsResolver $resolver)
     {
         $resolver
-            ->setRequired('dateNaissance')->setAllowedTypes('dateNaissance', ['string', \DateTime::class])->setNormalizer('dateNaissance', function (Options $options, $value) {
-                if (is_string($value)) {
+            ->setRequired('dateNaissance')->setAllowedTypes('dateNaissance', [\DateTime::class, 'string'])->setNormalizer('dateNaissance', function (Options $options, $value) {
+                if ($value instanceof \DateTime) {
                     return $value;
                 }
 
-                return $value->format('Y-m-d');
+                return \DateTime::createFromFormat('Y-m-d', $value);
             })
             ->setDefault('lienSiAutre', null)->setAllowedTypes('lienSiAutre', ['string', null])
             ->setRequired('lienSouscripteur')->setAllowedTypes('lienSouscripteur', ['array', LienParenteDto::class])->setNormalizer('lienSouscripteur', function (Options $options, $value) {

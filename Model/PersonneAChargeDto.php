@@ -40,11 +40,11 @@ class PersonneAChargeDto
     {
         $resolver
             ->setRequired('dateNaissance')->setAllowedTypes('dateNaissance', [\DateTime::class, 'string'])->setNormalizer('dateNaissance', function (Options $options, $value) {
-                if (is_string($value)) {
-                    return \DateTime::createFromFormat('Y-m-d', $value);
+                if ($value instanceof \DateTime) {
+                    return $value;
                 }
 
-                return $value;
+                return \DateTime::createFromFormat('Y-m-d', $value);
             })
             ->setRequired('lienFamilial')->setAllowedTypes('lienFamilial', ['array', LienFamilialDto::class])->setNormalizer('lienFamilial', function (Options $options, $value) {
                 if ($value instanceof LienFamilialDto) {
