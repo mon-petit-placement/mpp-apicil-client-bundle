@@ -9,6 +9,7 @@ use Mpp\ApicilClientBundle\Model\ProjetInvestissement;
 use Mpp\ApicilClientBundle\Model\ProjetInvestissementRetour;
 use Mpp\ApicilClientBundle\Model\ReponseProjetDto;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 
 class ApicilProjectClient extends AbstractApicilClientDomain implements ApicilProjectClientInterface
 {
@@ -54,7 +55,7 @@ class ApicilProjectClient extends AbstractApicilClientDomain implements ApicilPr
     public function createFromInvestmentProject(ProjetInvestissement $project): ReponseProjetDto
     {
         return $this->requestAndPopulate(ReponseProjetDto::class, 'POST', '/asigner', [
-            'body' => $this->serializer->serialize($project, 'json'),
+            'body' => $this->serializer->serialize($project, 'json', [AbstractObjectNormalizer::SKIP_NULL_VALUES => true]),
         ]);
     }
 
