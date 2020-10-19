@@ -59,14 +59,14 @@ class OrigineDesFondsDto
     public static function configureData(OptionsResolver $resolver)
     {
         $resolver
-            ->setDefault('ofAutre', null)->setAllowedTypes('ofAutre', ['float', null])
-            ->setDefault('ofAutreCommentaire', null)->setAllowedTypes('ofAutreCommentaire', ['float', null])
-            ->setDefault('ofAutresPlacements', null)->setAllowedTypes('ofAutresPlacements', ['float', null])
-            ->setDefault('ofBiensMobiliers', null)->setAllowedTypes('ofBiensMobiliers', ['float', null])
-            ->setDefault('ofCessionActifs', null)->setAllowedTypes('ofCessionActifs', ['float', null])
-            ->setDefault('ofRevenusPro', null)->setAllowedTypes('ofRevenusPro', ['float', null])
-            ->setDefault('ofSuccessionDonation', null)->setAllowedTypes('ofSuccessionDonation', ['float', null])
-            ->setDefault('ofVenteImmobiliere', null)->setAllowedTypes('ofVenteImmobiliere', ['float', null])
+            ->setDefault('ofAutre', null)->setAllowedTypes('ofAutre', ['float', 'null'])
+            ->setDefault('ofAutreCommentaire', null)->setAllowedTypes('ofAutreCommentaire', ['float', 'null'])
+            ->setDefault('ofAutresPlacements', null)->setAllowedTypes('ofAutresPlacements', ['float', 'null'])
+            ->setDefault('ofBiensMobiliers', null)->setAllowedTypes('ofBiensMobiliers', ['float', 'null'])
+            ->setDefault('ofCessionActifs', null)->setAllowedTypes('ofCessionActifs', ['float', 'null'])
+            ->setDefault('ofRevenusPro', null)->setAllowedTypes('ofRevenusPro', ['float', 'null'])
+            ->setDefault('ofSuccessionDonation', null)->setAllowedTypes('ofSuccessionDonation', ['float', 'null'])
+            ->setDefault('ofVenteImmobiliere', null)->setAllowedTypes('ofVenteImmobiliere', ['float', 'null'])
         ;
     }
 

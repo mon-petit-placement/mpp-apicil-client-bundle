@@ -116,7 +116,11 @@ class EtatCivilDto
 
                 return PaysDto::createFromArray($value);
             })
-            ->setDefault('personnesACharge', null)->setAllowedTypes('personnesACharge', ['array'])->setNormalizer('personnesACharge', function (Options $options, $value) {
+            ->setDefault('personnesACharge', null)->setAllowedTypes('personnesACharge', ['array', 'null'])->setNormalizer('personnesACharge', function (Options $options, $value) {
+                if (null === $value) {
+                    return $value;
+                }
+
                 foreach ($value as &$reponse) {
                     if ($reponse instanceof PersonneAChargeDto) {
                         continue;
@@ -135,12 +139,12 @@ class EtatCivilDto
 
                 return RegimeMatrimonialDto::createFromArray($value);
             })
-            ->setRequired('situationFamiliale')->setAllowedTypes('situationFamiliale', ['array', SituationFamilialDto::class])->setNormalizer('situationFamiliale', function (Options $options, $value) {
-                if ($value instanceof SituationFamilialDto) {
+            ->setRequired('situationFamiliale')->setAllowedTypes('situationFamiliale', ['array', SituationFamilialeDto::class])->setNormalizer('situationFamiliale', function (Options $options, $value) {
+                if ($value instanceof SituationFamilialeDto) {
                     return $value;
                 }
 
-                return SituationFamilialDto::createFromArray($value);
+                return SituationFamilialeDto::createFromArray($value);
             })
             ->setRequired('villeNaissance')->setAllowedTypes('villeNaissance', ['array', VilleNaissanceDto::class])->setNormalizer('villeNaissance', function (Options $options, $value) {
                 if ($value instanceof VilleNaissanceDto) {
@@ -173,6 +177,7 @@ class EtatCivilDto
         return (new self())
             ->setCivilite($resolvedOptions['civilite'])
             ->setDateNaissance($resolvedOptions['dateNaissance'])
+            ->setNationalite($resolvedOptions['nationalite'])
             ->setNom($resolvedOptions['nom'])
             ->setNomNaissance($resolvedOptions['nomNaissance'])
             ->setNombreEnfants($resolvedOptions['nombreEnfants'])
