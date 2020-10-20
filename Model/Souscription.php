@@ -187,7 +187,7 @@ class Souscription
             ->setTransfertContrat($resolvedOptions['transfertContrat'])
             ->setVersementInitial($resolvedOptions['versementInitial'])
             ->setVersementProgramme($resolvedOptions['versementProgramme'])
-            ;
+        ;
     }
     
     /**
@@ -419,6 +419,7 @@ class Souscription
 
     /**
      * @param bool|null $transfertContrat
+     *
      * @return self
      */
     public function setTransfertContrat(?bool $transfertContrat): Souscription
