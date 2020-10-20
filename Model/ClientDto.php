@@ -93,19 +93,19 @@ class ClientDto
 
                 return DepensesDto::createFromArray($value);
             })
-            ->setRequired('situationProfessionnelle')->setAllowedTypes('situationProfessionnelle', ['array', SituationProfessionnelleConjointDto::class])->setNormalizer('situationProfessionnelle', function (Options $options, $value) {
-                if ($value instanceof SituationProfessionnelleConjointDto) {
+            ->setRequired('situationProfessionnelle')->setAllowedTypes('situationProfessionnelle', ['array', SituationProfessionnelleDto::class])->setNormalizer('situationProfessionnelle', function (Options $options, $value) {
+                if ($value instanceof SituationProfessionnelleDto) {
                     return $value;
                 }
 
-                return SituationProfessionnelleConjointDto::createFromArray($value);
+                return SituationProfessionnelleDto::createFromArray($value);
             })
-            ->setRequired('etatCivil')->setAllowedTypes('etatCivil', ['array', EtatCivilConjointDto::class])->setNormalizer('etatCivil', function (Options $options, $value) {
-                if ($value instanceof EtatCivilConjointDto) {
+            ->setRequired('etatCivil')->setAllowedTypes('etatCivil', ['array', EtatCivilDto::class])->setNormalizer('etatCivil', function (Options $options, $value) {
+                if ($value instanceof EtatCivilDto) {
                     return $value;
                 }
 
-                return EtatCivilConjointDto::createFromArray($value);
+                return EtatCivilDto::createFromArray($value);
             })
             ->setDefault('dispositionParticuliere', null)->setAllowedTypes('dispositionParticuliere', ['string', 'null'])
             ->setDefault('informationsFiscales', null)->setAllowedTypes('informationsFiscales', ['array', InfoFiscalesDto::class, 'null'])->setNormalizer('informationsFiscales', function (Options $options, $value) {
@@ -131,7 +131,7 @@ class ClientDto
             })
             ->setDefault('numeroIdentificationFiscalUS', null)->setAllowedTypes('numeroIdentificationFiscalUS', ['string', 'null'])
             ->setDefault('residentFiscalOuCitoyenUs', null)->setAllowedTypes('residentFiscalOuCitoyenUs', ['bool', 'null'])
-            ->setDefault('patrimoine', null)->setAllowedTypes('patrimoine', ['array', 'null'])->setNormalizer('reponses', function (Options $options, $value) {
+            ->setDefault('patrimoine', null)->setAllowedTypes('patrimoine', ['array', 'null'])->setNormalizer('patrimoine', function (Options $options, $value) {
                 if (null === $value) {
                     return $value;
                 }
@@ -146,7 +146,7 @@ class ClientDto
 
                 return $value;
             })
-            ->setDefault('revenus', null)->setAllowedTypes('revenus', ['array', 'null'])->setNormalizer('reponses', function (Options $options, $value) {
+            ->setDefault('revenus', null)->setAllowedTypes('revenus', ['array', 'null'])->setNormalizer('revenus', function (Options $options, $value) {
                 if (null === $value) {
                     return $value;
                 }

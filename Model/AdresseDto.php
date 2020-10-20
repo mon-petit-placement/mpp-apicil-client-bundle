@@ -54,12 +54,12 @@ class AdresseDto
 
                 return PaysDto::createFromArray($value);
             })
-            ->setRequired('ville')->setAllowedTypes('ville', ['array', VilleDto::class])->setNormalizer('ville', function (Options $options, $value) {
-                if ($value instanceof VilleDto) {
+            ->setRequired('ville')->setAllowedTypes('ville', ['array', VilleAdresseDto::class])->setNormalizer('ville', function (Options $options, $value) {
+                if ($value instanceof VilleAdresseDto) {
                     return $value;
                 }
 
-                return VilleDto::createFromArray($value);
+                return VilleAdresseDto::createFromArray($value);
             })
         ;
     }

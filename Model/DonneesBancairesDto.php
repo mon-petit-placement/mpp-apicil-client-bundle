@@ -24,6 +24,11 @@ class DonneesBancairesDto
     private $iban;
 
     /**
+     * @var bool|null
+     */
+    private $ibanOcr;
+    
+    /**
      * @var string|null
      */
     private $titulaire;
@@ -103,6 +108,25 @@ class DonneesBancairesDto
     public function setIban(?string $iban): self
     {
         $this->iban = $iban;
+
+        return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getIbanOcr(): ?bool
+    {
+        return $this->ibanOcr;
+    }
+
+    /**
+     * @param bool|null $ibanOcr
+     * @return self
+     */
+    public function setIbanOcr(?bool $ibanOcr): DonneesBancairesDto
+    {
+        $this->ibanOcr = $ibanOcr;
 
         return $this;
     }

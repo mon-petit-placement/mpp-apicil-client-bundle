@@ -81,6 +81,13 @@ class ConnaissanceClient
 
                 return CoordonneesDto::createFromArray($value);
             })
+            ->setDefault('dateSignatureClient', null)->setAllowedTypes('dateSignatureClient', [\DateTime::class, 'string', 'null'])->setNormalizer('dateSignatureClient', function (Options $options, $value) {
+                if ($value instanceof \DateTime || null === $value) {
+                    return $value;
+                }
+
+                return \DateTime::createFromFormat('Y-m-d', $value);
+            })
             ->setDefault('foyer', null)->setAllowedTypes('foyer',['array', Foyer::class, 'null'])->setNormalizer('foyer', function (Options $options, $value) {
                 if ($value instanceof Foyer || null == $value) {
                     return $value;

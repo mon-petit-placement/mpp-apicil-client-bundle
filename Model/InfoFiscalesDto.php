@@ -35,7 +35,7 @@ class InfoFiscalesDto
     {
         $resolver
             ->setDefault('adresseFiscale', null)->setAllowedTypes('adresseFiscale', ['array', AdresseDto::class, 'null'])->setNormalizer('adresseFiscale', function (Options $options, $value) {
-                if ($value instanceof AdresseDto ||  null === $value) {
+                if ($value instanceof AdresseDto || null === $value) {
                     return $value;
                 }
 
@@ -67,7 +67,7 @@ class InfoFiscalesDto
         return (new self())
             ->setAdresseFiscale($resolvedOptions['adresseFiscale'])
             ->setAdressePrincipaleEtResidenceDifferents($resolvedOptions['adressePrincipaleEtResidenceDifferents'])
-            ->setNumeroIdentificationFiscale($resolvedOptions['$numeroIdentificationFiscale'])
+            ->setNumeroIdentificationFiscale($resolvedOptions['numeroIdentificationFiscale'])
         ;
     }
 

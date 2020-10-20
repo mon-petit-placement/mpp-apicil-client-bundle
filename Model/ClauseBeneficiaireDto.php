@@ -197,7 +197,7 @@ class ClauseBeneficiaireDto
      *
      * @return self
      */
-    public function setPrenomNotaire(?string $prenomNotairesetCodePostalNotaire): self
+    public function setPrenomNotaire(?string $prenomNotaire): self
     {
         $this->prenomNotaire = $prenomNotaire;
 

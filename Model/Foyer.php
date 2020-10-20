@@ -29,7 +29,7 @@ class Foyer
     public static function configureData(OptionsResolver $resolver)
     {
         $resolver
-            ->setDefault('patrimoine', null)->setAllowedTypes('patrimoine', ['array', 'null'])->setNormalizer('reponses', function (Options $options, $value) {
+            ->setDefault('patrimoine', null)->setAllowedTypes('patrimoine', ['array', 'null'])->setNormalizer('patrimoine', function (Options $options, $value) {
                 if (null === $value) {
                     return $value;
                 }
@@ -44,7 +44,7 @@ class Foyer
 
                 return $value;
             })
-            ->setDefault('revenus', null)->setAllowedTypes('revenus', ['array', 'null'])->setNormalizer('reponses', function (Options $options, $value) {
+            ->setDefault('revenus', null)->setAllowedTypes('revenus', ['array', 'null'])->setNormalizer('revenus', function (Options $options, $value) {
                 if (null === $value) {
                     return $value;
                 }
