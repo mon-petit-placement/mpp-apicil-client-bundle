@@ -26,6 +26,12 @@ eight_points_guzzle:
                 auth:
                     - '%env(APICIL_USERNAME)%'
                     - '%env(APICIL_PASSWORD)%'
+        my_apicil_sign_client:
+            base_url: '%env(APICIL_BASE_URL)%'
+            options:
+                auth:
+                    - '%env(APICIL_SIGN_USERNAME)%'
+                    - '%env(APICIL_SIGN_PASSWORD)%'
 ```
 
 Then configure this client to be used by the bundle:
@@ -33,6 +39,7 @@ Then configure this client to be used by the bundle:
 // config/packages/mpp_apicil_client.yaml
 mpp_apicil_client:
     http_client: 'eight_points_guzzle.client.my_apicil_client'
+    sign_http_client: 'eight_points_guzzle.client.my_apicil_sign_client'
 ```
 
 Make sure to have enabled the serializer & property info component in symfony configuration (for serialization/deserialization):

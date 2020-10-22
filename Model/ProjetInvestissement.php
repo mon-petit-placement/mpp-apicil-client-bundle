@@ -42,7 +42,7 @@ class ProjetInvestissement
     private $souscription;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $typeSignature;
 
@@ -86,10 +86,12 @@ class ProjetInvestissement
 
                 return Souscription::createFromArray($value);
             })
-            ->setRequired('typeSignature')->setAllowedValues('typeSignature', [self::TYPE_SIGNATURE_ELECTRONIQUE, self::TYPE_SIGNATURE_PAPIER])
+            ->setDefault('typeSignature', null)->setAllowedTypes('typeSignature', ['string', 'null'])->setAllowedValues('typeSignature', function($value) {
+                return in_array($value, [null, ProjetInvestissement::TYPE_SIGNATURE_ELECTRONIQUE, ProjetInvestissement::TYPE_SIGNATURE_PAPIER]);
+            })
             ->setDefault('typesSouscription', null)->setAllowedTypes('typesSouscription', ['array', 'null'])->setNormalizer('typesSouscription', function (Options $options, $value) {
                 if (null === $value) {
-                    return $value;
+                    return [];
                 }
 
                 foreach ($value as &$type) {
@@ -235,19 +237,19 @@ class ProjetInvestissement
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getTypeSignature(): string
+    public function getTypeSignature(): ?string
     {
         return $this->typeSignature;
     }
 
     /**
-     * @param string $typeSignature
+     * @param string|null $typeSignature
      *
      * @return self
      */
-    public function setTypeSignature(string $typeSignature): self
+    public function setTypeSignature(?string $typeSignature): self
     {
         $this->typeSignature = $typeSignature;
 

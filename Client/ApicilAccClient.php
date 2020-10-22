@@ -36,7 +36,7 @@ class ApicilAccClient extends AbstractApicilClientDomain implements ApicilAccCli
     {
         $options = ApicilAccClientOptionResolver::resolveAddDocumentByContractOptions($options);
 
-        $this->request('PUT', sprintf('/contrat/%s/documents', $id), [
+        $this->request('PUT', sprintf('/contrat/%s/documents', $contractId), [
             'multipart' => [
                 [
                     'name' => 'documents',
