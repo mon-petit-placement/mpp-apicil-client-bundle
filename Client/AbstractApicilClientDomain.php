@@ -4,8 +4,11 @@ namespace Mpp\ApicilClientBundle\Client;
 
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\Psr7\Response as GuzzleResponse;
+use GuzzleHttp\RequestOptions;
 use Mpp\ApicilClientBundle\Model\ApicilApiError;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,11 +32,17 @@ abstract class AbstractApicilClientDomain implements ApicilClientDomainInterface
      */
     protected $httpClient;
 
-    public function __construct(LoggerInterface $logger, SerializerInterface $serializer, ClientInterface $httpClient)
+    /**
+     * @var ClientInterface
+     */
+    protected $signHttpClient;
+
+    public function __construct(LoggerInterface $logger, SerializerInterface $serializer, ClientInterface $httpClient, ClientInterface $signHttpClient)
     {
         $this->logger = $logger;
         $this->serializer = $serializer;
         $this->httpClient = $httpClient;
+        $this->signHttpClient = $signHttpClient;
     }
 
     /**
@@ -68,12 +77,13 @@ abstract class AbstractApicilClientDomain implements ApicilClientDomainInterface
      * @param string $method
      * @param string $path
      * @param array  $options
+     * @param bool   $isSign
      *
      * @return GuzzleResponse
      *
      * @throws ApicilApiError
      */
-    public function request(string $method, string $path, array $options = []): GuzzleResponse
+    public function request(string $method, string $path, array $options = [], bool $isSign = false): ResponseInterface
     {
         try {
             $fullPath = sprintf('%s%s', $this->getBasePath(), $path);
@@ -85,8 +95,11 @@ abstract class AbstractApicilClientDomain implements ApicilClientDomainInterface
                 'url' => $url,
                 'headers' => $this->httpClient->getConfig('headers'),
             ]);
-
-            return $this->httpClient->request($method, $fullPath, $options);
+            if ($isSign) {
+                return $this->signHttpClient->request($method, $fullPath, $options);
+            } else {
+                return $this->httpClient->request($method, $fullPath, $options);
+            }
         } catch (ClientException | ServerException $e) {
             if (Response::HTTP_UNAUTHORIZED === $e->getResponse()->getStatusCode()) {
                 throw (new ApicilApiError())
@@ -125,11 +138,12 @@ abstract class AbstractApicilClientDomain implements ApicilClientDomainInterface
      */
     public function download(string $method, string $path, array $options = []): File
     {
-        $temporaryResourcePath = sprintf('%s/%s', sys_get_temp_dir(), uniqid());
-        $options['sink'] = fopen($temporaryResourcePath, 'w');
+        $tmpFilePath     = sprintf('%s/%s', sys_get_temp_dir(), uniqid());
+        $tmpFileResource = fopen($tmpFilePath, 'w+');
+        $options[RequestOptions::SINK] = $tmpFileResource;
         $this->request($method, $path, $options);
 
-        return new File($temporaryResourcePath);
+        return new File($tmpFilePath, true);
     }
 
     /**
@@ -141,12 +155,13 @@ abstract class AbstractApicilClientDomain implements ApicilClientDomainInterface
      * @param string $method
      * @param string $path
      * @param array  $options
+     * @param bool   $isSign
      *
      * @return mixed
      */
-    public function requestAndPopulate(string $className, string $method, string $path, array $options = [])
+    public function requestAndPopulate(string $className, string $method, string $path, array $options = [], bool $isSign = false)
     {
-        $response = $this->request($method, $path, $options)->getBody()->getContents();
+        $response = $this->request($method, $path, $options, $isSign)->getBody()->getContents();
 
         if ('bool' === $className) {
             return filter_var($response, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);

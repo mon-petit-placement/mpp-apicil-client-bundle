@@ -25,6 +25,7 @@ class MppApicilClientCompilerPass implements CompilerPassInterface
         $taggedServices = $container->findTaggedServiceIds(sprintf('%s.domain', Configuration::CONFIGURATION_ROOT));
         foreach ($taggedServices as $class => $tags) {
             $container->getDefinition($class)->setArgument('$httpClient', $container->getDefinition($config['http_client']));
+            $container->getDefinition($class)->setArgument('$signHttpClient', $container->getDefinition($config['sign_http_client']));
 
             foreach ($tags as $attributes) {
                 $registryDefinition->addMethodCall(

@@ -8,8 +8,10 @@ use Mpp\ApicilClientBundle\Model\ListDocumentDto;
 use Mpp\ApicilClientBundle\Model\ProjetInvestissement;
 use Mpp\ApicilClientBundle\Model\ProjetInvestissementRetour;
 use Mpp\ApicilClientBundle\Model\ReponseProjetDto;
+use Mpp\ApicilClientBundle\OptionsResolver\ApicilProjectClientOptionResolver;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 class ApicilProjectClient extends AbstractApicilClientDomain implements ApicilProjectClientInterface
 {
@@ -18,7 +20,7 @@ class ApicilProjectClient extends AbstractApicilClientDomain implements ApicilPr
      */
     public function approveSignature(int $id, string $otp)
     {
-        $this->request('POST', sprintf('/%s/signature/%s', $id, $otp));
+        $this->request('POST', sprintf('/%s/signature/%s', $id, $otp), [], true);
     }
 
     /**
@@ -72,7 +74,7 @@ class ApicilProjectClient extends AbstractApicilClientDomain implements ApicilPr
      */
     public function getBulletin(int $id): File
     {
-        return $this->download('GET', sprintf('/%s/bulletin', $id));
+        return $this->download('GET', sprintf('/%s/bulletin?return-type=pdf', $id));
     }
 
     /**
@@ -98,7 +100,7 @@ class ApicilProjectClient extends AbstractApicilClientDomain implements ApicilPr
      */
     public function sendSignatureByEmail(int $id)
     {
-        $this->request('GET', sprintf('/%s/signature/mail', $id));
+        $this->request('GET', sprintf('/%s/signature/mail', $id), [], true);
     }
 
     /**
@@ -106,7 +108,7 @@ class ApicilProjectClient extends AbstractApicilClientDomain implements ApicilPr
      */
     public function sendSignatureBySms(int $id)
     {
-        $this->request('GET', sprintf('/%s/signature/sms', $id));
+        $this->request('GET', sprintf('/%s/signature/sms', $id), [], true);
     }
 
     /**

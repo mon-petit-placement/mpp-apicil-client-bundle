@@ -8,6 +8,14 @@ eight_points_guzzle:
                     - '%env(APICIL_PASSWORD)%'
                 timeout: 30
                 http_errors: true
+        mpp_apicil_sign_test:
+            base_url: '%env(APICIL_BASE_URL)%'
+            options:
+                auth:
+                    - '%env(APICIL_SIGN_USERNAME)%'
+                    - '%env(APICIL_SIGN_PASSWORD)%'
+                timeout: 30
+                http_errors: true
 
 framework:
     property_info:
@@ -15,6 +23,7 @@ framework:
 
 mpp_apicil_client:
     http_client: 'eight_points_guzzle.client.mpp_apicil_test'
+    sign_http_client: 'eight_points_guzzle.client.mpp_apicil_sign_test'
 
 services:
     Mpp\ApicilClientBundle\Client\ApicilClientDomainRegistry:

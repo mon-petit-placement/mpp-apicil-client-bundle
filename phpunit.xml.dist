@@ -17,6 +17,8 @@
         <env name="APICIL_BASE_URL" value="" />
         <env name="APICIL_USERNAME" value="" />
         <env name="APICIL_PASSWORD" value="" />
+        <env name="APICIL_SIGN_USERNAME" value="" />
+        <env name="APICIL_SIGN_PASSWORD" value="" />
         <server name="KERNEL_CLASS" value="Mpp\ApicilClientBundle\Tests\TestKernel" />
     </php>
 
