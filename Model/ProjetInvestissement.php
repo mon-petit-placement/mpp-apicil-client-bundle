@@ -86,7 +86,9 @@ class ProjetInvestissement
 
                 return Souscription::createFromArray($value);
             })
-            ->setDefault('typeSignature', null)->setAllowedTypes('typeSignature', ['string', 'null'])
+            ->setDefault('typeSignature', null)->setAllowedTypes('typeSignature', ['string', 'null'])->setAllowedValues('typeSignature', function($value) {
+                return in_array($value, [null, ProjetInvestissement::TYPE_SIGNATURE_ELECTRONIQUE, ProjetInvestissement::TYPE_SIGNATURE_PAPIER]);
+            })
             ->setDefault('typesSouscription', null)->setAllowedTypes('typesSouscription', ['array', 'null'])->setNormalizer('typesSouscription', function (Options $options, $value) {
                 if (null === $value) {
                     return [];
