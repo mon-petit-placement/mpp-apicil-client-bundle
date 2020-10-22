@@ -17,7 +17,6 @@ class Configuration implements ConfigurationInterface
         $treeBuilder->getRootNode()
             ->children()
                 ->scalarNode('http_client')->isRequired()->cannotBeEmpty()->end()
-            ->children()
                 ->scalarNode('sign_http_client')->isRequired()->cannotBeEmpty()->end()
             ->end()
         ;
