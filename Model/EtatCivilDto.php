@@ -79,6 +79,11 @@ class EtatCivilDto
     private $villeNaissance;
 
     /**
+     * @var DepartementDto
+     */
+    private $departementNaissance;
+
+    /**
      * @param OptionsResolver $resolver
      */
     public static function configureData(OptionsResolver $resolver)
@@ -153,6 +158,13 @@ class EtatCivilDto
 
                 return VilleNaissanceDto::createFromArray($value);
             })
+            ->setRequired('departementNaissance')->setAllowedTypes('departementNaissance', ['array', DepartementDto::class])->setNormalizer('departementNaissance', function (Options $options, $value) {
+                if ($value instanceof DepartementDto) {
+                    return $value;
+                }
+
+                return DepartementDto::createFromArray($value);
+            })
         ;
     }
 
@@ -188,6 +200,7 @@ class EtatCivilDto
             ->setRegimeMatrimonial($resolvedOptions['regimeMatrimonial'])
             ->setSituationFamiliale($resolvedOptions['situationFamiliale'])
             ->setVilleNaissance($resolvedOptions['villeNaissance'])
+            ->setDepartementNaissance($resolvedOptions['departementNaissance'])
         ;
     }
 
@@ -448,6 +461,24 @@ class EtatCivilDto
     {
         $this->villeNaissance = $villeNaissance;
 
+        return $this;
+    }
+
+    /**
+     * @return DepartementDto
+     */
+    public function getDepartementNaissance(): DepartementDto
+    {
+        return $this->departementDeNaissance;
+    }
+
+    /**
+     * @param DepartementDto $departementNaissance
+     * @return EtatCivilDto
+     */
+    public function setDepartementNaissance(DepartementDto $departementNaissance): EtatCivilDto
+    {
+        $this->departementDeNaissance = $departementNaissance;
         return $this;
     }
 }

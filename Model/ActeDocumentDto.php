@@ -4,6 +4,13 @@ namespace Mpp\ApicilClientBundle\Model;
 
 class ActeDocumentDto
 {
+    const NON_TRANSMIS = 'NON_TRANSMIS';
+    const VALIDE_KO = 'VALIDE_KO';
+    const VALIDE_AUTO = 'VALIDE_AUTO';
+    const TRANSMIS = 'TRANSMIS';
+    const SIGNE = 'SIGNE';
+    const NUL = 'NUL';
+
     /**
      * @var string|null
      */
@@ -33,6 +40,21 @@ class ActeDocumentDto
      * @var string|null
      */
     private $typeDuDocument;
+
+    /**
+     * @var int|null
+     */
+    private $nombreTentative;
+
+    /**
+     * @var string|null
+     */
+    private $statut;
+
+    /**
+     * @var bool|null
+     */
+    private $verificationAutomatique;
 
     /**
      * @return string|null
@@ -151,6 +173,63 @@ class ActeDocumentDto
     {
         $this->typeDuDocument = $typeDuDocument;
 
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getNombreTentative(): ?int
+    {
+        return $this->nombreTentative;
+    }
+
+    /**
+     * @param int|null $nombreTentative
+     *
+     * @return ActeDocumentDto
+     */
+    public function setNombreTentative(?int $nombreTentative): ActeDocumentDto
+    {
+        $this->nombreTentative = $nombreTentative;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getStatut(): ?string
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param string|null $statut
+     *
+     * @return ActeDocumentDto
+     */
+    public function setStatut(?string $statut): ActeDocumentDto
+    {
+        $this->status = $statut;
+        return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getVerificationAutomatique(): ?bool
+    {
+        return $this->verificationAutomatique;
+    }
+
+    /**
+     * @param bool|null $verificationAutomatique
+     *
+     * @return ActeDocumentDto
+     */
+    public function setVerificationAutomatique(?bool $verificationAutomatique): ActeDocumentDto
+    {
+        $this->verificationAutomatique = $verificationAutomatique;
         return $this;
     }
 }
