@@ -19,6 +19,7 @@ class ListDocumentDto
 
     /**
      * @param ActeDocumentDto[]|null $documentDtos
+     *
      * @return ListDocumentDto
      */
     public function setDocumentDtos(?array $documentDtos): ListDocumentDto
