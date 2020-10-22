@@ -192,6 +192,7 @@ class ActeDocumentDto
     public function setNombreTentative(?int $nombreTentative): ActeDocumentDto
     {
         $this->nombreTentative = $nombreTentative;
+
         return $this;
     }
 
@@ -200,7 +201,7 @@ class ActeDocumentDto
      */
     public function getStatut(): ?string
     {
-        return $this->status;
+        return $this->statut;
     }
 
     /**
@@ -210,7 +211,8 @@ class ActeDocumentDto
      */
     public function setStatut(?string $statut): ActeDocumentDto
     {
-        $this->status = $statut;
+        $this->statut = $statut;
+
         return $this;
     }
 
@@ -230,6 +232,7 @@ class ActeDocumentDto
     public function setVerificationAutomatique(?bool $verificationAutomatique): ActeDocumentDto
     {
         $this->verificationAutomatique = $verificationAutomatique;
+
         return $this;
     }
 }
