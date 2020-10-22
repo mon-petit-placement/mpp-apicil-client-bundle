@@ -474,6 +474,7 @@ class EtatCivilDto
 
     /**
      * @param DepartementDto $departementNaissance
+     *
      * @return EtatCivilDto
      */
     public function setDepartementNaissance(DepartementDto $departementNaissance): EtatCivilDto
