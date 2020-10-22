@@ -25,6 +25,7 @@ class ListDocumentDto
     public function setDocumentDtos(?array $documentDtos): ListDocumentDto
     {
         $this->documentDtos = $documentDtos;
+
         return $this;
     }
 }
