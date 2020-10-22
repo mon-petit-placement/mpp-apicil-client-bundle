@@ -11,7 +11,6 @@ use Mpp\ApicilClientBundle\Model\ReponseProjetDto;
 use Mpp\ApicilClientBundle\OptionsResolver\ApicilProjectClientOptionResolver;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 class ApicilProjectClient extends AbstractApicilClientDomain implements ApicilProjectClientInterface
 {
