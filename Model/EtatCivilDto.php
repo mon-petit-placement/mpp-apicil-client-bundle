@@ -469,7 +469,7 @@ class EtatCivilDto
      */
     public function getDepartementNaissance(): DepartementDto
     {
-        return $this->departementDeNaissance;
+        return $this->departementNaissance;
     }
 
     /**
@@ -478,7 +478,8 @@ class EtatCivilDto
      */
     public function setDepartementNaissance(DepartementDto $departementNaissance): EtatCivilDto
     {
-        $this->departementDeNaissance = $departementNaissance;
+        $this->departementNaissance = $departementNaissance;
+
         return $this;
     }
 }
