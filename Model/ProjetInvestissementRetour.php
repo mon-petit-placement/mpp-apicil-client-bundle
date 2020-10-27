@@ -4,6 +4,12 @@ namespace Mpp\ApicilClientBundle\Model;
 
 class ProjetInvestissementRetour
 {
+    public const STATUT_A_COMPLETER = 'Pièces jointes à compléter';
+    public const STATUT_AFFAIRES_ABANDONNEES = 'Affaires abandonnées';
+    public const STATUT_CONTRAT_OUVERT = 'Contrat ouvert';
+    public const STATUT_ELABORATION = 'Élaboration du projet';
+    public const STATUT_TRAITEMENT_EN_COURS = 'Traitement du dossier chez l\'assureur';
+
     /**
      * @var ConnaissanceClient|null
      */
