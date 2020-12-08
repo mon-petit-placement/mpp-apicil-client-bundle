@@ -60,7 +60,7 @@ class OrigineDesFondsDto
     {
         $resolver
             ->setDefault('ofAutre', null)->setAllowedTypes('ofAutre', ['float', 'null'])
-            ->setDefault('ofAutreCommentaire', null)->setAllowedTypes('ofAutreCommentaire', ['float', 'null'])
+            ->setDefault('ofAutreCommentaire', null)->setAllowedTypes('ofAutreCommentaire', ['string', 'null'])
             ->setDefault('ofAutresPlacements', null)->setAllowedTypes('ofAutresPlacements', ['float', 'null'])
             ->setDefault('ofBiensMobiliers', null)->setAllowedTypes('ofBiensMobiliers', ['float', 'null'])
             ->setDefault('ofCessionActifs', null)->setAllowedTypes('ofCessionActifs', ['float', 'null'])
