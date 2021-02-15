@@ -105,9 +105,9 @@ class ApicilProjectClient extends AbstractApicilClientDomain implements ApicilPr
     /**
      * {@inheritdoc}
      */
-    public function sendSignatureBySms(int $id)
+    public function sendSignatureBySms(int $id, bool $resendCode = false)
     {
-        $this->request('GET', sprintf('/%s/signature/sms', $id), [], true);
+        $this->request('GET', sprintf('/%s/signature/sms?estRenvoyerCode=%s', $id, var_export($resendCode, true)), [], true);
     }
 
     /**
