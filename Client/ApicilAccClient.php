@@ -51,7 +51,7 @@ class ApicilAccClient extends AbstractApicilClientDomain implements ApicilAccCli
      */
     public function approve(int $id, array $options)
     {
-        $options = ApicilAccClientOptionsResolver::resolveApproveOptions($options);
+        $options = ApicilAccClientOptionResolver::resolveApproveOptions($options);
 
         $this->request('PUT', sprintf('/%s/valider', $id), [
             'multipart' => [
@@ -68,7 +68,7 @@ class ApicilAccClient extends AbstractApicilClientDomain implements ApicilAccCli
      */
     public function approveByContract(int $contractId, array $options)
     {
-        $options = ApicilAccClientOptionsResolver::resolveApproveByContractOptions($options);
+        $options = ApicilAccClientOptionResolver::resolveApproveByContractOptions($options);
 
         $this->request('PUT', sprintf('/contrat/%s/valider', $contractId), [
             'multipart' => [
@@ -86,7 +86,7 @@ class ApicilAccClient extends AbstractApicilClientDomain implements ApicilAccCli
     public function approveSecurityCode(array $options): array
     {
         return $this->request('POST', '/codesecurite/valider', [
-            'query' => ApicilAccClientOptionsResolver::resolveApproveSecurityCodeOptions($options),
+            'query' => ApicilAccClientOptionResolver::resolveApproveSecurityCodeOptions($options),
         ]);
     }
 
@@ -112,7 +112,7 @@ class ApicilAccClient extends AbstractApicilClientDomain implements ApicilAccCli
     public function generateSecurityCode(array $options): bool
     {
         $this->request('POST', '/codesecurite/generer', [
-            'query' => ApicilAccClientOptionsResolver::resolveGenerateSecurityCodeOptions($options),
+            'query' => ApicilAccClientOptionResolver::resolveGenerateSecurityCodeOptions($options),
         ]);
     }
 
@@ -255,9 +255,17 @@ class ApicilAccClient extends AbstractApicilClientDomain implements ApicilAccCli
     /**
      * {@inheritdoc}
      */
+    public function sendSignatureBySmsByContract(int $contractId)
+    {
+        $this->request('GET', sprintf('/contrat/%s/signature', $contractId));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function update(int $id, array $options): ResultatDeCreationResource
     {
-        $options = ApicilAccClientOptionsResolver::resolveUpdateOptions($options);
+        $options = ApicilAccClientOptionResolver::resolveUpdateOptions($options);
 
         return $this->requestAndPopulate(ResultatDeCreationResource::class, 'PUT', sprintf('/%s', $id), [
             'multipart' => [
@@ -272,9 +280,9 @@ class ApicilAccClient extends AbstractApicilClientDomain implements ApicilAccCli
     /**
      * {@inheritdoc}
      */
-    public function updateByContract(int $id, array $options): ResultatDeCreationResource
+    public function updateByContract(int $contractId, array $options): ResultatDeCreationResource
     {
-        $options = ApicilAccClientOptionsResolver::resolveUpdateByContractOptions($options);
+        $options = ApicilAccClientOptionResolver::resolveUpdateByContractOptions($options);
 
         return $this->requestAndPopulate(ResultatDeCreationResource::class, 'PUT', sprintf('/contrat/%s', $contractId), [
             'multipart' => [
