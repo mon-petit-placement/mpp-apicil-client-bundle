@@ -287,7 +287,7 @@ interface ApicilAccClientInterface
      *
      * @param int $contractId
      */
-    public function sendSignatureBySmsByContract(int $contractId)
+    public function sendSignatureBySmsByContract(int $contractId);
 
     /**
      * Update a customer knowledge update.
