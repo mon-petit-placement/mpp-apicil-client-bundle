@@ -281,6 +281,15 @@ interface ApicilAccClientInterface
     public function sendSignatureBySms(int $id);
 
     /**
+     * Initiate the signature and retrieve the code.
+     *
+     * @method sendSignatureBySmsByContract
+     *
+     * @param int $contractId
+     */
+    public function sendSignatureBySmsByContract(int $contractId)
+
+    /**
      * Update a customer knowledge update.
      *
      * @method update

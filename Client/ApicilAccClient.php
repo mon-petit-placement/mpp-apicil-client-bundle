@@ -95,7 +95,7 @@ class ApicilAccClient extends AbstractApicilClientDomain implements ApicilAccCli
      */
     public function approveSignature(int $id, string $otp)
     {
-        $this->request('POST', sprintf('/%s/signature/%s', $id, $otp));
+        $this->request('POST', sprintf('/%s/signature/%s', $id, $otp), [], true);
     }
 
     /**
@@ -103,7 +103,7 @@ class ApicilAccClient extends AbstractApicilClientDomain implements ApicilAccCli
      */
     public function approveSignatureByContract(int $contractId, string $otp)
     {
-        $this->request('POST', sprintf('/contrat/%s/signature/%s', $contractId, $otp));
+        $this->request('POST', sprintf('/contrat/%s/signature/%s', $contractId, $otp), [], true);
     }
 
     /**
@@ -249,7 +249,7 @@ class ApicilAccClient extends AbstractApicilClientDomain implements ApicilAccCli
      */
     public function sendSignatureBySms(int $id)
     {
-        $this->request('GET', sprintf('/%s/signature', $id));
+        $this->request('GET', sprintf('/%s/signature', $id, [], true));
     }
 
     /**
@@ -257,7 +257,7 @@ class ApicilAccClient extends AbstractApicilClientDomain implements ApicilAccCli
      */
     public function sendSignatureBySmsByContract(int $contractId)
     {
-        $this->request('GET', sprintf('/contrat/%s/signature', $contractId));
+        $this->request('GET', sprintf('/contrat/%s/signature', $contractId), [], true);
     }
 
     /**
