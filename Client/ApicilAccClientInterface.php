@@ -5,6 +5,7 @@ namespace Mpp\ApicilClientBundle\Client;
 use Mpp\ApicilClientBundle\Model\ActeDocumentDto;
 use Mpp\ApicilClientBundle\Model\ConnaissanceClient;
 use Mpp\ApicilClientBundle\Model\DtoEligibilite;
+use Mpp\ApicilClientBundle\Model\ReponseConnaissanceClient;
 use Mpp\ApicilClientBundle\Model\ResultatDeCreationResource;
 use Mpp\ApicilClientBundle\Model\TelephoneDto;
 use Symfony\Component\HttpFoundation\File\File;
@@ -100,9 +101,9 @@ interface ApicilAccClientInterface
      *
      * @param int $id
      *
-     * @return ConnaissanceClient
+     * @return ReponseConnaissanceClient
      */
-    public function get(int $id): ConnaissanceClient;
+    public function get(int $id): ReponseConnaissanceClient;
 
     /**
      * Retrieve customer knowledge from contract.
@@ -111,9 +112,9 @@ interface ApicilAccClientInterface
      *
      * @param int $contractId
      *
-     * @return ConnaissanceClient
+     * @return ReponseConnaissanceClient
      */
-    public function getByContract(int $contractId): ConnaissanceClient;
+    public function getByContract(int $contractId): ReponseConnaissanceClient;
 
     /**
      * Retrieve the customer knowledge bulletin.
