@@ -2,17 +2,27 @@
 
 namespace Mpp\ApicilClientBundle\Model;
 
-class VersementComplementaireDtoDeConsultation
+class VersementDto
 {
     public const MODEINVESTISSEMENT_CHOIX = 'CHOIX';
     public const MODEINVESTISSEMENT_PRORATA = 'PRORATA';
+    public const MODEINVESTISSEMENT_CONTRAT = 'CONTRAT';
+    public const MODEINVESTISSEMENT_PROFIL = 'PROFIL';
 
     public const MODEPAIEMENT_C = 'C';
     public const MODEPAIEMENT_P = 'P';
     public const MODEPAIEMENT_V = 'V';
+    public const MODEPAIEMENT_T = 'T';
 
     public const TYPEVERSEMENT_COMPLEMENTAIRE = 'COMPLEMENTAIRE';
     public const TYPEVERSEMENT_PROGRAMME = 'PROGRAMME';
+    public const TYPEVERSEMENT_SUPPRESSION_PROGRAMME     = 'SUPPRESSION_PROGRAMME';
+
+    public const PERIODICITE_MENSUELLE = 'Mensuelle';
+    public const PERIODICITE_TRIMESTRIELLE = 'Trimestrielle';
+    public const PERIODICITE_SEMESTRIELLE = 'Semestrielle';
+    public const PERIODICITE_ANNUELLE = 'Annuelle';
+
 
     /**
      * @var string|null
@@ -53,11 +63,6 @@ class VersementComplementaireDtoDeConsultation
      * @var TrHorizonInvestissementDto|null
      */
     private $horizonInvestissement;
-
-    /**
-     * @var int|null
-     */
-    private $id;
 
     /**
      * @var string|null
@@ -190,26 +195,6 @@ class VersementComplementaireDtoDeConsultation
     public function setDonneesBancaires(?DonneesBancairesDto $donneesBancaires): self
     {
         $this->donneesBancaires = $donneesBancaires;
-
-        return $this;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int|null $id
-     *
-     * @return self
-     */
-    public function setId(?int $id): self
-    {
-        $this->id = $id;
 
         return $this;
     }
