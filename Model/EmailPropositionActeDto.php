@@ -15,14 +15,9 @@ class EmailPropositionActeDto
     private $dureeValidite;
 
     /**
-     * @var string|null
+     * @var LogoParamsDto|null
      */
-    private $emailDeTest;
-
-    /**
-     * @var string|null
-     */
-    private $emailDestinataire;
+    private $logo;
 
     /**
      * @var bool|null
@@ -80,41 +75,21 @@ class EmailPropositionActeDto
     }
 
     /**
-     * @return string|null
+     * @return LogoParamsDto|null
      */
-    public function getEmailDeTest(): ?string
+    public function getLogo(): ?LogoParamsDto
     {
-        return $this->emailDeTest;
+        return $this->logo;
     }
 
     /**
-     * @param string|null $emailDeTest
+     * @param LogoParamsDto|null $logo
      *
      * @return self
      */
-    public function setEmailDeTest(?string $emailDeTest): self
+    public function setLogo(?LogoParamsDto $logo): self
     {
-        $this->emailDeTest = $emailDeTest;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getEmailDestinataire(): ?string
-    {
-        return $this->emailDestinataire;
-    }
-
-    /**
-     * @param string|null $emailDestinataire
-     *
-     * @return self
-     */
-    public function setEmailDestinataire(?string $emailDestinataire): self
-    {
-        $this->emailDestinataire = $emailDestinataire;
+        $this->logo = $logo;
 
         return $this;
     }

@@ -7,8 +7,17 @@ use Mpp\ApicilClientBundle\Model\ArbitrageDto;
 use Mpp\ApicilClientBundle\Model\ArbitrageDtoDeConsultation;
 use Mpp\ApicilClientBundle\Model\DtoEligibilite;
 use Mpp\ApicilClientBundle\Model\EmailPropositionActeDto;
+use Mpp\ApicilClientBundle\Model\ErreurCodeFonctionnelDto;
+use Mpp\ApicilClientBundle\Model\FraisArbitrageDto;
+use Mpp\ApicilClientBundle\Model\ListeDesSupports;
+use Mpp\ApicilClientBundle\Model\OperationEnCoursDto;
+use Mpp\ApicilClientBundle\Model\RecuperationActeDocSousCategorieDto;
+use Mpp\ApicilClientBundle\Model\ReponseClientHorsMursDto;
+use Mpp\ApicilClientBundle\Model\ReponseGenererCodeSecuriteHorsMursDto;
 use Mpp\ApicilClientBundle\Model\TelephoneDto;
 use Mpp\ApicilClientBundle\OptionsResolver\ApicilAccClientOptionResolver;
+use Mpp\ApicilClientBundle\OptionsResolver\ApicilArbitrationClientOptionResolver;
+use Mpp\ApicilClientBundle\OptionsResolver\ApicilReferentialClientOptionsResolver;
 use Symfony\Component\HttpFoundation\File\File;
 
 class ApicilArbitrationClient extends AbstractApicilClientDomain implements ApicilArbitrationClientInterface
@@ -16,11 +25,11 @@ class ApicilArbitrationClient extends AbstractApicilClientDomain implements Apic
     /**
      * {@inheritdoc}
      */
-    public function addDocument(int $id, string $documentCategory, array $options): ActeRetourCreationDto
+    public function addDocument(int $id, string $documentCategory, array $options): RecuperationActeDocSousCategorieDto
     {
         $options = ApicilAccClientOptionResolver::resolveAddDocumentOptions($options);
 
-        return $this->requestAndPopulate(ActeRetourCreationDto::class, 'PUT', sprintf('/%s/document/%s', $id, $documentCategory), [
+        return $this->requestAndPopulate(RecuperationActeDocSousCategorieDto::class, 'PUT', sprintf('/%s/document/%s', $id, $documentCategory), [
             'multipart' => [
                 [
                     'name' => 'document',
@@ -36,7 +45,7 @@ class ApicilArbitrationClient extends AbstractApicilClientDomain implements Apic
     public function approveSecurityCode(array $options): ReponseClientHorsMursDto
     {
         return $this->requestAndPopulate(ReponseClientHorsMursDto::class, 'POST', '/codesecurite/valider', [
-            'query' => ApicilReferentialClientOptionsResolver::resolveApproveSecurityCodeOptions($options),
+            'query' => ApicilArbitrationClientOptionResolver::resolveApproveSecurityCodeOptions($options),
         ]);
     }
 
@@ -53,7 +62,7 @@ class ApicilArbitrationClient extends AbstractApicilClientDomain implements Apic
      */
     public function create(array $options): ActeRetourCreationDto
     {
-        $options = ApicilReferentialClientOptionsResolver::resolveCreateOptions($options);
+        $options = ApicilArbitrationClientOptionResolver::resolveCreateOptions($options);
 
         return $this->requestAndPopulate(ActeRetourCreationDto::class, 'POST', '/', [
             'query' => [
@@ -81,10 +90,10 @@ class ApicilArbitrationClient extends AbstractApicilClientDomain implements Apic
     /**
      * {@inheritdoc}
      */
-    public function generateSecurityCode(array $options): array
+    public function generateSecurityCode(array $options): ReponseGenererCodeSecuriteHorsMursDto
     {
-        $this->request('POST', '/codesecurite/generer', [
-            'query' => ApicilReferentialClientOptionsResolver::resolveGenerateSecurityCodeOptions($options),
+        return $this->requestAndPopulate(ReponseGenererCodeSecuriteHorsMursDto::class, 'POST', '/codesecurite/generer', [
+            'query' => ApicilArbitrationClientOptionResolver::resolveGenerateSecurityCodeOptions($options),
         ]);
     }
 
@@ -147,10 +156,10 @@ class ApicilArbitrationClient extends AbstractApicilClientDomain implements Apic
     /**
      * {@inheritdoc}
      */
-    public function getInvestmentEligibleSupports(int $contractId, array $options): array
+    public function getInvestmentEligibleSupports(int $contractId, array $options): ListeDesSupports
     {
-        return $this->request('GET', sprintf('/support/investissement/%s', $contractId), [
-            'query' => ApicilReferentialClientOptionsResolver::resolveGetInvestmentEligibleSupportsOptions($options),
+        return $this->requestAndPopulate(ListeDesSupports::class, 'GET', sprintf('/support/investissement/%s', $contractId), [
+            'query' => ApicilArbitrationClientOptionResolver::resolveGetInvestmentEligibleSupportsOptions($options),
         ]);
     }
 
@@ -181,9 +190,9 @@ class ApicilArbitrationClient extends AbstractApicilClientDomain implements Apic
     /**
      * {@inheritdoc}
      */
-    public function refuse(int $id, array $options = []): bool
+    public function refuse(int $id, array $options = [])
     {
-        $options = ApicilReferentialClientOptionsResolver::resolveRefuseOptions($options);
+        $options = ApicilArbitrationClientOptionResolver::resolveRefuseOptions($options);
 
         $this->request('POST', sprintf('/%s/refuser', $id), [
             'query' => $options,
@@ -195,7 +204,7 @@ class ApicilArbitrationClient extends AbstractApicilClientDomain implements Apic
      */
     public function remove(int $id): bool
     {
-        $this->requestAndPopulate('bool', 'DELETE', sprintf('/%s', $id));
+        return $this->requestAndPopulate('bool', 'DELETE', sprintf('/%s', $id));
     }
 
     /**
@@ -203,7 +212,7 @@ class ApicilArbitrationClient extends AbstractApicilClientDomain implements Apic
      */
     public function removeDocument(int $id, string $documentId): bool
     {
-        $this->requestAndPopulate('bool', 'DELETE', sprintf('/%s/document/%s', $id, $documentId));
+        return $this->requestAndPopulate('bool', 'DELETE', sprintf('/%s/document/%s', $id, $documentId));
     }
 
     /**
@@ -211,7 +220,7 @@ class ApicilArbitrationClient extends AbstractApicilClientDomain implements Apic
      */
     public function restart(int $id, array $options)
     {
-        $options = ApicilReferentialClientOptionsResolver::resolveRestartOptions($options);
+        $options = ApicilArbitrationClientOptionResolver::resolveRestartOptions($options);
 
         $this->request('PUT', sprintf('/%s/relancer', $id), [
             'query' => $options,
@@ -247,7 +256,7 @@ class ApicilArbitrationClient extends AbstractApicilClientDomain implements Apic
     /**
      * {@inheritdoc}
      */
-    public function testEmail(int $id, EmailPropositionActeDto $email): bool
+    public function testEmail(int $id, EmailPropositionActeDto $email)
     {
         $this->request('POST', sprintf('/%s/mail/tester', $id), [
             'body' => $this->serializer->serialize($email, 'json'),
@@ -257,11 +266,11 @@ class ApicilArbitrationClient extends AbstractApicilClientDomain implements Apic
     /**
      * {@inheritdoc}
      */
-    public function update(int $id, array $options): array
+    public function update(int $id, array $options): ArbitrageDto
     {
-        $options = ApicilReferentialClientOptionsResolver::resolveUpdateOptions($options);
+        $options = ApicilArbitrationClientOptionResolver::resolveUpdateOptions($options);
 
-        $this->request('PUT', sprintf('/%s', $id), [
+        return $this->requestAndPopulate(ArbitrageDto::class, 'PUT', sprintf('/%s', $id), [
             'multipart' => [
                 [
                     'name' => 'bulletin',
@@ -274,10 +283,10 @@ class ApicilArbitrationClient extends AbstractApicilClientDomain implements Apic
     /**
      * {@inheritdoc}
      */
-    public function updateFromModel(int $id, ArbitrationDto $arbitration): ArbitrationDto
+    public function updateFromModel(int $id, ArbitrageDto $arbitration): ArbitrageDto
     {
-        return $this->requestAndPopulate(ArbitrationDto::class, 'PUT', sprintf('/asigner/%s', $id), [
-            'body' => $this->serializer->serialize($email, 'json'),
+        return $this->requestAndPopulate(ArbitrageDto::class, 'PUT', sprintf('/asigner/%s', $id), [
+            'body' => $this->serializer->serialize($arbitration, 'json'),
         ]);
     }
 
@@ -298,7 +307,7 @@ class ApicilArbitrationClient extends AbstractApicilClientDomain implements Apic
     {
         return $this->request('POST', sprintf('/%s/questionnaires', $id), [
             'body' => $this->serializer->serialize(
-                ApicilReferentialClientOptionsResolver::resolveVerifySurveysOptions($surveys),
+                ApicilArbitrationClientOptionResolver::resolveVerifySurveysOptions($surveys),
                 'json'
             ),
         ])->getBody()->getContents();
