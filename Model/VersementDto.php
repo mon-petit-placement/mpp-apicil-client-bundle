@@ -2,6 +2,9 @@
 
 namespace Mpp\ApicilClientBundle\Model;
 
+use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
 class VersementDto
 {
     public const MODEINVESTISSEMENT_CHOIX = 'CHOIX';
@@ -105,19 +108,138 @@ class VersementDto
     private $reponsesSupportStructure;
 
     /**
-     * @var bool|null
-     */
-    private $signeClient;
-
-    /**
      * @var string|null
      */
-    private $statutActuel;
+    private $rum;
 
     /**
      * @var string|null
      */
     private $typeVersement;
+
+    /**
+     * @param OptionsResolver $resolver
+     */
+    public static function configureData(OptionsResolver $resolver)
+    {
+        $resolver
+            ->setDefault('alliance', null)->setAllowedTypes('alliance', ['string', 'null'])
+            ->setDefault('bulletinPartenaire', null)->setAllowedTypes('bulletinPartenaire', ['bool', 'null'])
+            ->setDefault('conserverIban', null)->setAllowedTypes('conserverIban', ['bool', 'null'])
+            ->setRequired('contratId')->setAllowedTypes('contratId', ['int'])
+            ->setDefault('dateSignatureSepa', null)->setAllowedTypes('dateSignatureSepa', [\DateTime::class, 'string', 'null'])->setNormalizer('dateSignatureSepa', function (Options $options, $value) {
+                if ($value instanceof \DateTime || null === $value) {
+                    return $value;
+                }
+
+                return \DateTime::createFromFormat('Y-m-d', $value);
+            })
+            ->setDefault('deduction', null)->setAllowedTypes('deduction', ['bool', 'null'])
+            ->setRequired('donneesBancaires')->setAllowedTypes('donneesBancaires', ['array', DonneesBancairesDto::class])->setNormalizer('donneesBancaires', function (Options $options, $value) {
+                if ($value instanceof DonneesBancairesDto) {
+                    return $value;
+                }
+
+                return DonneesBancairesDto::createFromArray($value);
+            })
+            ->setDefault('horizonInvestissement', null)->setAllowedTypes('horizonInvestissement', ['array', TrHorizonInvestissementDto::class])->setNormalizer('horizonInvestissement', function (Options $options, $value) {
+                if ($value instanceof TrHorizonInvestissementDto) {
+                    return $value;
+                }
+
+                return TrHorizonInvestissementDto::createFromArray($value);
+            })
+            ->setRequired('modeInvestissement')->setAllowedTypes('modeInvestissement', ['string'])
+            ->setRequired('modePaiement')->setAllowedTypes('modePaiement', ['string'])
+            ->setRequired('montant')->setAllowedTypes('montant', ['float'])
+            ->setDefault('origineDesFonds', null)->setAllowedTypes('origineDesFonds', ['array', OrigineDesFondsDto::class, 'null'])->setNormalizer('origineDesFonds', function (Options $options, $value) {
+                if ($value instanceof OrigineDesFondsDto || null == $value) {
+                    return $value;
+                }
+
+                return OrigineDesFondsDto::createFromArray($value);
+            })
+            ->setDefault('payeur', null)->setAllowedTypes('payeur', ['array', PayeurDto::class, 'null'])->setNormalizer('payeur', function (Options $options, $value) {
+                if ($value instanceof PayeurDto || null == $value) {
+                    return $value;
+                }
+
+                return PayeurDto::createFromArray($value);
+            })
+            ->setDefault('periodicite', null)->setAllowedTypes('periodicite', ['string', 'null'])
+            ->setDefault('repartitionInvestissement', null)->setAllowedTypes('repartitionInvestissement', ['array', 'null'])->setNormalizer('repartitionInvestissement', function (Options $options, $value) {
+                if (null === $value) {
+                    return $value;
+                }
+
+                foreach ($value as &$repartition) {
+                    if ($repartition instanceof RepartitionReponseDto) {
+                        continue;
+                    }
+
+                    $repartition = RepartitionReponseDto::createFromArray($repartition);
+                }
+
+                return $value;
+            })
+            ->setDefault('reponsesSupportStructure', null)->setAllowedTypes('reponsesSupportStructure', ['array', 'null'])->setNormalizer('reponsesSupportStructure', function (Options $options, $value) {
+                if (null === $value) {
+                    return $value;
+                }
+
+                foreach ($value as &$questionnaire) {
+                    if ($questionnaire instanceof QuestionnaireStructuresReponses) {
+                        continue;
+                    }
+
+                    $questionnaire = QuestionnaireStructuresReponses::createFromArray($questionnaire);
+                }
+
+                return $value;
+            })
+            ->setDefault('rum', null)->setAllowedTypes('rum', ['string', 'null'])
+            ->setDefault('typeVersement', null)->setAllowedTypes('typeVersement', ['string', 'null'])
+        ;
+    }
+
+    /**
+     * @param array $options
+     *
+     * @return self
+     *
+     * @throws UndefinedOptionsException If an option name is undefined
+     * @throws InvalidOptionsException   If an option doesn't fulfill the language specified validation rules
+     * @throws MissingOptionsException   If a required option is missing
+     * @throws OptionDefinitionException If there is a cyclic dependency between lazy options and/or normalizers
+     * @throws NoSuchOptionException     If a lazy option reads an unavailable option
+     * @throws AccessException           If called from a lazy option or normalizer
+     */
+    public static function createFromArray(array $options): self
+    {
+        $resolver = new OptionsResolver();
+        self::configureData($resolver);
+        $resolvedOptions = $resolver->resolve($options);
+
+        return (new self())
+            ->setAlliance($resolvedOptions['alliance'])
+            ->setBulletinPartenaire($resolvedOptions['bulletinPartenaire'])
+            ->setConserverIban($resolvedOptions['conserverIban'])
+            ->setContratId($resolvedOptions['contratId'])
+            ->setDateSignatureSepa($resolvedOptions['dateSignatureSepa'])
+            ->setDonneesBancaires($resolvedOptions['donneesBancaires'])
+            ->setHorizonInvestissement($resolvedOptions['horizonInvestissement'])
+            ->setModeInvestissement($resolvedOptions['modeInvestissement'])
+            ->setModePaiement($resolvedOptions['modePaiement'])
+            ->setMontant($resolvedOptions['montant'])
+            ->setOrigineDesFonds($resolvedOptions['origineDesFonds'])
+            ->setPayeur($resolvedOptions['payeur'])
+            ->setPeriodicite($resolvedOptions['periodicite'])
+            ->setRepartitionInvestissement($resolvedOptions['repartitionInvestissement'])
+            ->setReponsesSupportStructure($resolvedOptions['reponsesSupportStructure'])
+            ->setRum($resolvedOptions['rum'])
+            ->setTypeVersement($resolvedOptions['typeVersement'])
+        ;
+    }
 
     /**
      * @return string|null
@@ -360,46 +482,6 @@ class VersementDto
     }
 
     /**
-     * @return bool|null
-     */
-    public function getSigneClient(): ?bool
-    {
-        return $this->signeClient;
-    }
-
-    /**
-     * @param bool|null $signeClient
-     *
-     * @return self
-     */
-    public function setSigneClient(?bool $signeClient): self
-    {
-        $this->signeClient = $signeClient;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getStatutActuel(): ?string
-    {
-        return $this->statutActuel;
-    }
-
-    /**
-     * @param string|null $statutActuel
-     *
-     * @return self
-     */
-    public function setStatutActuel(?string $statutActuel): self
-    {
-        $this->statutActuel = $statutActuel;
-
-        return $this;
-    }
-
-    /**
      * @return string|null
      */
     public function getTypeVersement(): ?string
@@ -495,6 +577,26 @@ class VersementDto
     public function setHorizonInvestissement(?TrHorizonInvestissementDto $horizonInvestissement): self
     {
         $this->horizonInvestissement = $horizonInvestissement;
+
+        return $this;
+    }
+
+    /**
+     * @return  string|null
+     */
+    public function getRum(): ?string
+    {
+        return $this->rum;
+    }
+
+    /**
+     * @param  string|null  $rum
+     *
+     * @return  self
+     */
+    public function setRum(?string $rum): self
+    {
+        $this->rum = $rum;
 
         return $this;
     }

@@ -100,6 +100,11 @@ class VersementComplementaireDtoDeConsultation
     private $reponsesSupportStructure;
 
     /**
+     * @var string|null
+     */
+    private $rum;
+
+    /**
      * @var bool|null
      */
     private $signeClient;
@@ -510,6 +515,26 @@ class VersementComplementaireDtoDeConsultation
     public function setHorizonInvestissement(?TrHorizonInvestissementDto $horizonInvestissement): self
     {
         $this->horizonInvestissement = $horizonInvestissement;
+
+        return $this;
+    }
+
+    /**
+     * @return  string|null
+     */
+    public function getRum(): ?string
+    {
+        return $this->rum;
+    }
+
+    /**
+     * @param  string|null  $rum
+     *
+     * @return  self
+     */
+    public function setRum(?string $rum): self
+    {
+        $this->rum = $rum;
 
         return $this;
     }

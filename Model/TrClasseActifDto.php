@@ -2,6 +2,8 @@
 
 namespace Mpp\ApicilClientBundle\Model;
 
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
 class TrClasseActifDto
 {
     /**
@@ -12,12 +14,56 @@ class TrClasseActifDto
     /**
      * @var string|null
      */
-    private $codeColeur;
+    private $codeCouleur;
 
     /**
      * @var string|null
      */
     private $libelle;
+
+    /**
+     * @var bool|null
+     */
+    private $seuilCheck;
+
+    /**
+     * @param OptionsResolver $resolver
+     */
+    public static function configureData(OptionsResolver $resolver)
+    {
+        $resolver
+            ->setDefault('code', null)->setAllowedTypes('code', ['string', 'null'])
+            ->setDefault('codeCouleur', null)->setAllowedTypes('codeCouleur', ['string', 'null'])
+            ->setDefault('libelle', null)->setAllowedTypes('libelle', ['string', 'null'])
+            ->setDefault('seuilCheck', null)->setAllowedTypes('seuilCheck', ['bool', 'null'])
+        ;
+    }
+
+    /**
+     * @param array $options
+     *
+     * @return self
+     *
+     * @throws UndefinedOptionsException If an option name is undefined
+     * @throws InvalidOptionsException   If an option doesn't fulfill the language specified validation rules
+     * @throws MissingOptionsException   If a required option is missing
+     * @throws OptionDefinitionException If there is a cyclic dependency between lazy options and/or normalizers
+     * @throws NoSuchOptionException     If a lazy option reads an unavailable option
+     * @throws AccessException           If called from a lazy option or normalizer
+     */
+    public static function createFromArray(array $options): self
+    {
+        $resolver = new OptionsResolver();
+        self::configureData($resolver);
+        $resolvedOptions = $resolver->resolve($options);
+
+        return (new self())
+            ->setCode($resolvedOptions['code'])
+            ->setCodeCouleur($resolvedOptions['codeCouleur'])
+            ->setLibelle($resolvedOptions['libelle'])
+            ->setSeuilCheck($resolvedOptions['seuilCheck'])
+        ;
+    }
 
     /**
      * @return string|null
@@ -42,19 +88,19 @@ class TrClasseActifDto
     /**
      * @return string|null
      */
-    public function getCodeColeur(): ?string
+    public function getCodeCouleur(): ?string
     {
-        return $this->codeColeur;
+        return $this->codeCouleur;
     }
 
     /**
-     * @param string|null $codeColeur
+     * @param string|null $codeCouleur
      *
      * @return self
      */
-    public function setCodeColeur(?string $codeColeur): self
+    public function setCodeCouleur(?string $codeCouleur): self
     {
-        $this->codeColeur = $codeColeur;
+        $this->codeCouleur = $codeCouleur;
 
         return $this;
     }
@@ -75,6 +121,26 @@ class TrClasseActifDto
     public function setLibelle(?string $libelle): self
     {
         $this->libelle = $libelle;
+
+        return $this;
+    }
+
+    /**
+     * @return  bool|null
+     */
+    public function getSeuilCheck(): ?bool
+    {
+        return $this->seuilCheck;
+    }
+
+    /**
+     * @param  bool|null  $seuilCheck
+     *
+     * @return  self
+     */
+    public function setSeuilCheck(?bool $seuilCheck): self
+    {
+        $this->seuilCheck = $seuilCheck;
 
         return $this;
     }

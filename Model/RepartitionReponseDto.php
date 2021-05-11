@@ -2,6 +2,9 @@
 
 namespace Mpp\ApicilClientBundle\Model;
 
+use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
 class RepartitionReponseDto
 {
     /**
@@ -33,6 +36,55 @@ class RepartitionReponseDto
      * @var float|null
      */
     private $pourcentage;
+
+    /**
+     * @param OptionsResolver $resolver
+     */
+    public static function configureData(OptionsResolver $resolver)
+    {
+        $resolver
+            ->setDefault('classeActif', null)->setAllowedTypes('classeActif', ['array', TrClasseActifDto::class, 'null'])->setNormalizer('classeActif', function (Options $options, $value) {
+                if ($value instanceof TrClasseActifDto || null == $value) {
+                    return $value;
+                }
+
+                return TrClasseActifDto::createFromArray($value);
+            })
+            ->setRequired('codeIsinSupport')->setAllowedTypes('codeIsinSupport', ['string'])
+            ->setDefault('desinvestissement', null)->setAllowedTypes('desinvestissement', ['bool', 'null'])
+            ->setDefault('eligibleVP', null)->setAllowedTypes('eligibleVP', ['bool', 'null'])
+            ->setRequired('montant')->setAllowedTypes('montant', ['float'])
+            ->setRequired('pourcentage')->setAllowedTypes('pourcentage', ['float'])
+        ;
+    }
+
+    /**
+     * @param array $options
+     *
+     * @return self
+     *
+     * @throws UndefinedOptionsException If an option name is undefined
+     * @throws InvalidOptionsException   If an option doesn't fulfill the language specified validation rules
+     * @throws MissingOptionsException   If a required option is missing
+     * @throws OptionDefinitionException If there is a cyclic dependency between lazy options and/or normalizers
+     * @throws NoSuchOptionException     If a lazy option reads an unavailable option
+     * @throws AccessException           If called from a lazy option or normalizer
+     */
+    public static function createFromArray(array $options): self
+    {
+        $resolver = new OptionsResolver();
+        self::configureData($resolver);
+        $resolvedOptions = $resolver->resolve($options);
+
+        return (new self())
+            ->setClasseActif($resolvedOptions['classeActif'])
+            ->setCodeIsinSupport($resolvedOptions['codeIsinSupport'])
+            ->setDesinvestissement($resolvedOptions['desinvestissement'])
+            ->setEligibleVP($resolvedOptions['eligibleVP'])
+            ->setMontant($resolvedOptions['montant'])
+            ->setPourcentage($resolvedOptions['pourcentage'])
+        ;
+    }
 
     /**
      * @return string|null
