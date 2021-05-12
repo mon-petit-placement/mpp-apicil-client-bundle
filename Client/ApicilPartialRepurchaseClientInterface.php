@@ -2,11 +2,14 @@
 
 namespace Mpp\ApicilClientBundle\Client;
 
-use Mpp\ApicilClientBundle\Client\Model\ActeDocumentDto;
-use Mpp\ApicilClientBundle\Client\Model\ActeRetourCreationDto;
-use Mpp\ApicilClientBundle\Client\Model\EmailPropositionActeDto;
-use Mpp\ApicilClientBundle\Client\Model\RachatPartielDtoDeConsultation;
-use Mpp\ApicilClientBundle\Client\Model\TelephoneDto;
+use Mpp\ApicilClientBundle\Model\ActeDocumentDto;
+use Mpp\ApicilClientBundle\Model\ActeRetourCreationDto;
+use Mpp\ApicilClientBundle\Model\DtoEligibilite;
+use Mpp\ApicilClientBundle\Model\EmailPropositionActeDto;
+use Mpp\ApicilClientBundle\Model\OperationEnCoursDto;
+use Mpp\ApicilClientBundle\Model\RachatDto;
+use Mpp\ApicilClientBundle\Model\RachatPartielDtoDeConsultation;
+use Mpp\ApicilClientBundle\Model\TelephoneDto;
 use Symfony\Component\HttpFoundation\File\File;
 
 interface ApicilPartialRepurchaseClientInterface
@@ -201,7 +204,7 @@ interface ApicilPartialRepurchaseClientInterface
      *
      * @return bool
      */
-    public function sendSignatureBySms(int $id): bool;
+    public function sendSignatureBySms(int $id);
 
     /**
      * Send the partial repurchase request to the customer.
