@@ -4,6 +4,7 @@ namespace Mpp\ApicilClientBundle\Client;
 
 use Mpp\ApicilClientBundle\Model\ActeRetourCreationDto;
 use Mpp\ApicilClientBundle\Model\DetailOptionVP;
+use Mpp\ApicilClientBundle\Model\DtoDeLaSuppressionDeLOption;
 use Mpp\ApicilClientBundle\Model\DtoEligibilite;
 use Mpp\ApicilClientBundle\Model\EmailPropositionActeDto;
 use Mpp\ApicilClientBundle\Model\EmailPropositionDto;
@@ -11,10 +12,11 @@ use Mpp\ApicilClientBundle\Model\ListeDesSupports;
 use Mpp\ApicilClientBundle\Model\ModeleDeVersement;
 use Mpp\ApicilClientBundle\Model\MontantVCDto;
 use Mpp\ApicilClientBundle\Model\OperationEnCoursDto;
-use Mpp\ApicilClientBundle\Model\RecuperationActeDocSousCategorieDoc;
+use Mpp\ApicilClientBundle\Model\RecuperationActeDocSousCategorieDto;
 use Mpp\ApicilClientBundle\Model\RecuperationVersementSuppression;
 use Mpp\ApicilClientBundle\Model\ReponseClientHorsMursDto;
-use Mpp\ApicilClientBundle\Model\SuppressionOptionDto;
+use Mpp\ApicilClientBundle\Model\TelephoneDto;
+use Mpp\ApicilClientBundle\OptionsResolver\ApicilPaymentClientOptionResolver;
 use Symfony\Component\HttpFoundation\File\File;
 
 class ApicilPaymentClient extends AbstractApicilClientDomain implements ApicilPaymentClientInterface
@@ -41,7 +43,7 @@ class ApicilPaymentClient extends AbstractApicilClientDomain implements ApicilPa
      */
     public function approve(int $id)
     {
-        $this->requestAndPopulate('POST', sprintf('/%s/valider', $id));
+        $this->request('POST', sprintf('/%s/valider', $id));
     }
 
     /**
@@ -49,7 +51,7 @@ class ApicilPaymentClient extends AbstractApicilClientDomain implements ApicilPa
      */
     public function approveAsOffice(int $id)
     {
-        $this->requestAndPopulate('PUT', sprintf('/%s/cabinet/valider', $id));
+        $this->request('PUT', sprintf('/%s/cabinet/valider', $id));
     }
 
     /**
@@ -159,15 +161,15 @@ class ApicilPaymentClient extends AbstractApicilClientDomain implements ApicilPa
     /**
      * {@inheritdoc}
      */
-    public function getDocument(int $id, string $documentId): RecuperationActeDocSousCategorieDoc
+    public function getDocument(int $id, string $documentId): RecuperationActeDocSousCategorieDto
     {
-        return $this->requestAndPopulate(RecuperationActeDocSousCategorieDoc::class, 'GET', sprintf('/%s/documents/%s', $id, $documentId));
+        return $this->requestAndPopulate(RecuperationActeDocSousCategorieDto::class, 'GET', sprintf('/%s/documents/%s', $id, $documentId));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDocuments(int $id): RecuperationActeDocSousCategorieDoc
+    public function getDocuments(int $id): RecuperationActeDocSousCategorieDto
     {
         return $this->requestAndPopulate(RecuperationActeDocSousCategorieDto::class, 'GET', sprintf('/%s/documents', $id));
     }
@@ -281,9 +283,9 @@ class ApicilPaymentClient extends AbstractApicilClientDomain implements ApicilPa
     /**
      * {@inheritdoc}
      */
-    public function removeOptionFromModel(SuppressionOptionDto $model): ActeRetourCreationDto
+    public function removeOptionFromModel(DtoDeLaSuppressionDeLOption $model): ActeRetourCreationDto
     {
-        $this->requestAndPopulate(ActeRetourCreationDto::class, 'POST', '/retireroption/asigner', [
+        return $this->requestAndPopulate(ActeRetourCreationDto::class, 'POST', '/retireroption/asigner', [
             'body' => $this->serializer->serialize($model, 'json'),
         ]);
     }
@@ -317,7 +319,7 @@ class ApicilPaymentClient extends AbstractApicilClientDomain implements ApicilPa
     /**
      * {@inheritdoc}
      */
-    public function sendToCustomer(int $id, EmailPropositionDto $email): bool
+    public function sendToCustomer(int $id, EmailPropositionActeDto $email)
     {
         $this->request('POST', sprintf('/%s/transmettre', $id), [
             'body' => $this->serializer->serialize($email, 'json'),
@@ -335,7 +337,7 @@ class ApicilPaymentClient extends AbstractApicilClientDomain implements ApicilPa
     /**
      * {@inheritdoc}
      */
-    public function testEmail(int $id, EmailPropositionActeDto $email): bool
+    public function testEmail(int $id, EmailPropositionActeDto $email)
     {
         $this->request('POST', sprintf('/%s/mail/tester', $id), [
             'body' => $this->serializer->serialize($email, 'json'),
@@ -355,7 +357,7 @@ class ApicilPaymentClient extends AbstractApicilClientDomain implements ApicilPa
     /**
      * {@inheritdoc}
      */
-    public function updatePhoneNumber(int $id, TelephoneDto $phoneNumber): bool
+    public function updatePhoneNumber(int $id, TelephoneDto $phoneNumber)
     {
         $this->request('PUT', sprintf('/%s/telephone', $id), [
             'body' => $this->serializer->serialize($phoneNumber, 'json'),

@@ -10,7 +10,7 @@ use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
 use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TrClasseActifDto
+class TrHorizonInvestissementDto
 {
     /**
      * @var string|null
@@ -20,17 +20,7 @@ class TrClasseActifDto
     /**
      * @var string|null
      */
-    private $codeCouleur;
-
-    /**
-     * @var string|null
-     */
     private $libelle;
-
-    /**
-     * @var bool|null
-     */
-    private $seuilCheck;
 
     /**
      * @param OptionsResolver $resolver
@@ -38,10 +28,8 @@ class TrClasseActifDto
     public static function configureData(OptionsResolver $resolver)
     {
         $resolver
-            ->setDefault('code', null)->setAllowedTypes('code', ['string', 'null'])
-            ->setDefault('codeCouleur', null)->setAllowedTypes('codeCouleur', ['string', 'null'])
+            ->setRequired('code')->setAllowedTypes('code', ['string', 'null'])
             ->setDefault('libelle', null)->setAllowedTypes('libelle', ['string', 'null'])
-            ->setDefault('seuilCheck', null)->setAllowedTypes('seuilCheck', ['bool', 'null'])
         ;
     }
 
@@ -65,9 +53,7 @@ class TrClasseActifDto
 
         return (new self())
             ->setCode($resolvedOptions['code'])
-            ->setCodeCouleur($resolvedOptions['codeCouleur'])
             ->setLibelle($resolvedOptions['libelle'])
-            ->setSeuilCheck($resolvedOptions['seuilCheck'])
         ;
     }
 
@@ -94,26 +80,6 @@ class TrClasseActifDto
     /**
      * @return string|null
      */
-    public function getCodeCouleur(): ?string
-    {
-        return $this->codeCouleur;
-    }
-
-    /**
-     * @param string|null $codeCouleur
-     *
-     * @return self
-     */
-    public function setCodeCouleur(?string $codeCouleur): self
-    {
-        $this->codeCouleur = $codeCouleur;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
     public function getLibelle(): ?string
     {
         return $this->libelle;
@@ -127,26 +93,6 @@ class TrClasseActifDto
     public function setLibelle(?string $libelle): self
     {
         $this->libelle = $libelle;
-
-        return $this;
-    }
-
-    /**
-     * @return  bool|null
-     */
-    public function getSeuilCheck(): ?bool
-    {
-        return $this->seuilCheck;
-    }
-
-    /**
-     * @param  bool|null  $seuilCheck
-     *
-     * @return  self
-     */
-    public function setSeuilCheck(?bool $seuilCheck): self
-    {
-        $this->seuilCheck = $seuilCheck;
 
         return $this;
     }

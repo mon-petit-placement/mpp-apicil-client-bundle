@@ -18,6 +18,21 @@ class ArbitrageDtoDeConsultation
      */
     private $alliance;
 
+       /**
+     * @var bool|null
+     */
+    private $bulletinPartenaire;
+
+    /**
+     * @var string|null
+     */
+    private $codeFiscal;
+
+    /**
+     * @var string|null
+     */
+    private $compartiment;
+
     /**
      * @var int|null
      */
@@ -34,6 +49,11 @@ class ArbitrageDtoDeConsultation
     private $fraisDerogatoireArbitrage;
 
     /**
+     * @var TrHorizonInvestissementDto|null
+     */
+    private $horizonInvestissement;
+
+    /**
      * @var int|null
      */
     private $id;
@@ -44,22 +64,22 @@ class ArbitrageDtoDeConsultation
     private $modeCible;
 
     /**
-     * @var RepartitionReponseDto|null
+     * @var array|null
      */
     private $portefeuilleCible;
 
     /**
-     * @var RepartitionReponseDto|null
+     * @var array|null
      */
     private $repartitionDesInvestissement;
 
     /**
-     * @var RepartitionReponseDto|null
+     * @var array|null
      */
     private $repartitionInvestissement;
 
     /**
-     * @var QuestionnaireStructuresReponses|null
+     * @var array|null
      */
     private $reponsesSupportStructure;
 
@@ -81,7 +101,7 @@ class ArbitrageDtoDeConsultation
     /**
      * @var float|null
      */
-    private $tauxNumber;
+    private $tauxArbitrage;
 
     /**
      * @var string|null
@@ -209,19 +229,19 @@ class ArbitrageDtoDeConsultation
     }
 
     /**
-     * @return RepartitionReponseDto|null
+     * @return array|null
      */
-    public function getPorteFeuilleCible(): ?RepartitionReponseDto
+    public function getPorteFeuilleCible(): ?array
     {
         return $this->portefeuilleCible;
     }
 
     /**
-     * @param RepartitionReponseDto|null $porteFeuilleCible
+     * @param array|null $porteFeuilleCible
      *
      * @return self
      */
-    public function setPorteFeuilleCible(?RepartitionReponseDto $porteFeuilleCible): self
+    public function setPorteFeuilleCible(?array $porteFeuilleCible): self
     {
         $this->porteFeuilleCible = $porteFeuilleCible;
 
@@ -229,19 +249,19 @@ class ArbitrageDtoDeConsultation
     }
 
     /**
-     * @return RepartitionReponseDto|null
+     * @return array|null
      */
-    public function getRepartitionDesInvestissement(): ?RepartitionReponseDto
+    public function getRepartitionDesInvestissement(): ?array
     {
         return $this->repartitionDesInvestissement;
     }
 
     /**
-     * @param RepartitionReponseDto|null $repartitionDesInvestissement
+     * @param array|null $repartitionDesInvestissement
      *
      * @return self
      */
-    public function setRepartitionDesInvestissement(?RepartitionReponseDto $repartitionDesInvestissement): self
+    public function setRepartitionDesInvestissement(?array $repartitionDesInvestissement): self
     {
         $this->repartitionDesInvestissement = $repartitionDesInvestissement;
 
@@ -249,19 +269,19 @@ class ArbitrageDtoDeConsultation
     }
 
     /**
-     * @return RepartitionReponseDto|null
+     * @return array|null
      */
-    public function getRepartitionInvestissement(): ?RepartitionReponseDto
+    public function getRepartitionInvestissement(): ?array
     {
         return $this->repartitionInvestissement;
     }
 
     /**
-     * @param RepartitionReponseDto|null $repartitionInvestissement
+     * @param array|null $repartitionInvestissement
      *
      * @return self
      */
-    public function setRepartitionInvestissement(?RepartitionReponseDto $repartitionInvestissement): self
+    public function setRepartitionInvestissement(?array $repartitionInvestissement): self
     {
         $this->repartitionInvestissement = $repartitionInvestissement;
 
@@ -269,19 +289,19 @@ class ArbitrageDtoDeConsultation
     }
 
     /**
-     * @return QuestionnaireStructuresReponses|null
+     * @return array|null
      */
-    public function getReponsesSupportStructure(): ?QuestionnaireStructuresReponses
+    public function getReponsesSupportStructure(): ?array
     {
         return $this->reponsesSupportStructure;
     }
 
     /**
-     * @param QuestionnaireStructuresReponses|null $repartitionInvestissement
+     * @param array|null $repartitionInvestissement
      *
      * @return self
      */
-    public function setReponsesSupportStructure(?QuestionnaireStructuresReponses $reponsesSupportStructure): self
+    public function setReponsesSupportStructure(?array $reponsesSupportStructure): self
     {
         $this->reponsesSupportStructure = $reponsesSupportStructure;
 
@@ -351,19 +371,19 @@ class ArbitrageDtoDeConsultation
     /**
      * @return float|null
      */
-    public function getTauxNumber(): ?float
+    public function getTauxArbitrage(): ?float
     {
-        return $this->tauxNumber;
+        return $this->tauxArbitrage;
     }
 
     /**
-     * @param float|null $tauxNumber
+     * @param float|null $tauxArbitrage
      *
      * @return self
      */
-    public function setTauxNumber(?float $tauxNumber): self
+    public function setTauxArbitrage(?float $tauxArbitrage): self
     {
-        $this->tauxNumber = $tauxNumber;
+        $this->tauxArbitrage = $tauxArbitrage;
 
         return $this;
     }
@@ -384,6 +404,86 @@ class ArbitrageDtoDeConsultation
     public function setType(?string $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @return  bool|null
+     */
+    public function getBulletinPartenaire(): ?bool
+    {
+        return $this->bulletinPartenaire;
+    }
+
+    /**
+     * @param  bool|null  $bulletinPartenaire
+     *
+     * @return  self
+     */
+    public function setBulletinPartenaire(?bool $bulletinPartenaire): self
+    {
+        $this->bulletinPartenaire = $bulletinPartenaire;
+
+        return $this;
+    }
+
+    /**
+     * @return  string|null
+     */
+    public function getCodeFiscal(): ?string
+    {
+        return $this->codeFiscal;
+    }
+
+    /**
+     * @param  string|null  $codeFiscal
+     *
+     * @return  self
+     */
+    public function setCodeFiscal(?string $codeFiscal): self
+    {
+        $this->codeFiscal = $codeFiscal;
+
+        return $this;
+    }
+
+    /**
+     * @return  string|null
+     */
+    public function getCompartiment(): ?string
+    {
+        return $this->compartiment;
+    }
+
+    /**
+     * @param  string|null  $compartiment
+     *
+     * @return  self
+     */
+    public function setCompartiment(?string $compartiment): self
+    {
+        $this->compartiment = $compartiment;
+
+        return $this;
+    }
+
+    /**
+     * @return  TrHorizonInvestissementDto|null
+     */
+    public function getHorizonInvestissement(): ?TrHorizonInvestissementDto
+    {
+        return $this->horizonInvestissement;
+    }
+
+    /**
+     * @param  TrHorizonInvestissementDto|null  $horizonInvestissement
+     *
+     * @return  self
+     */
+    public function setHorizonInvestissement(?TrHorizonInvestissementDto $horizonInvestissement): self
+    {
+        $this->horizonInvestissement = $horizonInvestissement;
 
         return $this;
     }

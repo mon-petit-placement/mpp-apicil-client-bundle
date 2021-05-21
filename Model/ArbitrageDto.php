@@ -2,12 +2,31 @@
 
 namespace Mpp\ApicilClientBundle\Model;
 
+use Symfony\Component\OptionsResolver\Exception\AccessException;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
+use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
+use Symfony\Component\OptionsResolver\Exception\NoSuchOptionException;
+use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
+use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
+use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
 class ArbitrageDto
 {
     /**
      * @var string|null
      */
     private $alliance;
+
+    /**
+     * @var bool|null
+     */
+    private $bulletinPartenaire;
+
+    /**
+     * @var string|null
+     */
+    private $codeFiscal;
 
     /**
      * @var int|null
@@ -20,22 +39,27 @@ class ArbitrageDto
     private $fraisDerogatoireArbitrage;
 
     /**
-     * @var RepartitionReponseDto|null
+     * @var TrHorizonInvestissementDto|null
+     */
+    private $horizonInvestissement;
+
+    /**
+     * @var array|null
      */
     private $portefeuilleCible;
 
     /**
-     * @var RepartitionReponseDto|null
+     * @var array|null
      */
     private $repartitionDesInvestissement;
 
     /**
-     * @var RepartitionReponseDto|null
+     * @var array|null
      */
     private $repartitionInvestissement;
 
     /**
-     * @var QuestionnaireStructuresReponses|null
+     * @var array|null
      */
     private $reponsesSupportStructure;
 
@@ -43,6 +67,121 @@ class ArbitrageDto
      * @var float|null
      */
     private $tauxArbitrage;
+
+    /**
+     * @param OptionsResolver $resolver
+     */
+    public static function configureData(OptionsResolver $resolver)
+    {
+        $resolver
+            ->setDefault('alliance', null)->setAllowedTypes('alliance', ['string', 'null'])
+            ->setDefault('bulletinPartenaire', null)->setAllowedTypes('bulletinPartenaire', ['bool', 'null'])
+            ->setDefault('codeFiscal', null)->setAllowedTypes('codeFiscal', ['string', 'null'])
+            ->setRequired('contratId')->setAllowedTypes('contratId', ['int'])
+            ->setDefault('fraisDerogatoireArbitrage', null)->setAllowedTypes('fraisDerogatoireArbitrage', ['float', 'null'])
+            ->setDefault('horizonInvestissement', null)->setAllowedTypes('horizonInvestissement', ['array', TrHorizonInvestissementDto::class])->setNormalizer('horizonInvestissement', function (Options $options, $value) {
+                if ($value instanceof TrHorizonInvestissementDto) {
+                    return $value;
+                }
+
+                return TrHorizonInvestissementDto::createFromArray($value);
+            })
+            ->setDefault('portefeuilleCible', null)->setAllowedTypes('portefeuilleCible', ['array', 'null'])->setNormalizer('portefeuilleCible', function (Options $options, $value) {
+                if (null === $value) {
+                    return $value;
+                }
+
+                foreach ($value as &$repartition) {
+                    if ($repartition instanceof RepartitionReponseDto) {
+                        continue;
+                    }
+
+                    $repartition = RepartitionReponseDto::createFromArray($repartition);
+                }
+
+                return $value;
+            })
+            ->setDefault('repartitionDesInvestissement', null)->setAllowedTypes('repartitionDesInvestissement', ['array', 'null'])->setNormalizer('repartitionDesInvestissement', function (Options $options, $value) {
+                if (null === $value) {
+                    return $value;
+                }
+
+                foreach ($value as &$repartition) {
+                    if ($repartition instanceof RepartitionReponseDto) {
+                        continue;
+                    }
+
+                    $repartition = RepartitionReponseDto::createFromArray($repartition);
+                }
+
+                return $value;
+            })
+            ->setDefault('repartitionInvestissement', null)->setAllowedTypes('repartitionInvestissement', ['array', 'null'])->setNormalizer('repartitionInvestissement', function (Options $options, $value) {
+                if (null === $value) {
+                    return $value;
+                }
+
+                foreach ($value as &$repartition) {
+                    if ($repartition instanceof RepartitionReponseDto) {
+                        continue;
+                    }
+
+                    $repartition = RepartitionReponseDto::createFromArray($repartition);
+                }
+
+                return $value;
+            })
+            ->setDefault('reponsesSupportStructure', null)->setAllowedTypes('reponsesSupportStructure', ['array', 'null'])->setNormalizer('reponsesSupportStructure', function (Options $options, $value) {
+                if (null === $value) {
+                    return $value;
+                }
+
+                foreach ($value as &$questionnaire) {
+                    if ($questionnaire instanceof QuestionnaireStructuresReponses) {
+                        continue;
+                    }
+
+                    $questionnaire = QuestionnaireStructuresReponses::createFromArray($questionnaire);
+                }
+
+                return $value;
+            })
+            ->setDefault('tauxArbitrage', null)->setAllowedTypes('tauxArbitrage', ['float', 'null'])
+        ;
+    }
+
+    /**
+     * @param array $options
+     *
+     * @return self
+     *
+     * @throws UndefinedOptionsException If an option name is undefined
+     * @throws InvalidOptionsException   If an option doesn't fulfill the language specified validation rules
+     * @throws MissingOptionsException   If a required option is missing
+     * @throws OptionDefinitionException If there is a cyclic dependency between lazy options and/or normalizers
+     * @throws NoSuchOptionException     If a lazy option reads an unavailable option
+     * @throws AccessException           If called from a lazy option or normalizer
+     */
+    public static function createFromArray(array $options): self
+    {
+        $resolver = new OptionsResolver();
+        self::configureData($resolver);
+        $resolvedOptions = $resolver->resolve($options);
+
+        return (new self())
+            ->setAlliance($resolvedOptions['alliance'])
+            ->setBulletinPartenaire($resolvedOptions['bulletinPartenaire'])
+            ->setCodeFiscal($resolvedOptions['codeFiscal'])
+            ->setContratId($resolvedOptions['contratId'])
+            ->setFraisDerogatoireArbitrage($resolvedOptions['fraisDerogatoireArbitrage'])
+            ->setHorizonInvestissement($resolvedOptions['horizonInvestissement'])
+            ->setPorteFeuilleCible($resolvedOptions['portefeuilleCible'])
+            ->setRepartitionDesInvestissement($resolvedOptions['repartitionDesinvestissement'])
+            ->setRepartitionInvestissement($resolvedOptions['repartitionInvestissement'])
+            ->setReponsesSupportStructure($resolvedOptions['reponsesSupportStructure'])
+            ->setTauxArbitrage($resolvedOptions['tauxArbitrage'])
+        ;
+    }
 
     /**
      * @return string|null
@@ -105,19 +244,19 @@ class ArbitrageDto
     }
 
     /**
-     * @return RepartitionReponseDto|null
+     * @return array|null
      */
-    public function getPorteFeuilleCible(): ?RepartitionReponseDto
+    public function getPorteFeuilleCible(): ?array
     {
         return $this->portefeuilleCible;
     }
 
     /**
-     * @param RepartitionReponseDto|null $porteFeuilleCible
+     * @param array|null $porteFeuilleCible
      *
      * @return self
      */
-    public function setPorteFeuilleCible(?RepartitionReponseDto $porteFeuilleCible): self
+    public function setPorteFeuilleCible(?array $porteFeuilleCible): self
     {
         $this->porteFeuilleCible = $porteFeuilleCible;
 
@@ -125,19 +264,19 @@ class ArbitrageDto
     }
 
     /**
-     * @return RepartitionReponseDto|null
+     * @return array|null
      */
-    public function getRepartitionDesInvestissement(): ?RepartitionReponseDto
+    public function getRepartitionDesInvestissement(): ?array
     {
         return $this->repartitionDesInvestissement;
     }
 
     /**
-     * @param RepartitionReponseDto|null $repartitionDesInvestissement
+     * @param array|null $repartitionDesInvestissement
      *
      * @return self
      */
-    public function setRepartitionDesInvestissement(?RepartitionReponseDto $repartitionDesInvestissement): self
+    public function setRepartitionDesInvestissement(?array $repartitionDesInvestissement): self
     {
         $this->repartitionDesInvestissement = $repartitionDesInvestissement;
 
@@ -145,19 +284,19 @@ class ArbitrageDto
     }
 
     /**
-     * @return RepartitionReponseDto|null
+     * @return array|null
      */
-    public function getRepartitionInvestissement(): ?RepartitionReponseDto
+    public function getRepartitionInvestissement(): ?array
     {
         return $this->repartitionInvestissement;
     }
 
     /**
-     * @param RepartitionReponseDto|null $repartitionInvestissement
+     * @param array|null $repartitionInvestissement
      *
      * @return self
      */
-    public function setRepartitionInvestissement(?RepartitionReponseDto $repartitionInvestissement): self
+    public function setRepartitionInvestissement(?array $repartitionInvestissement): self
     {
         $this->repartitionInvestissement = $repartitionInvestissement;
 
@@ -165,19 +304,19 @@ class ArbitrageDto
     }
 
     /**
-     * @return QuestionnaireStructuresReponses|null
+     * @return array|null
      */
-    public function getReponsesSupportStructure(): ?QuestionnaireStructuresReponses
+    public function getReponsesSupportStructure(): ?array
     {
         return $this->reponsesSupportStructure;
     }
 
     /**
-     * @param QuestionnaireStructuresReponses|null $repartitionInvestissement
+     * @param array|null $repartitionInvestissement
      *
      * @return self
      */
-    public function setReponsesSupportStructure(?QuestionnaireStructuresReponses $reponsesSupportStructure): self
+    public function setReponsesSupportStructure(?array $reponsesSupportStructure): self
     {
         $this->reponsesSupportStructure = $reponsesSupportStructure;
 
@@ -220,6 +359,66 @@ class ArbitrageDto
     public function setType(?string $tauxNumber): self
     {
         $this->tauxNumber = $tauxNumber;
+
+        return $this;
+    }
+
+    /**
+     * @return  bool|null
+     */
+    public function getBulletinPartenaire(): ?bool
+    {
+        return $this->bulletinPartenaire;
+    }
+
+    /**
+     * @param  bool|null  $bulletinPartenaire
+     *
+     * @return  self
+     */
+    public function setBulletinPartenaire(?bool $bulletinPartenaire): self
+    {
+        $this->bulletinPartenaire = $bulletinPartenaire;
+
+        return $this;
+    }
+
+    /**
+     * @return  string|null
+     */
+    public function getCodeFiscal(): ?string
+    {
+        return $this->codeFiscal;
+    }
+
+    /**
+     * @param  string|null  $codeFiscal
+     *
+     * @return  self
+     */
+    public function setCodeFiscal(?string $codeFiscal): self
+    {
+        $this->codeFiscal = $codeFiscal;
+
+        return $this;
+    }
+
+    /**
+     * @return  TrHorizonInvestissementDto|null
+     */
+    public function getHorizonInvestissement(): ?TrHorizonInvestissementDto
+    {
+        return $this->horizonInvestissement;
+    }
+
+    /**
+     * @param  TrHorizonInvestissementDto|null  $horizonInvestissement
+     *
+     * @return  self
+     */
+    public function setHorizonInvestissement(?TrHorizonInvestissementDto $horizonInvestissement): self
+    {
+        $this->horizonInvestissement = $horizonInvestissement;
 
         return $this;
     }

@@ -2,11 +2,14 @@
 
 namespace Mpp\ApicilClientBundle\Client;
 
-use Mpp\ApicilClientBundle\Client\Model\ActeDocumentDto;
-use Mpp\ApicilClientBundle\Client\Model\ActeRetourCreationDto;
-use Mpp\ApicilClientBundle\Client\Model\EmailPropositionActeDto;
-use Mpp\ApicilClientBundle\Client\Model\RachatPartielDtoDeConsultation;
-use Mpp\ApicilClientBundle\Client\Model\TelephoneDto;
+use Mpp\ApicilClientBundle\Model\ActeDocumentDto;
+use Mpp\ApicilClientBundle\Model\ActeRetourCreationDto;
+use Mpp\ApicilClientBundle\Model\DtoEligibilite;
+use Mpp\ApicilClientBundle\Model\EmailPropositionActeDto;
+use Mpp\ApicilClientBundle\Model\OperationEnCoursDto;
+use Mpp\ApicilClientBundle\Model\RachatDto;
+use Mpp\ApicilClientBundle\Model\RachatPartielDtoDeConsultation;
+use Mpp\ApicilClientBundle\Model\TelephoneDto;
 use Mpp\ApicilClientBundle\OptionsResolver\ApicilPartialRepurchaseClientOptionResolver;
 use Symfony\Component\HttpFoundation\File\File;
 
@@ -110,7 +113,7 @@ class ApicilPartialRepurchaseClient extends AbstractApicilClientDomain implement
      */
     public function getEmailTemplate(array $options): EmailPropositionActeDto
     {
-        return $this->requestAndPopulate(EmailPropositionActeDto::class, 'GET', sprintf('/mail/template', $id), [
+        return $this->requestAndPopulate(EmailPropositionActeDto::class, 'GET', '/mail/template', [
             'query' => ApicilPartialRepurchaseClientOptionResolver::resolveGetEmailTemplateOptions($options),
         ]);
     }
@@ -172,13 +175,13 @@ class ApicilPartialRepurchaseClient extends AbstractApicilClientDomain implement
      */
     public function resume(int $id): ActeRetourCreationDto
     {
-        $this->requestAndPopulate(ActeRetourCreationDto::class, 'PUT', sprintf('/%s/reprendre', $id));
+        return $this->requestAndPopulate(ActeRetourCreationDto::class, 'PUT', sprintf('/%s/reprendre', $id));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function sendSignatureBySms(int $id): bool
+    public function sendSignatureBySms(int $id)
     {
         $this->request('GET', sprintf('/%s/signature', $id));
     }

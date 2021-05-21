@@ -22,6 +22,11 @@ class VersementComplementaireDtoDeConsultation
     /**
      * @var bool|null
      */
+    private $bulletinPartenaire;
+
+    /**
+     * @var bool|null
+     */
     private $conserverIban;
 
     /**
@@ -30,9 +35,24 @@ class VersementComplementaireDtoDeConsultation
     private $contratId;
 
     /**
+     * @var \DateTime|null
+     */
+    private $dateSignatureSepa;
+
+    /**
+     * @var bool|null
+     */
+    private $deduction;
+
+    /**
      * @var DonneesBancairesDto|null
      */
     private $donneesBancaires;
+
+    /**
+     * @var TrHorizonInvestissementDto|null
+     */
+    private $horizonInvestissement;
 
     /**
      * @var int|null
@@ -78,6 +98,11 @@ class VersementComplementaireDtoDeConsultation
      * @var array|null
      */
     private $reponsesSupportStructure;
+
+    /**
+     * @var string|null
+     */
+    private $rum;
 
     /**
      * @var bool|null
@@ -410,6 +435,106 @@ class VersementComplementaireDtoDeConsultation
     public function setTypeVersement(?string $typeVersement): self
     {
         $this->typeVersement = $typeVersement;
+
+        return $this;
+    }
+
+    /**
+     * @return  bool|null
+     */
+    public function getBulletinPartenaire(): ?bool
+    {
+        return $this->bulletinPartenaire;
+    }
+
+    /**
+     * @param  bool|null  $bulletinPartenaire
+     *
+     * @return  self
+     */
+    public function setBulletinPartenaire(?bool $bulletinPartenaire): self
+    {
+        $this->bulletinPartenaire = $bulletinPartenaire;
+
+        return $this;
+    }
+
+    /**
+     * @return  \DateTime|null
+     */
+    public function getDateSignatureSepa(): ?\DateTime
+    {
+        return $this->dateSignatureSepa;
+    }
+
+    /**
+     * @param  \DateTime|null  $dateSignatureSepa
+     *
+     * @return  self
+     */
+    public function setDateSignatureSepa(?\DateTime $dateSignatureSepa): self
+    {
+        $this->dateSignatureSepa = $dateSignatureSepa;
+
+        return $this;
+    }
+
+    /**
+     * @return  bool|null
+     */
+    public function getDeduction(): ?bool
+    {
+        return $this->deduction;
+    }
+
+    /**
+     * @param  bool|null  $deduction
+     *
+     * @return  self
+     */
+    public function setDeduction(?bool $deduction): self
+    {
+        $this->deduction = $deduction;
+
+        return $this;
+    }
+
+    /**
+     * @return  TrHorizonInvestissementDto|null
+     */
+    public function getHorizonInvestissement(): ?TrHorizonInvestissementDto
+    {
+        return $this->horizonInvestissement;
+    }
+
+    /**
+     * @param  TrHorizonInvestissementDto|null  $horizonInvestissement
+     *
+     * @return  self
+     */
+    public function setHorizonInvestissement(?TrHorizonInvestissementDto $horizonInvestissement): self
+    {
+        $this->horizonInvestissement = $horizonInvestissement;
+
+        return $this;
+    }
+
+    /**
+     * @return  string|null
+     */
+    public function getRum(): ?string
+    {
+        return $this->rum;
+    }
+
+    /**
+     * @param  string|null  $rum
+     *
+     * @return  self
+     */
+    public function setRum(?string $rum): self
+    {
+        $this->rum = $rum;
 
         return $this;
     }

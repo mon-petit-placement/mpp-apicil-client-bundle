@@ -7,6 +7,12 @@ use Mpp\ApicilClientBundle\Model\ArbitrageDto;
 use Mpp\ApicilClientBundle\Model\ArbitrageDtoDeConsultation;
 use Mpp\ApicilClientBundle\Model\DtoEligibilite;
 use Mpp\ApicilClientBundle\Model\EmailPropositionActeDto;
+use Mpp\ApicilClientBundle\Model\FraisArbitrageDto;
+use Mpp\ApicilClientBundle\Model\ListeDesSupports;
+use Mpp\ApicilClientBundle\Model\OperationEnCoursDto;
+use Mpp\ApicilClientBundle\Model\RecuperationActeDocSousCategorieDto;
+use Mpp\ApicilClientBundle\Model\ReponseClientHorsMursDto;
+use Mpp\ApicilClientBundle\Model\ReponseGenererCodeSecuriteHorsMursDto;
 use Mpp\ApicilClientBundle\Model\TelephoneDto;
 use Symfony\Component\HttpFoundation\File\File;
 
@@ -21,9 +27,9 @@ interface ApicilArbitrationClientInterface
      * @param string $documentCategory
      * @param array  $query
      *
-     * @return ActeRetourCreationDto
+     * @return RecuperationActeDocSousCategorieDto
      */
-    public function addDocument(int $id, string $documentCategory, array $options): ActeRetourCreationDto;
+    public function addDocument(int $id, string $documentCategory, array $options): RecuperationActeDocSousCategorieDto;
 
     /**
      * Verify the security code and return the associated arbitration's identifier.
@@ -74,9 +80,9 @@ interface ApicilArbitrationClientInterface
      *
      * @param array $options
      *
-     * @return bool
+     * @return ReponseGenererCodeSecuriteHorsMursDto
      */
-    public function generateSecurityCode(array $options): array;
+    public function generateSecurityCode(array $options): ReponseGenererCodeSecuriteHorsMursDto;
 
     /**
      * Retrieve the information of an arbitrage operation.
@@ -163,7 +169,7 @@ interface ApicilArbitrationClientInterface
      * @param int   $contractId
      * @param array $options
      */
-    public function getInvestmentEligibleSupports(int $contractId, array $options): array;
+    public function getInvestmentEligibleSupports(int $contractId, array $options): ListeDesSupports;
 
     /**
      * Give up an arbitration proposal for the client.
@@ -206,7 +212,7 @@ interface ApicilArbitrationClientInterface
      *
      * @return bool
      */
-    public function refuse(int $id, array $options = []): bool;
+    public function refuse(int $id, array $options = []);
 
     /**
      * Delete an arbitration operation.
@@ -281,7 +287,7 @@ interface ApicilArbitrationClientInterface
      *
      * @return bool
      */
-    public function testEmail(int $id, EmailPropositionActeDto $email): bool;
+    public function testEmail(int $id, EmailPropositionActeDto $email);
 
     /**
      * Add the signed arbitration file to an arbitration operation.
@@ -293,7 +299,7 @@ interface ApicilArbitrationClientInterface
      *
      * @return ArbitrageDto
      */
-    public function update(int $id, array $options): array;
+    public function update(int $id, array $options): ArbitrageDto;
 
     /**
      * Update arbitration from model.
@@ -301,11 +307,11 @@ interface ApicilArbitrationClientInterface
      * @method updateFromModel
      *
      * @param int            $id
-     * @param ArbitrationDto $arbitration
+     * @param ArbitrageDto $arbitration
      *
-     * @return ArbitrationDto
+     * @return ArbitrageDto
      */
-    public function updateFromModel(int $id, ArbitrationDto $arbitration): ArbitrationDto;
+    public function updateFromModel(int $id, ArbitrageDto $arbitration): ArbitrageDto;
 
     /**
      * Update the customer's phone number.

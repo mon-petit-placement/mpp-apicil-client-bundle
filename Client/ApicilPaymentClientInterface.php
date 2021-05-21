@@ -4,18 +4,18 @@ namespace Mpp\ApicilClientBundle\Client;
 
 use Mpp\ApicilClientBundle\Model\ActeRetourCreationDto;
 use Mpp\ApicilClientBundle\Model\DetailOptionVP;
+use Mpp\ApicilClientBundle\Model\DtoDeLaSuppressionDeLOption;
 use Mpp\ApicilClientBundle\Model\DtoEligibilite;
 use Mpp\ApicilClientBundle\Model\EmailPropositionActeDto;
-use Mpp\ApicilClientBundle\Model\EmailPropositionDto;
 use Mpp\ApicilClientBundle\Model\ListeDesSupports;
 use Mpp\ApicilClientBundle\Model\ModeleDeVersement;
 use Mpp\ApicilClientBundle\Model\MontantVCDto;
 use Mpp\ApicilClientBundle\Model\OperationEnCoursDto;
 use Mpp\ApicilClientBundle\Model\QuestionnaireStructuresReponses;
-use Mpp\ApicilClientBundle\Model\RecuperationActeDocSousCategorieDoc;
+use Mpp\ApicilClientBundle\Model\RecuperationActeDocSousCategorieDto;
 use Mpp\ApicilClientBundle\Model\RecuperationVersementSuppression;
 use Mpp\ApicilClientBundle\Model\ReponseClientHorsMursDto;
-use Mpp\ApicilClientBundle\Model\SuppressionOptionDto;
+use Mpp\ApicilClientBundle\Model\TelephoneDto;
 use Symfony\Component\HttpFoundation\File\File;
 
 interface ApicilPaymentClientInterface
@@ -176,9 +176,9 @@ interface ApicilPaymentClientInterface
      * @param int    $id
      * @param string $documentId
      *
-     * @return RecuperationActeDocSousCategorieDoc
+     * @return RecuperationActeDocSousCategorieDto
      */
-    public function getDocument(int $id, string $documentId): RecuperationActeDocSousCategorieDoc;
+    public function getDocument(int $id, string $documentId): RecuperationActeDocSousCategorieDto;
 
     /**
      * Retrieve payment request documents.
@@ -187,9 +187,9 @@ interface ApicilPaymentClientInterface
      *
      * @param int $id
      *
-     * @return RecuperationActeDocSousCategorieDoc
+     * @return RecuperationActeDocSousCategorieDto
      */
-    public function getDocuments(int $id): RecuperationActeDocSousCategorieDoc;
+    public function getDocuments(int $id): RecuperationActeDocSousCategorieDto;
 
     /**
      * Retrieve payment request email.
@@ -315,11 +315,11 @@ interface ApicilPaymentClientInterface
      *
      * @method removeOptionFromModel
      *
-     * @param SuppressionOptionDto $model
+     * @param DtoDeLaSuppressionDeLOption $model
      *
      * @return ActeRetourCreationDto
      */
-    public function removeOptionFromModel(SuppressionOptionDto $model): ActeRetourCreationDto;
+    public function removeOptionFromModel(DtoDeLaSuppressionDeLOption $model): ActeRetourCreationDto;
 
     /**
      * Restart a payment request.
@@ -357,9 +357,9 @@ interface ApicilPaymentClientInterface
      * @method sendToCustomer
      *
      * @param int                 $id
-     * @param EmailPropositionDto $email
+     * @param EmailPropositionActeDto $email
      */
-    public function sendToCustomer(int $id, EmailPropositionDto $email);
+    public function sendToCustomer(int $id, EmailPropositionActeDto $email);
 
     /**
      * Start the payment request as an office.
