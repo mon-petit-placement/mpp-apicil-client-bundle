@@ -9,7 +9,7 @@ use Mpp\ApicilClientBundle\Model\DtoEligibilite;
 use Mpp\ApicilClientBundle\Model\EmailPropositionActeDto;
 use Mpp\ApicilClientBundle\Model\EmailPropositionDto;
 use Mpp\ApicilClientBundle\Model\ListeDesSupports;
-use Mpp\ApicilClientBundle\Model\ModeleDeVersement;
+use Mpp\ApicilClientBundle\Model\ModeleDeVersementLibre;
 use Mpp\ApicilClientBundle\Model\MontantVCDto;
 use Mpp\ApicilClientBundle\Model\OperationEnCoursDto;
 use Mpp\ApicilClientBundle\Model\RecuperationActeDocSousCategorieDto;
@@ -93,7 +93,7 @@ class ApicilPaymentClient extends AbstractApicilClientDomain implements ApicilPa
     /**
      * {@inheritdoc}
      */
-    public function createFromModel(ModeleDeVersement $paymentModel)
+    public function createFromModel(ModeleDeVersementLibre $paymentModel)
     {
         $this->request('POST', '/asigner', [
             'body' => $this->serializer->serialize($paymentModel, 'json'),
@@ -347,9 +347,9 @@ class ApicilPaymentClient extends AbstractApicilClientDomain implements ApicilPa
     /**
      * {@inheritdoc}
      */
-    public function updateFromModel(int $id, ModeleDeVersement $paymentModel): ModeleDeVersement
+    public function updateFromModel(int $id, ModeleDeVersementLibre $paymentModel): ModeleDeVersementLibre
     {
-        return $this->requestAndPopulate(ModeleDeVersement::class, 'PUT', sprintf('/asigner/%s', $id), [
+        return $this->requestAndPopulate(ModeleDeVersementLibre::class, 'PUT', sprintf('/asigner/%s', $id), [
             'body' => $this->serializer->serialize($paymentModel, 'json'),
         ]);
     }

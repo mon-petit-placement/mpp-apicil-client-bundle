@@ -8,7 +8,7 @@ use Mpp\ApicilClientBundle\Model\DtoDeLaSuppressionDeLOption;
 use Mpp\ApicilClientBundle\Model\DtoEligibilite;
 use Mpp\ApicilClientBundle\Model\EmailPropositionActeDto;
 use Mpp\ApicilClientBundle\Model\ListeDesSupports;
-use Mpp\ApicilClientBundle\Model\ModeleDeVersement;
+use Mpp\ApicilClientBundle\Model\ModeleDeVersementLibre;
 use Mpp\ApicilClientBundle\Model\MontantVCDto;
 use Mpp\ApicilClientBundle\Model\OperationEnCoursDto;
 use Mpp\ApicilClientBundle\Model\QuestionnaireStructuresReponses;
@@ -88,9 +88,9 @@ interface ApicilPaymentClientInterface
      *
      * @method createFromModel
      *
-     * @param ModeleDeVersement $paymentModel
+     * @param ModeleDeVersementLibre $paymentModel
      */
-    public function createFromModel(ModeleDeVersement $paymentModel);
+    public function createFromModel(ModeleDeVersementLibre $paymentModel);
 
     /**
      * Generate the payment request security code.
@@ -386,11 +386,11 @@ interface ApicilPaymentClientInterface
      * @method updateFromModel
      *
      * @param int               $id
-     * @param ModeleDeVersement $paymentModel
+     * @param ModeleDeVersementLibre $paymentModel
      *
-     * @return ModeleDeVersement
+     * @return ModeleDeVersementLibre
      */
-    public function updateFromModel(int $id, ModeleDeVersement $paymentModel): ModeleDeVersement;
+    public function updateFromModel(int $id, ModeleDeVersementLibre $paymentModel): ModeleDeVersementLibre;
 
     /**
      * Update the customer's phone number for a payment request.
