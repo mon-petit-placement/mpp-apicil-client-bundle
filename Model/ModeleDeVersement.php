@@ -13,35 +13,55 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ModeleDeVersement
 {
-    public const MODE_INVESTISSEMENT_CHOIX = 'CHOIX';
-    public const MODE_INVESTISSEMENT_PRORATA = 'PRORATA';
-    public const MODE_INVESTISSEMENT_CONTRAT = 'CONTRAT';
-    public const MODE_INVESTISSEMENT_PROFIL = 'PROFIL';
-
-    public const MODE_PAIEMENT_C = 'C';
-    public const MODE_PAIEMENT_P = 'P';
-    public const MODE_PAIEMENT_V = 'V';
-    public const MODE_PAIEMENT_T = 'T';
-
-    public const TYPE_VERSEMENT_COMPLEMENTAIRE = 'COMPLEMENTAIRE';
-    public const TYPE_VERSEMENT_PROGRAMME = 'PROGRAMME';
-    public const TYPE_VERSEMENT_SUPPRESSION_PROGRAMME     = 'SUPPRESSION_PROGRAMME';
-
     public const PERIODICITE_MENSUELLE = 'Mensuelle';
     public const PERIODICITE_TRIMESTRIELLE = 'Trimestrielle';
     public const PERIODICITE_SEMESTRIELLE = 'Semestrielle';
     public const PERIODICITE_ANNUELLE = 'Annuelle';
 
+    public const MODE_INVESTISSEMENT_CHOIX = 'CHOIX';
+    public const MODE_INVESTISSEMENT_PRORATA = 'PRORATA';
+
+    public const MODE_PAIEMENT_C = 'C';
+    public const MODE_PAIEMENT_P = 'P';
+    public const MODE_PAIEMENT_V = 'V';
+
+    public const TYPE_VERSEMENT_COMPLEMENTAIRE = 'COMPLEMENTAIRE';
+    public const TYPE_VERSEMENT_PROGRAMME = 'PROGRAMME';
+
+    /**
+     * @var float
+     */
+    private $montant;
+
+    /**
+     * @var string
+     */
+    private $periodicite;
+
+    /**
+     * @var array|null
+     */
+    private $portefeuille;
+
+    /**
+     * @var array|null
+     */
+    private $reponsesSupportStructure;
+
+    /**
+     * @var float|null
+     */
+    private $tauxDerogatoire;
+
+    /**
+     * @var bool
+     */
+    private $vpRepartitionSpecifique;
 
     /**
      * @var string|null
      */
     private $alliance;
-
-    /**
-     * @var bool|null
-     */
-    private $bulletinPartenaire;
 
     /**
      * @var bool|null
@@ -54,24 +74,9 @@ class ModeleDeVersement
     private $contratId;
 
     /**
-     * @var \DateTime|null
-     */
-    private $dateSignatureSepa;
-
-    /**
-     * @var bool|null
-     */
-    private $deduction;
-
-    /**
      * @var DonneesBancairesDto|null
      */
     private $donneesBancaires;
-
-    /**
-     * @var TrHorizonInvestissementDto|null
-     */
-    private $horizonInvestissement;
 
     /**
      * @var string|null
@@ -84,11 +89,6 @@ class ModeleDeVersement
     private $modePaiement;
 
     /**
-     * @var float|null
-     */
-    private $montant;
-
-    /**
      * @var OrigineDesFondsDto|null
      */
     private $origineDesFonds;
@@ -99,24 +99,9 @@ class ModeleDeVersement
     private $payeur;
 
     /**
-     * @var string|null
-     */
-    private $periodicite;
-
-    /**
      * @var array|null
      */
     private $repartitionInvestissement;
-
-    /**
-     * @var array|null
-     */
-    private $reponsesSupportStructure;
-
-    /**
-     * @var string|null
-     */
-    private $rum;
 
     /**
      * @var string|null
@@ -129,61 +114,19 @@ class ModeleDeVersement
     public static function configureData(OptionsResolver $resolver)
     {
         $resolver
-            ->setDefault('alliance', null)->setAllowedTypes('alliance', ['string', 'null'])
-            ->setDefault('bulletinPartenaire', null)->setAllowedTypes('bulletinPartenaire', ['bool', 'null'])
-            ->setDefault('conserverIban', null)->setAllowedTypes('conserverIban', ['bool', 'null'])
-            ->setRequired('contratId')->setAllowedTypes('contratId', ['int'])
-            ->setDefault('dateSignatureSepa', null)->setAllowedTypes('dateSignatureSepa', [\DateTime::class, 'string', 'null'])->setNormalizer('dateSignatureSepa', function (Options $options, $value) {
-                if ($value instanceof \DateTime || null === $value) {
-                    return $value;
-                }
-
-                return \DateTime::createFromFormat('Y-m-d', $value);
-            })
-            ->setDefault('deduction', null)->setAllowedTypes('deduction', ['bool', 'null'])
-            ->setRequired('donneesBancaires')->setAllowedTypes('donneesBancaires', ['array', DonneesBancairesDto::class])->setNormalizer('donneesBancaires', function (Options $options, $value) {
-                if ($value instanceof DonneesBancairesDto) {
-                    return $value;
-                }
-
-                return DonneesBancairesDto::createFromArray($value);
-            })
-            ->setDefault('horizonInvestissement', null)->setAllowedTypes('horizonInvestissement', ['array', TrHorizonInvestissementDto::class])->setNormalizer('horizonInvestissement', function (Options $options, $value) {
-                if ($value instanceof TrHorizonInvestissementDto) {
-                    return $value;
-                }
-
-                return TrHorizonInvestissementDto::createFromArray($value);
-            })
-            ->setRequired('modeInvestissement')->setAllowedTypes('modeInvestissement', ['string'])
-            ->setRequired('modePaiement')->setAllowedTypes('modePaiement', ['string'])
             ->setRequired('montant')->setAllowedTypes('montant', ['float'])
-            ->setDefault('origineDesFonds', null)->setAllowedTypes('origineDesFonds', ['array', OrigineDesFondsDto::class, 'null'])->setNormalizer('origineDesFonds', function (Options $options, $value) {
-                if ($value instanceof OrigineDesFondsDto || null == $value) {
-                    return $value;
-                }
-
-                return OrigineDesFondsDto::createFromArray($value);
-            })
-            ->setDefault('payeur', null)->setAllowedTypes('payeur', ['array', PayeurDto::class, 'null'])->setNormalizer('payeur', function (Options $options, $value) {
-                if ($value instanceof PayeurDto || null == $value) {
-                    return $value;
-                }
-
-                return PayeurDto::createFromArray($value);
-            })
-            ->setDefault('periodicite', null)->setAllowedTypes('periodicite', ['string', 'null'])
-            ->setDefault('repartitionInvestissement', null)->setAllowedTypes('repartitionInvestissement', ['array', 'null'])->setNormalizer('repartitionInvestissement', function (Options $options, $value) {
+            ->setDefault('periodicite', null)->setAllowedValues('periodicite', [self::PERIODICITE_MENSUELLE, self::PERIODICITE_TRIMESTRIELLE, self::PERIODICITE_SEMESTRIELLE, self::PERIODICITE_ANNUELLE])
+            ->setDefault('portefeuille', null)->setAllowedTypes('portefeuille', ['array', 'null'])->setNormalizer('portefeuille', function (Options $options, $value) {
                 if (null === $value) {
                     return $value;
                 }
 
-                foreach ($value as &$repartition) {
-                    if ($repartition instanceof RepartitionReponseDto) {
+                foreach ($value as &$portefeuille) {
+                    if ($portefeuille instanceof PortefeuilleDto) {
                         continue;
                     }
 
-                    $repartition = RepartitionReponseDto::createFromArray($repartition);
+                    $portefeuille = PortefeuilleDto::createFromArray($portefeuille);
                 }
 
                 return $value;
@@ -193,18 +136,18 @@ class ModeleDeVersement
                     return $value;
                 }
 
-                foreach ($value as &$questionnaire) {
-                    if ($questionnaire instanceof QuestionnaireStructuresReponses) {
+                foreach ($value as &$questionnaireStructuresReponse) {
+                    if ($questionnaireStructuresReponse instanceof QuestionnaireStructuresReponse) {
                         continue;
                     }
 
-                    $questionnaire = QuestionnaireStructuresReponses::createFromArray($questionnaire);
+                    $questionnaireStructuresReponse = PortefeuilleDto::createFromArray($questionnaireStructuresReponse);
                 }
 
                 return $value;
             })
-            ->setDefault('rum', null)->setAllowedTypes('rum', ['string', 'null'])
-            ->setDefault('typeVersement', null)->setAllowedTypes('typeVersement', ['string', 'null'])
+            ->setDefault('tauxDerogatoire', null)->setAllowedTypes('tauxDerogatoire', ['float'])
+            ->setRequired('vpRepartitionSpecifique')->setAllowedTypes('vpRepartitionSpecifique', ['bool'])
         ;
     }
 
@@ -227,24 +170,133 @@ class ModeleDeVersement
         $resolvedOptions = $resolver->resolve($options);
 
         return (new self())
-            ->setAlliance($resolvedOptions['alliance'])
-            ->setBulletinPartenaire($resolvedOptions['bulletinPartenaire'])
-            ->setConserverIban($resolvedOptions['conserverIban'])
-            ->setContratId($resolvedOptions['contratId'])
-            ->setDateSignatureSepa($resolvedOptions['dateSignatureSepa'])
-            ->setDonneesBancaires($resolvedOptions['donneesBancaires'])
-            ->setHorizonInvestissement($resolvedOptions['horizonInvestissement'])
-            ->setModeInvestissement($resolvedOptions['modeInvestissement'])
-            ->setModePaiement($resolvedOptions['modePaiement'])
             ->setMontant($resolvedOptions['montant'])
-            ->setOrigineDesFonds($resolvedOptions['origineDesFonds'])
-            ->setPayeur($resolvedOptions['payeur'])
             ->setPeriodicite($resolvedOptions['periodicite'])
-            ->setRepartitionInvestissement($resolvedOptions['repartitionInvestissement'])
+            ->setPortefeuille($resolvedOptions['portefeuille'])
             ->setReponsesSupportStructure($resolvedOptions['reponsesSupportStructure'])
-            ->setRum($resolvedOptions['rum'])
-            ->setTypeVersement($resolvedOptions['typeVersement'])
+            ->setTauxDerogatoire($resolvedOptions['tauxDerogatoire'])
+            ->setVpRepartitionSpecifique($resolvedOptions['vpRepartitionSpecifique'])
         ;
+    }
+
+    /**
+     * @return float
+     */
+    public function getMontant(): float
+    {
+        return $this->montant;
+    }
+
+    /**
+     * @param float $montant
+     *
+     * @return self
+     */
+    public function setMontant(float $montant): self
+    {
+        $this->montant = $montant;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPeriodicite(): string
+    {
+        return $this->periodicite;
+    }
+
+    /**
+     * @param string $periodicite
+     *
+     * @return self
+     */
+    public function setPeriodicite(string $periodicite): self
+    {
+        $this->periodicite = $periodicite;
+
+        return $this;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getPortefeuille(): ?array
+    {
+        return $this->portefeuille;
+    }
+
+    /**
+     * @param array|null $portefeuille
+     *
+     * @return self
+     */
+    public function setPortefeuille(?array $portefeuille): self
+    {
+        $this->portefeuille = $portefeuille;
+
+        return $this;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getReponsesSupportStructure(): ?array
+    {
+        return $this->reponsesSupportStructure;
+    }
+
+    /**
+     * @param array|null $reponsesSupportStructure
+     *
+     * @return self
+     */
+    public function setReponsesSupportStructure(?array $reponsesSupportStructure): self
+    {
+        $this->reponsesSupportStructure = $reponsesSupportStructure;
+
+        return $this;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getTauxDerogatoire(): ?float
+    {
+        return $this->tauxDerogatoire;
+    }
+
+    /**
+     * @param float|null $tauxDerogatoire
+     *
+     * @return self
+     */
+    public function setTauxDerogatoire(?float $tauxDerogatoire): self
+    {
+        $this->tauxDerogatoire = $tauxDerogatoire;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getVpRepartitionSpecifique(): bool
+    {
+        return $this->vpRepartitionSpecifique;
+    }
+
+    /**
+     * @param bool $vpRepartitionSpecifique
+     *
+     * @return self
+     */
+    public function setVpRepartitionSpecifique(bool $vpRepartitionSpecifique): self
+    {
+        $this->vpRepartitionSpecifique = $vpRepartitionSpecifique;
+
+        return $this;
     }
 
     /**
@@ -368,26 +420,6 @@ class ModeleDeVersement
     }
 
     /**
-     * @return float|null
-     */
-    public function getMontant(): ?float
-    {
-        return $this->montant;
-    }
-
-    /**
-     * @param float|null $montant
-     *
-     * @return self
-     */
-    public function setMontant(?float $montant): self
-    {
-        $this->montant = $montant;
-
-        return $this;
-    }
-
-    /**
      * @return OrigineDesFondsDto|null
      */
     public function getOrigineDesFonds(): ?OrigineDesFondsDto
@@ -428,26 +460,6 @@ class ModeleDeVersement
     }
 
     /**
-     * @return string|null
-     */
-    public function getPeriodicite(): ?string
-    {
-        return $this->periodicite;
-    }
-
-    /**
-     * @param string|null $periodicite
-     *
-     * @return self
-     */
-    public function setPeriodicite(?string $periodicite): self
-    {
-        $this->periodicite = $periodicite;
-
-        return $this;
-    }
-
-    /**
      * @return array|null
      */
     public function getRepartitionInvestissement(): ?array
@@ -468,26 +480,6 @@ class ModeleDeVersement
     }
 
     /**
-     * @return array|null
-     */
-    public function getReponsesSupportStructure(): ?array
-    {
-        return $this->reponsesSupportStructure;
-    }
-
-    /**
-     * @param array|null $reponsesSupportStructure
-     *
-     * @return self
-     */
-    public function setReponsesSupportStructure(?array $reponsesSupportStructure): self
-    {
-        $this->reponsesSupportStructure = $reponsesSupportStructure;
-
-        return $this;
-    }
-
-    /**
      * @return string|null
      */
     public function getTypeVersement(): ?string
@@ -503,106 +495,6 @@ class ModeleDeVersement
     public function setTypeVersement(?string $typeVersement): self
     {
         $this->typeVersement = $typeVersement;
-
-        return $this;
-    }
-
-    /**
-     * @return  bool|null
-     */
-    public function getBulletinPartenaire(): ?bool
-    {
-        return $this->bulletinPartenaire;
-    }
-
-    /**
-     * @param  bool|null  $bulletinPartenaire
-     *
-     * @return  self
-     */
-    public function setBulletinPartenaire(?bool $bulletinPartenaire): self
-    {
-        $this->bulletinPartenaire = $bulletinPartenaire;
-
-        return $this;
-    }
-
-    /**
-     * @return  \DateTime|null
-     */
-    public function getDateSignatureSepa(): ?\DateTime
-    {
-        return $this->dateSignatureSepa;
-    }
-
-    /**
-     * @param  \DateTime|null  $dateSignatureSepa
-     *
-     * @return  self
-     */
-    public function setDateSignatureSepa(?\DateTime $dateSignatureSepa): self
-    {
-        $this->dateSignatureSepa = $dateSignatureSepa;
-
-        return $this;
-    }
-
-    /**
-     * @return  bool|null
-     */
-    public function getDeduction(): ?bool
-    {
-        return $this->deduction;
-    }
-
-    /**
-     * @param  bool|null  $deduction
-     *
-     * @return  self
-     */
-    public function setDeduction(?bool $deduction): self
-    {
-        $this->deduction = $deduction;
-
-        return $this;
-    }
-
-    /**
-     * @return  TrHorizonInvestissementDto|null
-     */
-    public function getHorizonInvestissement(): ?TrHorizonInvestissementDto
-    {
-        return $this->horizonInvestissement;
-    }
-
-    /**
-     * @param  TrHorizonInvestissementDto|null  $horizonInvestissement
-     *
-     * @return  self
-     */
-    public function setHorizonInvestissement(?TrHorizonInvestissementDto $horizonInvestissement): self
-    {
-        $this->horizonInvestissement = $horizonInvestissement;
-
-        return $this;
-    }
-
-    /**
-     * @return  string|null
-     */
-    public function getRum(): ?string
-    {
-        return $this->rum;
-    }
-
-    /**
-     * @param  string|null  $rum
-     *
-     * @return  self
-     */
-    public function setRum(?string $rum): self
-    {
-        $this->rum = $rum;
 
         return $this;
     }
