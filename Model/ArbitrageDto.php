@@ -51,7 +51,7 @@ class ArbitrageDto
     /**
      * @var array|null
      */
-    private $repartitionDesInvestissement;
+    private $repartitionDesinvestissement;
 
     /**
      * @var array|null
@@ -101,7 +101,7 @@ class ArbitrageDto
 
                 return $value;
             })
-            ->setDefault('repartitionDesInvestissement', null)->setAllowedTypes('repartitionDesInvestissement', ['array', 'null'])->setNormalizer('repartitionDesInvestissement', function (Options $options, $value) {
+            ->setDefault('repartitionDesinvestissement', null)->setAllowedTypes('repartitionDesinvestissement', ['array', 'null'])->setNormalizer('repartitionDesinvestissement', function (Options $options, $value) {
                 if (null === $value) {
                     return $value;
                 }
@@ -175,8 +175,8 @@ class ArbitrageDto
             ->setContratId($resolvedOptions['contratId'])
             ->setFraisDerogatoireArbitrage($resolvedOptions['fraisDerogatoireArbitrage'])
             ->setHorizonInvestissement($resolvedOptions['horizonInvestissement'])
-            ->setPorteFeuilleCible($resolvedOptions['portefeuilleCible'])
-            ->setRepartitionDesInvestissement($resolvedOptions['repartitionDesinvestissement'])
+            ->setPortefeuilleCible($resolvedOptions['portefeuilleCible'])
+            ->setRepartitionDesinvestissement($resolvedOptions['repartitionDesinvestissement'])
             ->setRepartitionInvestissement($resolvedOptions['repartitionInvestissement'])
             ->setReponsesSupportStructure($resolvedOptions['reponsesSupportStructure'])
             ->setTauxArbitrage($resolvedOptions['tauxArbitrage'])
@@ -246,19 +246,19 @@ class ArbitrageDto
     /**
      * @return array|null
      */
-    public function getPorteFeuilleCible(): ?array
+    public function getPortefeuilleCible(): ?array
     {
         return $this->portefeuilleCible;
     }
 
     /**
-     * @param array|null $porteFeuilleCible
+     * @param array|null $portefeuilleCible
      *
      * @return self
      */
-    public function setPorteFeuilleCible(?array $porteFeuilleCible): self
+    public function setPortefeuilleCible(?array $portefeuilleCible): self
     {
-        $this->porteFeuilleCible = $porteFeuilleCible;
+        $this->portefeuilleCible = $portefeuilleCible;
 
         return $this;
     }
@@ -266,19 +266,19 @@ class ArbitrageDto
     /**
      * @return array|null
      */
-    public function getRepartitionDesInvestissement(): ?array
+    public function getRepartitionDesinvestissement(): ?array
     {
-        return $this->repartitionDesInvestissement;
+        return $this->repartitionDesinvestissement;
     }
 
     /**
-     * @param array|null $repartitionDesInvestissement
+     * @param array|null $repartitionDesinvestissement
      *
      * @return self
      */
-    public function setRepartitionDesInvestissement(?array $repartitionDesInvestissement): self
+    public function setRepartitionDesinvestissement(?array $repartitionDesinvestissement): self
     {
-        $this->repartitionDesInvestissement = $repartitionDesInvestissement;
+        $this->repartitionDesinvestissement = $repartitionDesinvestissement;
 
         return $this;
     }
@@ -339,26 +339,6 @@ class ArbitrageDto
     public function setTauxArbitrage(?float $tauxArbitrage): self
     {
         $this->tauxArbitrage = $tauxArbitrage;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    /**
-     * @param string|null $type
-     *
-     * @return self
-     */
-    public function setType(?string $tauxNumber): self
-    {
-        $this->tauxNumber = $tauxNumber;
 
         return $this;
     }

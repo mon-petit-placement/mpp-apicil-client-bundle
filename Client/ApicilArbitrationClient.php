@@ -80,7 +80,7 @@ class ApicilArbitrationClient extends AbstractApicilClientDomain implements Apic
     /**
      * {@inheritdoc}
      */
-    public function createFromModel(int $id, ArbitrageDto $arbitration)
+    public function createFromModel(ArbitrageDto $arbitration)
     {
         $this->request('POST', '/asigner', [
             'body' => $this->serializer->serialize($arbitration, 'json'),
