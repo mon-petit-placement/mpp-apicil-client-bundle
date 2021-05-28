@@ -213,7 +213,7 @@ class ApicilPaymentClient extends AbstractApicilClientDomain implements ApicilPa
     /**
      * {@inheritdoc}
      */
-    public function hasContract(int $contractId, array $options = []): OperationEnCoursDto
+    public function hasContract(int $contractId, array $options = []): ?OperationEnCoursDto
     {
         return $this->requestAndPopulate(OperationEnCoursDto::class, 'GET', sprintf('/contrat/%s/existe', $contractId), [
             'query' => ApicilPaymentClientOptionResolver::resolveHasContractOptions($options),

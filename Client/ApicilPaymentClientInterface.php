@@ -245,7 +245,7 @@ interface ApicilPaymentClientInterface
      *
      * @return OperationEnCoursDto
      */
-    public function hasContract(int $contractId, array $options = []): OperationEnCoursDto;
+    public function hasContract(int $contractId, array $options = []): ?OperationEnCoursDto;
 
     /**
      * Verify if the given contract is eligible to payment request.

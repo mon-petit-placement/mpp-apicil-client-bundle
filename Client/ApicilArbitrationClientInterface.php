@@ -189,7 +189,7 @@ interface ApicilArbitrationClientInterface
      *
      * @return OperationEnCoursDto
      */
-    public function hasContract(int $contractId): OperationEnCoursDto;
+    public function hasContract(int $contractId): ?OperationEnCoursDto;
 
     /**
      * Verify if the given contract is eligible to arbitration.
