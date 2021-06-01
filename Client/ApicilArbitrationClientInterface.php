@@ -71,7 +71,7 @@ interface ApicilArbitrationClientInterface
      * @param int          $id
      * @param ArbitrageDto $arbitration
      */
-    public function createFromModel(int $id, ArbitrageDto $arbitration);
+    public function createFromModel(ArbitrageDto $arbitration);
 
     /**
      * Check the consultation link of the arbitration proposal and generate the security code.
@@ -189,7 +189,7 @@ interface ApicilArbitrationClientInterface
      *
      * @return OperationEnCoursDto
      */
-    public function hasContract(int $contractId): OperationEnCoursDto;
+    public function hasContract(int $contractId): ?OperationEnCoursDto;
 
     /**
      * Verify if the given contract is eligible to arbitration.

@@ -3,7 +3,7 @@
 namespace Mpp\ApicilClientBundle\Client;
 
 use Mpp\ApicilClientBundle\Model\ActeRetourCreationDto;
-use Mpp\ApicilClientBundle\Model\DetailOptionVP;
+use Mpp\ApicilClientBundle\Model\DetailOptionVPExterne;
 use Mpp\ApicilClientBundle\Model\DtoDeLaSuppressionDeLOption;
 use Mpp\ApicilClientBundle\Model\DtoEligibilite;
 use Mpp\ApicilClientBundle\Model\EmailPropositionActeDto;
@@ -137,9 +137,9 @@ class ApicilPaymentClient extends AbstractApicilClientDomain implements ApicilPa
     /**
      * {@inheritdoc}
      */
-    public function getContractOption(int $contractId): DetailOptionVP
+    public function getContractOption(int $contractId): DetailOptionVPExterne
     {
-        return $this->requestAndPopulate(DetailOptionVP::class, 'GET', sprintf('/contrat/%s/option', $contractId));
+        return $this->requestAndPopulate(DetailOptionVPExterne::class, 'GET', sprintf('/contrat/%s/option', $contractId));
     }
 
     /**
@@ -213,7 +213,7 @@ class ApicilPaymentClient extends AbstractApicilClientDomain implements ApicilPa
     /**
      * {@inheritdoc}
      */
-    public function hasContract(int $contractId, array $options = []): OperationEnCoursDto
+    public function hasContract(int $contractId, array $options = []): ?OperationEnCoursDto
     {
         return $this->requestAndPopulate(OperationEnCoursDto::class, 'GET', sprintf('/contrat/%s/existe', $contractId), [
             'query' => ApicilPaymentClientOptionResolver::resolveHasContractOptions($options),

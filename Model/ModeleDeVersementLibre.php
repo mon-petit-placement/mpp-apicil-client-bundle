@@ -124,6 +124,11 @@ class ModeleDeVersementLibre
     private $typeVersement;
 
     /**
+     * @var string|null
+     */
+    private $typeSignature;
+
+    /**
      * @param OptionsResolver $resolver
      */
     public static function configureData(OptionsResolver $resolver)
@@ -148,8 +153,8 @@ class ModeleDeVersementLibre
 
                 return DonneesBancairesDto::createFromArray($value);
             })
-            ->setDefault('horizonInvestissement', null)->setAllowedTypes('horizonInvestissement', ['array', TrHorizonInvestissementDto::class])->setNormalizer('horizonInvestissement', function (Options $options, $value) {
-                if ($value instanceof TrHorizonInvestissementDto) {
+            ->setDefault('horizonInvestissement', null)->setAllowedTypes('horizonInvestissement', ['array', TrHorizonInvestissementDto::class, 'null'])->setNormalizer('horizonInvestissement', function (Options $options, $value) {
+                if ($value instanceof TrHorizonInvestissementDto || null === $value) {
                     return $value;
                 }
 
@@ -159,14 +164,14 @@ class ModeleDeVersementLibre
             ->setRequired('modePaiement')->setAllowedTypes('modePaiement', ['string'])
             ->setRequired('montant')->setAllowedTypes('montant', ['float'])
             ->setDefault('origineDesFonds', null)->setAllowedTypes('origineDesFonds', ['array', OrigineDesFondsDto::class, 'null'])->setNormalizer('origineDesFonds', function (Options $options, $value) {
-                if ($value instanceof OrigineDesFondsDto || null == $value) {
+                if ($value instanceof OrigineDesFondsDto || null === $value) {
                     return $value;
                 }
 
                 return OrigineDesFondsDto::createFromArray($value);
             })
             ->setDefault('payeur', null)->setAllowedTypes('payeur', ['array', PayeurDto::class, 'null'])->setNormalizer('payeur', function (Options $options, $value) {
-                if ($value instanceof PayeurDto || null == $value) {
+                if ($value instanceof PayeurDto || null === $value) {
                     return $value;
                 }
 
@@ -205,6 +210,9 @@ class ModeleDeVersementLibre
             })
             ->setDefault('rum', null)->setAllowedTypes('rum', ['string', 'null'])
             ->setDefault('typeVersement', null)->setAllowedTypes('typeVersement', ['string', 'null'])
+            ->setRequired('typeSignature')->setAllowedTypes('typeSignature', ['string'])->setAllowedValues('typeSignature', function ($value) {
+                return in_array($value, [ProjetInvestissement::TYPE_SIGNATURE_ELECTRONIQUE, ProjetInvestissement::TYPE_SIGNATURE_PAPIER]);
+            })
         ;
     }
 
@@ -244,6 +252,7 @@ class ModeleDeVersementLibre
             ->setReponsesSupportStructure($resolvedOptions['reponsesSupportStructure'])
             ->setRum($resolvedOptions['rum'])
             ->setTypeVersement($resolvedOptions['typeVersement'])
+            ->setTypeSignature($resolvedOptions['typeSignature'])
         ;
     }
 
@@ -603,6 +612,26 @@ class ModeleDeVersementLibre
     public function setRum(?string $rum): self
     {
         $this->rum = $rum;
+
+        return $this;
+    }
+
+    /**
+     * @return  string|null
+     */
+    public function getTypeSignature(): ?string
+    {
+        return $this->typeSignature;
+    }
+
+    /**
+     * @param  string|null  $typeSignature
+     *
+     * @return  self
+     */
+    public function setTypeSignature(?string $typeSignature): self
+    {
+        $this->typeSignature = $typeSignature;
 
         return $this;
     }
