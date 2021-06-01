@@ -3,7 +3,7 @@
 namespace Mpp\ApicilClientBundle\Client;
 
 use Mpp\ApicilClientBundle\Model\ActeRetourCreationDto;
-use Mpp\ApicilClientBundle\Model\DetailOptionVP;
+use Mpp\ApicilClientBundle\Model\DetailOptionVPExterne;
 use Mpp\ApicilClientBundle\Model\DtoDeLaSuppressionDeLOption;
 use Mpp\ApicilClientBundle\Model\DtoEligibilite;
 use Mpp\ApicilClientBundle\Model\EmailPropositionActeDto;
@@ -141,9 +141,9 @@ interface ApicilPaymentClientInterface
      *
      * @param int $contractId
      *
-     * @return DetailOptionVP
+     * @return DetailOptionVPExterne
      */
-    public function getContractOption(int $contractId): DetailOptionVP;
+    public function getContractOption(int $contractId): DetailOptionVPExterne;
 
     /**
      * Retrieve minimal and maximal rate of payment for a contract.
