@@ -24,7 +24,9 @@ use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
 
 class ApicilReferentialClientTest extends ApicilClientTest
 {
-    public function setUp()
+    private $client;
+
+    public function setUp(): void
     {
         $this->client = self::$registry->getReferential();
     }
@@ -37,7 +39,7 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $activitySectors = $this->client->getActivitySectors();
 
-        $this->assertInternalType('array', $activitySectors);
+        $this->assertIsArray($activitySectors);
         $this->assertGreaterThan(0, count($activitySectors));
         $this->assertInstanceOf(DonneesReferencesDto::class, $activitySectors[0]);
     }
@@ -64,7 +66,7 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $apiAddress = $this->client->getApiAddresses(['adresseKey' => 'test']);
 
-        $this->assertInternalType('string', $apiAddress);
+        $this->assertIsString($apiAddress);
     }
 
     /*******************/
@@ -75,7 +77,7 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $assetClasses = $this->client->getAssetClasses();
 
-        $this->assertInternalType('array', $assetClasses);
+        $this->assertIsArray($assetClasses);
         $this->assertGreaterThan(0, count($assetClasses));
         $this->assertInstanceOf(TrClasseActifDto::class, $assetClasses[0]);
     }
@@ -127,7 +129,7 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $civilities = $this->client->getCivilities();
 
-        $this->assertInternalType('array', $civilities);
+        $this->assertIsArray($civilities);
         $this->assertGreaterThan(0, count($civilities));
         $this->assertInstanceOf(DonneesReferencesDto::class, $civilities[0]);
     }
@@ -140,7 +142,7 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $cities = $this->client->getCities();
 
-        $this->assertInternalType('array', $cities);
+        $this->assertIsArray($cities);
         $this->assertGreaterThan(0, count($cities));
         $this->assertInstanceOf(VilleDto::class, $cities[0]);
     }
@@ -156,8 +158,8 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $cities = $this->client->getCities(['codePays' => 'FR', 'codeDepartement' => '69', 'query' => 'Villeurbanne']);
 
-        $this->assertInternalType('array', $cities);
-        $this->assertEquals(1, count($cities));
+        $this->assertIsArray($cities);
+        $this->assertCount(1, $cities);
         $this->assertInstanceOf(VilleDto::class, $cities[0]);
     }
 
@@ -169,7 +171,7 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $contractTypes = $this->client->getContractTypes();
 
-        $this->assertInternalType('array', $contractTypes);
+        $this->assertIsArray($contractTypes);
         $this->assertGreaterThan(0, count($contractTypes));
         $this->assertInstanceOf(TypeContratDto::class, $contractTypes[0]);
     }
@@ -182,7 +184,7 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $countries = $this->client->getCountries();
 
-        $this->assertInternalType('array', $countries);
+        $this->assertIsArray($countries);
         $this->assertGreaterThan(0, count($countries));
         $this->assertInstanceOf(DonneesReferencesDto::class, $countries[0]);
     }
@@ -198,8 +200,8 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $countries = $this->client->getCountries(['query' => 'France']);
 
-        $this->assertInternalType('array', $countries);
-        $this->assertEquals(1, count($countries));
+        $this->assertIsArray($countries);
+        $this->assertCount(1, $countries);
         $this->assertInstanceOf(DonneesReferencesDto::class, $countries[0]);
     }
 
@@ -211,7 +213,7 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $deathDispositions = $this->client->getDeathDispositions();
 
-        $this->assertInternalType('array', $deathDispositions);
+        $this->assertIsArray($deathDispositions);
         $this->assertGreaterThan(0, count($deathDispositions));
         $this->assertInstanceOf(DonneesReferencesDto::class, $deathDispositions[0]);
     }
@@ -224,7 +226,7 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $departments = $this->client->getDepartments();
 
-        $this->assertInternalType('array', $departments);
+        $this->assertIsArray($departments);
         $this->assertGreaterThan(0, count($departments));
         $this->assertInstanceOf(DepartementDto::class, $departments[0]);
     }
@@ -240,8 +242,8 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $departments = $this->client->getDepartments(['codePays' => 'FR', 'query' => 'Ain']);
 
-        $this->assertInternalType('array', $departments);
-        $this->assertEquals(1, count($departments));
+        $this->assertIsArray($departments);
+        $this->assertCount(1, $departments);
         $this->assertInstanceOf(DepartementDto::class, $departments[0]);
     }
 
@@ -253,7 +255,7 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $documentTypes = $this->client->getDocumentTypes();
 
-        $this->assertInternalType('array', $documentTypes);
+        $this->assertIsArray($documentTypes);
         $this->assertGreaterThan(0, count($documentTypes));
         $this->assertInstanceOf(SousCategorieDocumentDto::class, $documentTypes[0]);
     }
@@ -266,7 +268,7 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $familialSituations = $this->client->getFamilialSituations();
 
-        $this->assertInternalType('array', $familialSituations);
+        $this->assertIsArray($familialSituations);
         $this->assertGreaterThan(0, count($familialSituations));
         $this->assertInstanceOf(DonneesReferencesDto::class, $familialSituations[0]);
     }
@@ -279,7 +281,7 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $familyLinks = $this->client->getFamilyLinks();
 
-        $this->assertInternalType('array', $familyLinks);
+        $this->assertIsArray($familyLinks);
         $this->assertGreaterThan(0, count($familyLinks));
         $this->assertInstanceOf(DonneesReferencesDto::class, $familyLinks[0]);
     }
@@ -295,8 +297,8 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $familyLinks = $this->client->getFamilyLinks(['query' => 'Enfant']);
 
-        $this->assertInternalType('array', $familyLinks);
-        $this->assertEquals(1, count($familyLinks));
+        $this->assertIsArray($familyLinks);
+        $this->assertCount(1, $familyLinks);
         $this->assertInstanceOf(DonneesReferencesDto::class, $familyLinks[0]);
     }
 
@@ -308,8 +310,8 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $fiscalAgents = $this->client->getFiscalAgents();
 
-        $this->assertInternalType('array', $fiscalAgents);
-        $this->assertEquals(0, count($fiscalAgents));
+        $this->assertIsArray($fiscalAgents);
+        $this->assertCount(0, $fiscalAgents);
     }
 
     /******************/
@@ -320,7 +322,7 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $incomeTypes = $this->client->getIncomeTypes();
 
-        $this->assertInternalType('array', $incomeTypes);
+        $this->assertIsArray($incomeTypes);
         $this->assertGreaterThan(0, count($incomeTypes));
         $this->assertInstanceOf(TypePatrimoineOuRevenuDto::class, $incomeTypes[0]);
     }
@@ -333,7 +335,7 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $investmentEligibleSupports = $this->client->getInvestmentEligibleSupports('IC');
 
-        $this->assertInternalType('array', $investmentEligibleSupports);
+        $this->assertIsArray($investmentEligibleSupports);
         $this->assertGreaterThan(0, count($investmentEligibleSupports));
         $this->assertInstanceOf(ListeDesSupports::class, $investmentEligibleSupports[0]);
     }
@@ -360,7 +362,7 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $investmentGoals = $this->client->getInvestmentGoals();
 
-        $this->assertInternalType('array', $investmentGoals);
+        $this->assertIsArray($investmentGoals);
         $this->assertGreaterThan(0, count($investmentGoals));
         $this->assertInstanceOf(DonneesReferencesActifDto::class, $investmentGoals[0]);
     }
@@ -373,7 +375,7 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $investmentHorizons = $this->client->getInvestmentHorizons();
 
-        $this->assertInternalType('array', $investmentHorizons);
+        $this->assertIsArray($investmentHorizons);
         $this->assertGreaterThan(0, count($investmentHorizons));
         $this->assertInstanceOf(TrClasseActifDto::class, $investmentHorizons[0]);
     }
@@ -386,7 +388,7 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $jobs = $this->client->getJobs();
 
-        $this->assertInternalType('array', $jobs);
+        $this->assertIsArray($jobs);
         $this->assertGreaterThan(0, count($jobs));
         $this->assertInstanceOf(DonneesReferencesDto::class, $jobs[0]);
     }
@@ -399,7 +401,7 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $matrimonialRegimes = $this->client->getMatrimonialRegimes();
 
-        $this->assertInternalType('array', $matrimonialRegimes);
+        $this->assertIsArray($matrimonialRegimes);
         $this->assertGreaterThan(0, count($matrimonialRegimes));
         $this->assertInstanceOf(DonneesReferencesDto::class, $matrimonialRegimes[0]);
     }
@@ -412,7 +414,7 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $nationalities = $this->client->getNationalities();
 
-        $this->assertInternalType('array', $nationalities);
+        $this->assertIsArray($nationalities);
         $this->assertGreaterThan(0, count($nationalities));
         $this->assertInstanceOf(DonneesReferencesDto::class, $nationalities[0]);
     }
@@ -428,8 +430,8 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $nationalities = $this->client->getNationalities(['query' => 'FR']);
 
-        $this->assertInternalType('array', $nationalities);
-        $this->assertEquals(1, count($nationalities));
+        $this->assertIsArray($nationalities);
+        $this->assertCount(1, $nationalities);
         $this->assertInstanceOf(DonneesReferencesDto::class, $nationalities[0]);
     }
 
@@ -441,7 +443,7 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $outstandingCosts = $this->client->getOutstandingCosts('IC');
 
-        $this->assertInternalType('array', $outstandingCosts);
+        $this->assertIsArray($outstandingCosts);
         $this->assertGreaterThan(0, count($outstandingCosts));
         $this->assertInstanceOf(FraisEncoursDto::class, $outstandingCosts[0]);
     }
@@ -461,7 +463,7 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $parentalLinks = $this->client->getParentalLinks();
 
-        $this->assertInternalType('array', $parentalLinks);
+        $this->assertIsArray($parentalLinks);
         $this->assertGreaterThan(0, count($parentalLinks));
         $this->assertInstanceOf(LienParenteRefDto::class, $parentalLinks[0]);
     }
@@ -474,7 +476,7 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $patrimonyTypes = $this->client->getPatrimonyTypes();
 
-        $this->assertInternalType('array', $patrimonyTypes);
+        $this->assertIsArray($patrimonyTypes);
         $this->assertGreaterThan(0, count($patrimonyTypes));
         $this->assertInstanceOf(TypePatrimoineOuRevenuDto::class, $patrimonyTypes[0]);
     }
@@ -487,7 +489,7 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $paymentFrequencies = $this->client->getPaymentFrequencies('IC');
 
-        $this->assertInternalType('array', $paymentFrequencies);
+        $this->assertIsArray($paymentFrequencies);
         $this->assertGreaterThan(0, count($paymentFrequencies));
         $this->assertInstanceOf(PeriodiciteDto::class, $paymentFrequencies[0]);
     }
@@ -507,7 +509,7 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $paymentMethods = $this->client->getPaymentMethods(1, []);
 
-        $this->assertInternalType('array', $paymentMethods);
+        $this->assertIsArray($paymentMethods);
         $this->assertGreaterThan(0, count($paymentMethods));
         $this->assertInstanceOf(DonneesReferencesDto::class, $paymentMethods[0]);
     }
@@ -530,7 +532,7 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $paymentMethods = $this->client->getPaymentMethods(1, ['mode' => 'INVESTISSEMENT']);
 
-        $this->assertInternalType('array', $paymentMethods);
+        $this->assertIsArray($paymentMethods);
         $this->assertGreaterThan(0, count($paymentMethods));
         $this->assertInstanceOf(DonneesReferencesDto::class, $paymentMethods[0]);
     }
@@ -543,7 +545,7 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $phoneCodes = $this->client->getPhoneCodes();
 
-        $this->assertInternalType('array', $phoneCodes);
+        $this->assertIsArray($phoneCodes);
         $this->assertGreaterThan(0, count($phoneCodes));
         $this->assertInstanceOf(TrIndicatifDto::class, $phoneCodes[0]);
     }
@@ -559,8 +561,8 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $phoneCodes = $this->client->getNationalities(['query' => 'FR']);
 
-        $this->assertInternalType('array', $phoneCodes);
-        $this->assertEquals(1, count($phoneCodes));
+        $this->assertIsArray($phoneCodes);
+        $this->assertCount(1, $phoneCodes);
         $this->assertInstanceOf(TrIndicatifDto::class, $phoneCodes[0]);
     }
 
@@ -572,7 +574,7 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $functions = $this->client->getPoliticallyExposedPersonFunctions();
 
-        $this->assertInternalType('array', $functions);
+        $this->assertIsArray($functions);
         $this->assertGreaterThan(0, count($functions));
         $this->assertInstanceOf(DonneesReferencesObjetDto::class, $functions[0]);
     }
@@ -585,7 +587,7 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $natures = $this->client->getPoliticallyExposedPersonNatures();
 
-        $this->assertInternalType('array', $natures);
+        $this->assertIsArray($natures);
         $this->assertGreaterThan(0, count($natures));
         $this->assertInstanceOf(DonneesReferencesDto::class, $natures[0]);
     }
@@ -598,7 +600,7 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $links = $this->client->getPoliticallyExposedPersonParentalLinks();
 
-        $this->assertInternalType('array', $links);
+        $this->assertIsArray($links);
         $this->assertGreaterThan(0, count($links));
         $this->assertInstanceOf(DonneesReferencesObjetDto::class, $links[0]);
     }
@@ -629,7 +631,7 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $products = $this->client->getProducts();
 
-        $this->assertInternalType('array', $products);
+        $this->assertIsArray($products);
         $this->assertGreaterThan(0, count($products));
         $this->assertInstanceOf(ProduitDto::class, $products[0]);
     }
@@ -642,7 +644,7 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $professionalCategories = $this->client->getProfessionalCategories();
 
-        $this->assertInternalType('array', $professionalCategories);
+        $this->assertIsArray($professionalCategories);
         $this->assertGreaterThan(0, count($professionalCategories));
         $this->assertInstanceOf(DonneesReferencesDto::class, $professionalCategories[0]);
     }
@@ -658,8 +660,8 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $professionalCategories = $this->client->getProfessionalCategories(['query' => 'Agriculteur']);
 
-        $this->assertInternalType('array', $professionalCategories);
-        $this->assertEquals(1, count($professionalCategories));
+        $this->assertIsArray($professionalCategories);
+        $this->assertCount(1, $professionalCategories);
         $this->assertInstanceOf(DonneesReferencesDto::class, $professionalCategories[0]);
     }
 
@@ -671,7 +673,7 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $professionalSituations = $this->client->getProfessionalSituations();
 
-        $this->assertInternalType('array', $professionalSituations);
+        $this->assertIsArray($professionalSituations);
         $this->assertGreaterThan(0, count($professionalSituations));
         $this->assertInstanceOf(DonneesReferencesDto::class, $professionalSituations[0]);
     }
@@ -687,8 +689,8 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $professionalSituations = $this->client->getProfessionalCategories(['query' => 'Actif']);
 
-        $this->assertInternalType('array', $professionalSituations);
-        $this->assertEquals(1, count($professionalSituations));
+        $this->assertIsArray($professionalSituations);
+        $this->assertCount(1, $professionalSituations);
         $this->assertInstanceOf(DonneesReferencesDto::class, $professionalSituations[0]);
     }
 
@@ -700,7 +702,7 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $supports = $this->client->getScheduledPaymentEligibleSupports(['codeProduit' => 'IC']);
 
-        $this->assertInternalType('array', $supports);
+        $this->assertIsArray($supports);
         $this->assertGreaterThan(0, count($supports));
         $this->assertInstanceOf(SupportDto::class, $supports[0]);
     }
@@ -720,7 +722,7 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $subscriptionTypes = $this->client->getSubscriptionTypes();
 
-        $this->assertInternalType('array', $subscriptionTypes);
+        $this->assertIsArray($subscriptionTypes);
         $this->assertGreaterThan(0, count($subscriptionTypes));
         $this->assertInstanceOf(DonneesReferencesDto::class, $subscriptionTypes[0]);
     }
@@ -769,6 +771,6 @@ class ApicilReferentialClientTest extends ApicilClientTest
     {
         $support = $this->client->getUniqueMandateReference();
 
-        $this->assertInternalType('string', $support);
+        $this->assertIsString($support);
     }
 }

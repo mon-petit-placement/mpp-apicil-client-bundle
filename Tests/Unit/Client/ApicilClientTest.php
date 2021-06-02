@@ -12,10 +12,10 @@ abstract class ApicilClientTest extends KernelTestCase
      */
     protected static $registry;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         self::bootKernel();
 
-        self::$registry = self::$container->get(ApicilClientDomainRegistryInterface::class);
+        self::$registry = self::getContainer()->get(ApicilClientDomainRegistryInterface::class);
     }
 }
