@@ -137,7 +137,7 @@ class ApicilPaymentClient extends AbstractApicilClientDomain implements ApicilPa
     /**
      * {@inheritdoc}
      */
-    public function getContractOption(int $contractId): DetailOptionVPExterne
+    public function getContractOption(int $contractId): ?DetailOptionVPExterne
     {
         return $this->requestAndPopulate(DetailOptionVPExterne::class, 'GET', sprintf('/contrat/%s/option', $contractId));
     }

@@ -143,7 +143,7 @@ interface ApicilPaymentClientInterface
      *
      * @return DetailOptionVPExterne
      */
-    public function getContractOption(int $contractId): DetailOptionVPExterne;
+    public function getContractOption(int $contractId): ?DetailOptionVPExterne;
 
     /**
      * Retrieve minimal and maximal rate of payment for a contract.
