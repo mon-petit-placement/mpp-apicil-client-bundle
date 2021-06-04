@@ -187,9 +187,9 @@ interface ApicilPaymentClientInterface
      *
      * @param int $id
      *
-     * @return RecuperationActeDocSousCategorieDto
+     * @return array
      */
-    public function getDocuments(int $id): RecuperationActeDocSousCategorieDto;
+    public function getDocuments(int $id): array;
 
     /**
      * Retrieve payment request email.

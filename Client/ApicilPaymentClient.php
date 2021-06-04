@@ -169,9 +169,9 @@ class ApicilPaymentClient extends AbstractApicilClientDomain implements ApicilPa
     /**
      * {@inheritdoc}
      */
-    public function getDocuments(int $id): RecuperationActeDocSousCategorieDto
+    public function getDocuments(int $id): array
     {
-        return $this->requestAndPopulate(RecuperationActeDocSousCategorieDto::class, 'GET', sprintf('/%s/documents', $id));
+        return $this->requestAndPopulate(sprintf('%s[]', ActeDocumentDto::class), 'GET', sprintf('/%s/documents', $id));
     }
 
     /**
