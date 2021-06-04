@@ -69,7 +69,7 @@ class ApicilPaymentClient extends AbstractApicilClientDomain implements ApicilPa
      */
     public function approveSignature(int $id, string $otp)
     {
-        $this->request('POST', sprintf('/%s/signature/%s', $id, $otp));
+        $this->request('POST', sprintf('/%s/signature/%s', $id, $otp), [], true);
     }
 
     /**
@@ -313,7 +313,7 @@ class ApicilPaymentClient extends AbstractApicilClientDomain implements ApicilPa
      */
     public function sendSignatureBySms(int $id)
     {
-        $this->request('GET', sprintf('/%s/signature', $id));
+        $this->request('GET', sprintf('/%s/signature', $id), [], true);
     }
 
     /**
