@@ -90,7 +90,7 @@ interface ApicilPaymentClientInterface
      *
      * @param ModeleDeVersementLibre $paymentModel
      */
-    public function createFromModel(ModeleDeVersementLibre $paymentModel);
+    public function createFromModel(ModeleDeVersementLibre $paymentModel): int;
 
     /**
      * Generate the payment request security code.

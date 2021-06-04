@@ -93,11 +93,11 @@ class ApicilPaymentClient extends AbstractApicilClientDomain implements ApicilPa
     /**
      * {@inheritdoc}
      */
-    public function createFromModel(ModeleDeVersementLibre $paymentModel)
+    public function createFromModel(ModeleDeVersementLibre $paymentModel): int
     {
-        $this->request('POST', '/asigner', [
+        return $this->requestAndPopulate('array', 'POST', '/asigner', [
             'body' => $this->serializer->serialize($paymentModel, 'json'),
-        ]);
+        ])['id'];
     }
 
     /**
