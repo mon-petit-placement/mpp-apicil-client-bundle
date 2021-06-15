@@ -171,7 +171,7 @@ class ApicilPaymentClient extends AbstractApicilClientDomain implements ApicilPa
      */
     public function getDocuments(int $id): array
     {
-        return $this->requestAndPopulate(sprintf('%s[]', ActeDocumentDto::class), 'GET', sprintf('/%s/documents', $id));
+        return $this->requestAndPopulate(sprintf('%s[]', ActeDocumentDto::class), 'GET', sprintf('/%s/documents', $id)) ?? [];
     }
 
     /**
