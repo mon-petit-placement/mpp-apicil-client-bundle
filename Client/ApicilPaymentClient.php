@@ -69,7 +69,7 @@ class ApicilPaymentClient extends AbstractApicilClientDomain implements ApicilPa
      */
     public function approveSignature(int $id, string $otp)
     {
-        $this->request('POST', sprintf('/%s/signature/%s', $id, $otp));
+        $this->request('POST', sprintf('/%s/signature/%s', $id, $otp), [], true);
     }
 
     /**
@@ -93,11 +93,11 @@ class ApicilPaymentClient extends AbstractApicilClientDomain implements ApicilPa
     /**
      * {@inheritdoc}
      */
-    public function createFromModel(ModeleDeVersementLibre $paymentModel)
+    public function createFromModel(ModeleDeVersementLibre $paymentModel): int
     {
-        $this->request('POST', '/asigner', [
+        return $this->requestAndPopulate('array', 'POST', '/asigner', [
             'body' => $this->serializer->serialize($paymentModel, 'json'),
-        ]);
+        ])['id'];
     }
 
     /**
@@ -169,9 +169,9 @@ class ApicilPaymentClient extends AbstractApicilClientDomain implements ApicilPa
     /**
      * {@inheritdoc}
      */
-    public function getDocuments(int $id): RecuperationActeDocSousCategorieDto
+    public function getDocuments(int $id): array
     {
-        return $this->requestAndPopulate(RecuperationActeDocSousCategorieDto::class, 'GET', sprintf('/%s/documents', $id));
+        return $this->requestAndPopulate(sprintf('%s[]', ActeDocumentDto::class), 'GET', sprintf('/%s/documents', $id));
     }
 
     /**
@@ -313,7 +313,7 @@ class ApicilPaymentClient extends AbstractApicilClientDomain implements ApicilPa
      */
     public function sendSignatureBySms(int $id)
     {
-        $this->request('GET', sprintf('/%s/signature', $id));
+        $this->request('GET', sprintf('/%s/signature', $id), [], true);
     }
 
     /**
