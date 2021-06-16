@@ -2,6 +2,7 @@
 
 namespace Mpp\ApicilClientBundle\Client;
 
+use Mpp\ApicilClientBundle\Model\ActeDocumentDto;
 use Mpp\ApicilClientBundle\Model\ActeRetourCreationDto;
 use Mpp\ApicilClientBundle\Model\DetailOptionVPExterne;
 use Mpp\ApicilClientBundle\Model\DtoDeLaSuppressionDeLOption;
