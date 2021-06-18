@@ -2,6 +2,7 @@
 
 namespace Mpp\ApicilClientBundle\Client;
 
+use Mpp\ApicilClientBundle\Model\ActeDocumentDto;
 use Mpp\ApicilClientBundle\Model\ActeRetourCreationDto;
 use Mpp\ApicilClientBundle\Model\DetailOptionVPExterne;
 use Mpp\ApicilClientBundle\Model\DtoDeLaSuppressionDeLOption;
@@ -171,7 +172,7 @@ class ApicilPaymentClient extends AbstractApicilClientDomain implements ApicilPa
      */
     public function getDocuments(int $id): array
     {
-        return $this->requestAndPopulate(sprintf('%s[]', ActeDocumentDto::class), 'GET', sprintf('/%s/documents', $id));
+        return $this->requestAndPopulate(sprintf('%s[]', ActeDocumentDto::class), 'GET', sprintf('/%s/documents', $id)) ?? [];
     }
 
     /**
