@@ -9,6 +9,7 @@ use Mpp\ApicilClientBundle\Model\EmailPropositionActeDto;
 use Mpp\ApicilClientBundle\Model\OperationEnCoursDto;
 use Mpp\ApicilClientBundle\Model\RachatPartielDto;
 use Mpp\ApicilClientBundle\Model\RachatPartielDtoDeConsultation;
+use Mpp\ApicilClientBundle\Model\RecuperationActeDocSousCategorieDto;
 use Mpp\ApicilClientBundle\Model\TelephoneDto;
 use Mpp\ApicilClientBundle\OptionsResolver\ApicilPartialRepurchaseClientOptionResolver;
 use Symfony\Component\HttpFoundation\File\File;
@@ -95,7 +96,15 @@ class ApicilPartialRepurchaseClient extends AbstractApicilClientDomain implement
     /**
      * {@inheritdoc}
      */
-    public function getDocument(int $id, int $documentId): File
+    public function getDocumentByCategory(int $id, string $category): RecuperationActeDocSousCategorieDto
+    {
+        return $this->requestAndPopulate(RecuperationActeDocSousCategorieDto::class, 'GET', sprintf('/%s/document/%s', $id, $category));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDocumentById(int $id, int $documentId): File
     {
         return $this->download('GET', sprintf('/%s/documents/%s', $id, $documentId));
     }
@@ -103,7 +112,7 @@ class ApicilPartialRepurchaseClient extends AbstractApicilClientDomain implement
     /**
      * {@inheritdoc}
      */
-    public function getDocuments(int $id): ActeDocumentDto
+    public function getDocuments(int $id): array
     {
         return $this->requestAndPopulate(sprintf('%s[]', ActeDocumentDto::class), 'GET', sprintf('/%s/documents', $id));
     }
@@ -158,6 +167,14 @@ class ApicilPartialRepurchaseClient extends AbstractApicilClientDomain implement
     public function remove(int $id): bool
     {
         return $this->requestAndPopulate('bool', 'DELETE', sprintf('/%s', $id));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeDocument(int $id, int $documentId): bool
+    {
+        return $this->requestAndPopulate('bool', 'DELETE', sprintf('/%s/document/%s', $id, $documentId));
     }
 
     /**

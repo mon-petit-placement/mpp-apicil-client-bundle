@@ -9,6 +9,7 @@ use Mpp\ApicilClientBundle\Model\EmailPropositionActeDto;
 use Mpp\ApicilClientBundle\Model\OperationEnCoursDto;
 use Mpp\ApicilClientBundle\Model\RachatPartielDto;
 use Mpp\ApicilClientBundle\Model\RachatPartielDtoDeConsultation;
+use Mpp\ApicilClientBundle\Model\RecuperationActeDocSousCategorieDto;
 use Mpp\ApicilClientBundle\Model\TelephoneDto;
 use Symfony\Component\HttpFoundation\File\File;
 
@@ -93,13 +94,26 @@ interface ApicilPartialRepurchaseClientInterface
     /**
      * Retrieve partial repurchase document.
      *
-     * @method getDocument
+     * @method getDocumentByCategory
      *
      * @param int $id
+     * @param string $category
+     *
+     * @return RecuperationActeDocSousCategorieDto
+     */
+    public function getDocumentByCategory(int $id, string $category): RecuperationActeDocSousCategorieDto;
+
+    /**
+     * Retrieve partial repurchase document.
+     *
+     * @method getDocumentById
+     *
+     * @param int $id
+     * @param int $documentId
      *
      * @return File
      */
-    public function getDocument(int $id, int $documentId): File;
+    public function getDocumentById(int $id, int $documentId): File;
 
     /**
      * Retrieve partial repurchase documents.
@@ -108,9 +122,9 @@ interface ApicilPartialRepurchaseClientInterface
      *
      * @param int $id
      *
-     * @return ActeDocumentDto
+     * @return array
      */
-    public function getDocuments(int $id): ActeDocumentDto;
+    public function getDocuments(int $id): array;
 
     /**
      * Retrieve partial purchase email template.
@@ -173,6 +187,18 @@ interface ApicilPartialRepurchaseClientInterface
      * @return bool
      */
     public function remove(int $id): bool;
+
+    /**
+     * Remove partial repurchase request.
+     *
+     * @method removeDocument
+     *
+     * @param int $id
+     * @param int $documentId
+     *
+     * @return bool
+     */
+    public function removeDocument(int $id, int $documentId): bool;
 
     /**
      * Restart the partial repurchase request.
