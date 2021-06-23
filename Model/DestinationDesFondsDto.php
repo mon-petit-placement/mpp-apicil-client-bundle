@@ -2,6 +2,8 @@
 
 namespace Mpp\ApicilClientBundle\Model;
 
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
 class DestinationDesFondsDto
 {
     /**
@@ -59,6 +61,58 @@ class DestinationDesFondsDto
      */
     private $destinationVehicule;
 
+    /**
+     * @param OptionsResolver $resolver
+     */
+    public static function configureData(OptionsResolver $resolver)
+    {
+        $resolver
+            ->setDefault('destinationAutres', null)->setAllowedTypes('destinationAutres', ['float', 'null'])
+            ->setDefault('destinationAutresCommentaire', null)->setAllowedTypes('destinationAutresCommentaire', ['string', 'null'])
+            ->setDefault('destinationImmobilier', null)->setAllowedTypes('destinationImmobilier', ['float', 'null'])
+            ->setDefault('destinationImpots', null)->setAllowedTypes('destinationImpots', ['float', 'null'])
+            ->setDefault('destinationMobilier', null)->setAllowedTypes('destinationMobilier', ['float', 'null'])
+            ->setDefault('destinationRestructuration', null)->setAllowedTypes('destinationRestructuration', ['float', 'null'])
+            ->setDefault('destinationTravaux', null)->setAllowedTypes('destinationTravaux', ['float', 'null'])
+            ->setDefault('destinationTresorie', null)->setAllowedTypes('destinationTresorie', ['float', 'null'])
+            ->setDefault('destinationTresorieCommentaire', null)->setAllowedTypes('destinationTresorieCommentaire', ['string', 'null'])
+            ->setDefault('destinationVacances', null)->setAllowedTypes('destinationVacances', ['float', 'null'])
+            ->setDefault('destinationVehicule', null)->setAllowedTypes('destinationVehicule', ['float', 'null'])
+        ;
+    }
+
+    /**
+     * @param array $options
+     *
+     * @return self
+     *
+     * @throws UndefinedOptionsException If an option name is undefined
+     * @throws InvalidOptionsException   If an option doesn't fulfill the language specified validation rules
+     * @throws MissingOptionsException   If a required option is missing
+     * @throws OptionDefinitionException If there is a cyclic dependency between lazy options and/or normalizers
+     * @throws NoSuchOptionException     If a lazy option reads an unavailable option
+     * @throws AccessException           If called from a lazy option or normalizer
+     */
+    public static function createFromArray(array $options): self
+    {
+        $resolver = new OptionsResolver();
+        self::configureData($resolver);
+        $resolvedOptions = $resolver->resolve($options);
+
+        return (new self())
+            ->setDestinationAutres($resolvedOptions['destinationAutres'])
+            ->setDestinationAutresCommentaire($resolvedOptions['destinationAutresCommentaire'])
+            ->setDestinationImmobilier($resolvedOptions['destinationImmobilier'])
+            ->setDestinationImpots($resolvedOptions['destinationImpots'])
+            ->setDestinationMobilier($resolvedOptions['destinationMobilier'])
+            ->setDestinationRestructuration($resolvedOptions['destinationRestructuration'])
+            ->setDestinationTravaux($resolvedOptions['destinationTravaux'])
+            ->setDestinationTresorie($resolvedOptions['destinationTresorie'])
+            ->setDestinationTresorieCommentaire($resolvedOptions['destinationTresorieCommentaire'])
+            ->setDestinationVacances($resolvedOptions['destinationVacances'])
+            ->setDestinationVehicule($resolvedOptions['destinationVehicule'])
+        ;
+    }
 
     /**
      * @return  float|null

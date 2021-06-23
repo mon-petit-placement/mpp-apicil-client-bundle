@@ -774,10 +774,10 @@ public function sendToCustomer(int $id, EmailPropositionActeDto $email);
 public function restart(int $id, array $options);
 
 // POST /rachatpartiel/asigner
-public function createFromModel(RachatDto $repurchase);
+public function createFromModel(RachatPartielDto $repurchase);
 
 // PUT /rachatpartiel/asigner/{id}
-public function updateFromModel(int $id, RachatDto $repurchase): RachatDto;
+public function updateFromModel(int $id, RachatPartielDto $repurchase): RachatPartielDto;
 
 // GET /rachatpartiel/contrat/{contratId}/existe
 public function hasContract(int $contractId): OperationEnCoursDto;

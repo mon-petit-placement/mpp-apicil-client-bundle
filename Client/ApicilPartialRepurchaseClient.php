@@ -7,7 +7,7 @@ use Mpp\ApicilClientBundle\Model\ActeRetourCreationDto;
 use Mpp\ApicilClientBundle\Model\DtoEligibilite;
 use Mpp\ApicilClientBundle\Model\EmailPropositionActeDto;
 use Mpp\ApicilClientBundle\Model\OperationEnCoursDto;
-use Mpp\ApicilClientBundle\Model\RachatDto;
+use Mpp\ApicilClientBundle\Model\RachatPartielDto;
 use Mpp\ApicilClientBundle\Model\RachatPartielDtoDeConsultation;
 use Mpp\ApicilClientBundle\Model\TelephoneDto;
 use Mpp\ApicilClientBundle\OptionsResolver\ApicilPartialRepurchaseClientOptionResolver;
@@ -61,9 +61,9 @@ class ApicilPartialRepurchaseClient extends AbstractApicilClientDomain implement
     /**
      * {@inheritdoc}
      */
-    public function createFromModel(RachatDto $repurchase)
+    public function createFromModel(RachatPartielDto $repurchase)
     {
-        return $this->requestAndPopulate(RachatDto::class, 'POST', '/asigner', [
+        return $this->requestAndPopulate(RachatPartielDto::class, 'POST', '/asigner', [
             'body' => $this->serializer->serialize($repurchase, 'json'),
         ]);
     }
@@ -209,9 +209,9 @@ class ApicilPartialRepurchaseClient extends AbstractApicilClientDomain implement
     /**
      * {@inheritdoc}
      */
-    public function updateFromModel(int $id, RachatDto $repurchase): RachatDto
+    public function updateFromModel(int $id, RachatPartielDto $repurchase): RachatPartielDto
     {
-        return $this->requestAndPopulate(RachatDto::class, 'PUT', sprintf('/asigner/%s', $id), [
+        return $this->requestAndPopulate(RachatPartielDto::class, 'PUT', sprintf('/asigner/%s', $id), [
             'body' => $this->serializer->serialize($repurchase, 'json'),
         ]);
     }

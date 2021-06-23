@@ -7,7 +7,7 @@ use Mpp\ApicilClientBundle\Model\ActeRetourCreationDto;
 use Mpp\ApicilClientBundle\Model\DtoEligibilite;
 use Mpp\ApicilClientBundle\Model\EmailPropositionActeDto;
 use Mpp\ApicilClientBundle\Model\OperationEnCoursDto;
-use Mpp\ApicilClientBundle\Model\RachatDto;
+use Mpp\ApicilClientBundle\Model\RachatPartielDto;
 use Mpp\ApicilClientBundle\Model\RachatPartielDtoDeConsultation;
 use Mpp\ApicilClientBundle\Model\TelephoneDto;
 use Symfony\Component\HttpFoundation\File\File;
@@ -53,9 +53,9 @@ interface ApicilPartialRepurchaseClientInterface
      *
      * @method createFromModel
      *
-     * @param RachatDto $repurchase
+     * @param RachatPartielDto $repurchase
      */
-    public function createFromModel(RachatDto $repurchase);
+    public function createFromModel(RachatPartielDto $repurchase);
 
     /**
      * Retrieve a partial repurchase request.
@@ -232,11 +232,11 @@ interface ApicilPartialRepurchaseClientInterface
      * @method updateFromModel
      *
      * @param int       $id
-     * @param RachatDto $repurchase
+     * @param RachatPartielDto $repurchase
      *
-     * @return RachatDto
+     * @return RachatPartielDto
      */
-    public function updateFromModel(int $id, RachatDto $repurchase): RachatDto;
+    public function updateFromModel(int $id, RachatPartielDto $repurchase): RachatPartielDto;
 
     /**
      * Update the customer's phone number for a partial repurchase request.

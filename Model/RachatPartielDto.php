@@ -2,6 +2,7 @@
 
 namespace Mpp\ApicilClientBundle\Model;
 
+use phpDocumentor\Reflection\Types\Self_;
 use Symfony\Component\OptionsResolver\Exception\AccessException;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
@@ -11,12 +12,11 @@ use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class RachatDto
+class RachatPartielDto
 {
     public const MODE_DESINVESTISSEMENT_CHOIX = 'CHOIX';
     public const MODE_DESINVESTISSEMENT_PRORATA = 'PRORATA';
     public const MODE_DESINVESTISSEMENT_CONTRAT = 'CONTRAT';
-    public const MODE_DESINVESTISSEMENT_PROFIL = 'PROFIL';
 
     public const MODE_PAIEMENT_C = 'C';
     public const MODE_PAIEMENT_P = 'P';
@@ -24,10 +24,15 @@ class RachatDto
     public const MODE_PAIEMENT_T = 'T';
 
     public const TYPE_RACHAT_PARTIEL_PONCTUEL = 'PONCTUEL';
+    public const TYPE_RACHAT_PARTIEL_PROGRAMME = 'PROGRAMME';
+    public const TYPE_RACHAT_PARTIEL_SUPPRESSION_PROGRAMME = 'SUPPRESSION_PROGRAMME';
 
     public const TYPE_RACHAT_BRUT = 'BRUT';
+    public const TYPE_RACHAT_NET = 'NET';
+    public const TYPE_RACHAT_CHOIX = 'CHOIX';
 
     public const OPTION_FISCALE_LIBERATOIRE = 'LIBERATOIRE';
+    public const OPTION_FISCALE_DECLARATION = 'DECLARATION';
 
     public const TYPE_SIGNATURE_ELECTRONIQUE = 'ELECTRONIQUE';
 
@@ -45,6 +50,11 @@ class RachatDto
      * @var string|null
      */
     private $modePaiement;
+
+    /**
+     * @var DestinationDesFondsDto|null
+     */
+    private $destinationDesFonds;
 
     /**
      * @var DonneesBancairesDto|null
@@ -95,6 +105,13 @@ class RachatDto
             ->setRequired('contratId')->setAllowedTypes('contratId', ['int'])
             ->setRequired('montant')->setAllowedTypes('montant', ['float'])
             ->setRequired('modePaiement')->setAllowedTypes('modePaiement', ['string'])
+            ->setRequired('destinationDesFonds')->setAllowedTypes('destinationDesFonds', ['array', DestinationDesFondsDto::class])->setNormalizer('destinationDesFonds', function (Options $options, $value) {
+                if ($value instanceof DestinationDesFondsDto) {
+                    return $value;
+                }
+
+                return DestinationDesFondsDto::createFromArray($value);
+            })
             ->setRequired('donneesBancaires')->setAllowedTypes('donneesBancaires', ['array', DonneesBancairesDto::class])->setNormalizer('donneesBancaires', function (Options $options, $value) {
                 if ($value instanceof DonneesBancairesDto) {
                     return $value;
@@ -103,7 +120,7 @@ class RachatDto
                 return DonneesBancairesDto::createFromArray($value);
             })
             ->setRequired('modeDesinvestissement')->setAllowedTypes('modeDesinvestissement', ['string'])
-            ->setDefault('repartitionDesinvestissement', null)->setAllowedTypes('repartitionDesinvestissement', ['array', 'null'])->setNormalizer('repartitionDesinvestissement', function (Options $options, $value) {
+            ->setRequired('repartitionDesinvestissement')->setAllowedTypes('repartitionDesinvestissement', ['array'])->setNormalizer('repartitionDesinvestissement', function (Options $options, $value) {
                 if (null === $value) {
                     return $value;
                 }
@@ -119,10 +136,10 @@ class RachatDto
                 return $value;
             })
             ->setDefault('typeRachatPartiel', null)->setAllowedTypes('typeRachatPartiel', ['string', 'null'])
-            ->setDefault('typeRachat', null)->setAllowedTypes('typeRachat', ['string', 'null'])
+            ->setRequired('typeRachat')->setAllowedTypes('typeRachat', ['string'])
             ->setDefault('optionFiscale', null)->setAllowedTypes('optionFiscale', ['string', 'null'])
             ->setDefault('commentaireClientRachatPrecoce', null)->setAllowedTypes('commentaireClientRachatPrecoce', ['string', 'null'])
-            ->setDefault('typeSignature', null)->setAllowedTypes('typeSignature', ['string', 'null'])
+            ->setRequired('typeSignature')->setAllowedTypes('typeSignature', ['string'])
         ;
     }
 
@@ -148,6 +165,7 @@ class RachatDto
             ->setContratId($resolvedOptions['contratId'])
             ->setMontant($resolvedOptions['montant'])
             ->setModePaiement($resolvedOptions['modePaiement'])
+            ->setDestinationDesFonds($resolvedOptions['destinationDesFonds'])
             ->setDonneesBancaires($resolvedOptions['donneesBancaires'])
             ->setModeDesinvestissement($resolvedOptions['modeDesinvestissement'])
             ->setRepartitionDesinvestissement($resolvedOptions['repartitionDesinvestissement'])
@@ -375,6 +393,26 @@ class RachatDto
     public function setTypeSignature(?string $typeSignature): self
     {
         $this->typeSignature = $typeSignature;
+
+        return $this;
+    }
+
+    /**
+     * @return  DestinationDesFondsDto|null
+     */
+    public function getDestinationDesFonds(): ?DestinationDesFondsDto
+    {
+        return $this->destinationDesFonds;
+    }
+
+    /**
+     * @param  DestinationDesFondsDto|null  $destinationDesFonds
+     *
+     * @return  self
+     */
+    public function setDestinationDesFonds(?DestinationDesFondsDto $destinationDesFonds): self
+    {
+        $this->destinationDesFonds = $destinationDesFonds;
 
         return $this;
     }

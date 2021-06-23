@@ -19,8 +19,12 @@ class RachatPartielDtoDeConsultation
     public const MODE_PAIEMENT_T = 'T';
 
     public const TYPE_RACHAT_PARTIEL_PONCTUEL = 'PONCTUEL';
+    public const TYPE_RACHAT_PARTIEL_PROGRAMME = 'PROGRAMME';
+    public const TYPE_RACHAT_PARTIEL_SUPPRESSION_PROGRAMME = 'SUPPRESSION_PROGRAMME';
 
     public const TYPE_RACHAT_BRUT = 'BRUT';
+    public const TYPE_RACHAT_NET = 'NET';
+    public const TYPE_RACHAT_CHOIX = 'CHOIX';
 
     public const OPTION_FISCALE_LIBERATOIRE = 'LIBERATOIRE';
     public const OPTION_FISCALE_DECLARATION = 'DECLARATION';
