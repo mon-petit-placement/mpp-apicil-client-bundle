@@ -55,8 +55,10 @@ interface ApicilPartialRepurchaseClientInterface
      * @method createFromModel
      *
      * @param RachatPartielDto $repurchase
+     *
+     * @return int
      */
-    public function createFromModel(RachatPartielDto $repurchase);
+    public function createFromModel(RachatPartielDto $repurchase): int;
 
     /**
      * Retrieve a partial repurchase request.
@@ -147,7 +149,7 @@ interface ApicilPartialRepurchaseClientInterface
     public function giveUp(int $id);
 
     /**
-     * Verify if a partial repurchase    request exist for a contract.
+     * Verify if a partial repurchase request exist for a contract.
      *
      * @method hasContract
      *
@@ -227,8 +229,6 @@ interface ApicilPartialRepurchaseClientInterface
      * @method sendSignatureBySms
      *
      * @param int $id
-     *
-     * @return bool
      */
     public function sendSignatureBySms(int $id);
 

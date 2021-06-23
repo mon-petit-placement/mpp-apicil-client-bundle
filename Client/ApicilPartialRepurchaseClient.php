@@ -62,11 +62,11 @@ class ApicilPartialRepurchaseClient extends AbstractApicilClientDomain implement
     /**
      * {@inheritdoc}
      */
-    public function createFromModel(RachatPartielDto $repurchase)
+    public function createFromModel(RachatPartielDto $repurchase): int
     {
-        return $this->requestAndPopulate(RachatPartielDto::class, 'POST', '/asigner', [
+        return $this->requestAndPopulate('array', 'POST', '/asigner', [
             'body' => $this->serializer->serialize($repurchase, 'json'),
-        ]);
+        ])['id'];
     }
 
     /**

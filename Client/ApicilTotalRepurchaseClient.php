@@ -4,9 +4,13 @@ namespace Mpp\ApicilClientBundle\Client;
 
 use Mpp\ApicilClientBundle\Model\ActeDocumentDto;
 use Mpp\ApicilClientBundle\Model\ActeRetourCreationDto;
+use Mpp\ApicilClientBundle\Model\DtoEligibilite;
 use Mpp\ApicilClientBundle\Model\EmailPropositionActeDto;
+use Mpp\ApicilClientBundle\Model\OperationEnCoursDto;
 use Mpp\ApicilClientBundle\Model\RachatPartielDtoDeConsultation;
+use Mpp\ApicilClientBundle\Model\RachatTotalDto;
 use Mpp\ApicilClientBundle\Model\RecuperationActeDocSousCategorieDto;
+use Mpp\ApicilClientBundle\Model\TelephoneDto;
 use Mpp\ApicilClientBundle\OptionsResolver\ApicilTotalRepurchaseClientOptionResolver;
 use Symfony\Component\HttpFoundation\File\File;
 
@@ -32,6 +36,14 @@ class ApicilTotalRepurchaseClient extends AbstractApicilClientDomain implements 
     /**
      * {@inheritdoc}
      */
+    public function approveSignature(int $id, string $otp)
+    {
+        $this->request('POST', sprintf('/%s/signature/%s', $id, $otp), [], true);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function create(array $options): ActeRetourCreationDto
     {
         $options = ApicilTotalRepurchaseClientOptionResolver::resolveCreateOptions($options);
@@ -45,6 +57,16 @@ class ApicilTotalRepurchaseClient extends AbstractApicilClientDomain implements 
                 ],
             ],
         ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createFromModel(RachatTotalDto $repurchase): int
+    {
+        return $this->requestAndPopulate('array', 'POST', '/asigner', [
+            'body' => $this->serializer->serialize($repurchase, 'json'),
+        ])['id'];
     }
 
     /**
@@ -87,12 +109,36 @@ class ApicilTotalRepurchaseClient extends AbstractApicilClientDomain implements 
         return $this->requestAndPopulate(sprintf('%s[]', ActeDocumentDto::class), 'GET', sprintf('/%s/documents', $id));
     }
 
+     /**
+     * {@inheritdoc}
+     */
+    public function getEmailTemplate(): EmailPropositionActeDto
+    {
+        return $this->requestAndPopulate(EmailPropositionActeDto::class, 'GET', '/mail/template');
+    }
+
     /**
      * {@inheritdoc}
      */
     public function giveUp(int $id)
     {
         $this->request('POST', sprintf('/%s/abandonner', $id));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasContract(int $contractId): OperationEnCoursDto
+    {
+        return $this->requestAndPopulate(OperationEnCoursDto::class, 'GET', sprintf('/contrat/%s/existe', $contractId));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isContractEligible(int $contractId): DtoEligibilite
+    {
+        return $this->requestAndPopulate(DtoEligibilite::class, 'GET', sprintf('/contrat/%s/eligible', $contractId));
     }
 
     /**
@@ -134,10 +180,56 @@ class ApicilTotalRepurchaseClient extends AbstractApicilClientDomain implements 
     /**
      * {@inheritdoc}
      */
+    public function resume(int $id): ActeRetourCreationDto
+    {
+        return $this->requestAndPopulate(ActeRetourCreationDto::class, 'PUT', sprintf('/%s/reprendre', $id));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function sendSignatureBySms(int $id)
+    {
+        $this->request('GET', sprintf('/%s/signature', $id), [], true);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function sendToCustomer(int $id, EmailPropositionActeDto $email)
+    {
+        $this->request('POST', sprintf('/%s/transmettre', $id), [
+            'body' => $this->serializer->serialize($email, 'json'),
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function testEmail(int $id, EmailPropositionActeDto $email)
     {
         $this->request('POST', sprintf('/%s/mail/tester', $id), [
             'body' => $this->serializer->serialize($email, 'json'),
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function updateFromModel(int $id, RachatTotalDto $repurchase): RachatTotalDto
+    {
+        return $this->requestAndPopulate(RachatPartielDto::class, 'PUT', sprintf('/asigner/%s', $id), [
+            'body' => $this->serializer->serialize($repurchase, 'json'),
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function updatePhoneNumber(int $id, TelephoneDto $phoneNumber)
+    {
+        $this->request('PUT', sprintf('/%s/telephone', $id), [
+            'body' => $this->serializer->serialize($phoneNumber, 'json'),
         ]);
     }
 
