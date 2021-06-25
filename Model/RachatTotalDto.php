@@ -2,6 +2,7 @@
 
 namespace Mpp\ApicilClientBundle\Model;
 
+use phpDocumentor\Reflection\Types\Self_;
 use Symfony\Component\OptionsResolver\Exception\AccessException;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
@@ -11,12 +12,11 @@ use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class RachatDto
+class RachatTotalDto
 {
-    public const MODE_DESINVESTISSEMENT_CHOIX = 'CHOIX';
-    public const MODE_DESINVESTISSEMENT_PRORATA = 'PRORATA';
-    public const MODE_DESINVESTISSEMENT_CONTRAT = 'CONTRAT';
-    public const MODE_DESINVESTISSEMENT_PROFIL = 'PROFIL';
+    public const FOMRE_REGLEMENT_CAPITAL = 'CAPITAL';
+    public const FORME_REGLEMENT_VIAGERE = 'VIAGERE';
+    public const FORME_REGLEMENT_CHOIX = 'CHOIX';
 
     public const MODE_PAIEMENT_C = 'C';
     public const MODE_PAIEMENT_P = 'P';
@@ -24,10 +24,15 @@ class RachatDto
     public const MODE_PAIEMENT_T = 'T';
 
     public const TYPE_RACHAT_PARTIEL_PONCTUEL = 'PONCTUEL';
+    public const TYPE_RACHAT_PARTIEL_PROGRAMME = 'PROGRAMME';
+    public const TYPE_RACHAT_PARTIEL_SUPPRESSION_PROGRAMME = 'SUPPRESSION_PROGRAMME';
 
     public const TYPE_RACHAT_BRUT = 'BRUT';
+    public const TYPE_RACHAT_NET = 'NET';
+    public const TYPE_RACHAT_CHOIX = 'CHOIX';
 
     public const OPTION_FISCALE_LIBERATOIRE = 'LIBERATOIRE';
+    public const OPTION_FISCALE_DECLARATION = 'DECLARATION';
 
     public const TYPE_SIGNATURE_ELECTRONIQUE = 'ELECTRONIQUE';
 
@@ -37,14 +42,24 @@ class RachatDto
     private $contratId;
 
     /**
-     * @var float|null
+     * @var bool|null
      */
-    private $montant;
+    private $conserverIban;
 
     /**
      * @var string|null
      */
     private $modePaiement;
+
+    /**
+     * @var \DateTime|null
+     */
+    private $dateEffet;
+
+    /**
+     * @var DestinationDesFondsDto|null
+     */
+    private $destinationDesFonds;
 
     /**
      * @var DonneesBancairesDto|null
@@ -54,22 +69,7 @@ class RachatDto
     /**
      * @var string|null
      */
-    private $modeDesinvestissement;
-
-    /**
-     * @var array|null
-     */
-    private $repartitionDesinvestissement;
-
-    /**
-     * @var string|null
-     */
-    private $typeRachatPartiel;
-
-    /**
-     * @var string|null
-     */
-    private $typeRachat;
+    private $formeReglement;
 
     /**
      * @var string|null
@@ -93,8 +93,16 @@ class RachatDto
     {
         $resolver
             ->setRequired('contratId')->setAllowedTypes('contratId', ['int'])
-            ->setRequired('montant')->setAllowedTypes('montant', ['float'])
+            ->setDefault('conserverIban', null)->setAllowedTypes('conserverIban', ['bool', 'null'])
+            ->setDefault('dateEffet', null)->setAllowedTypes('dateEffet', [\DateTime::class, null])
             ->setRequired('modePaiement')->setAllowedTypes('modePaiement', ['string'])
+            ->setRequired('destinationDesFonds')->setAllowedTypes('destinationDesFonds', ['array', DestinationDesFondsDto::class])->setNormalizer('destinationDesFonds', function (Options $options, $value) {
+                if ($value instanceof DestinationDesFondsDto) {
+                    return $value;
+                }
+
+                return DestinationDesFondsDto::createFromArray($value);
+            })
             ->setRequired('donneesBancaires')->setAllowedTypes('donneesBancaires', ['array', DonneesBancairesDto::class])->setNormalizer('donneesBancaires', function (Options $options, $value) {
                 if ($value instanceof DonneesBancairesDto) {
                     return $value;
@@ -102,27 +110,10 @@ class RachatDto
 
                 return DonneesBancairesDto::createFromArray($value);
             })
-            ->setRequired('modeDesinvestissement')->setAllowedTypes('modeDesinvestissement', ['string'])
-            ->setDefault('repartitionDesinvestissement', null)->setAllowedTypes('repartitionDesinvestissement', ['array', 'null'])->setNormalizer('repartitionDesinvestissement', function (Options $options, $value) {
-                if (null === $value) {
-                    return $value;
-                }
-
-                foreach ($value as &$repartition) {
-                    if ($repartition instanceof RepartitionReponseDto) {
-                        continue;
-                    }
-
-                    $repartition = RepartitionReponseDto::createFromArray($repartition);
-                }
-
-                return $value;
-            })
-            ->setDefault('typeRachatPartiel', null)->setAllowedTypes('typeRachatPartiel', ['string', 'null'])
-            ->setDefault('typeRachat', null)->setAllowedTypes('typeRachat', ['string', 'null'])
-            ->setDefault('optionFiscale', null)->setAllowedTypes('optionFiscale', ['string', 'null'])
+            ->setDefault('formeReglement', null)->setAllowedTypes('formeReglement', ['string', 'null'])
+            ->setRequired('optionFiscale')->setAllowedTypes('optionFiscale', ['string'])
             ->setDefault('commentaireClientRachatPrecoce', null)->setAllowedTypes('commentaireClientRachatPrecoce', ['string', 'null'])
-            ->setDefault('typeSignature', null)->setAllowedTypes('typeSignature', ['string', 'null'])
+            ->setRequired('typeSignature')->setAllowedTypes('typeSignature', ['string'])
         ;
     }
 
@@ -148,6 +139,7 @@ class RachatDto
             ->setContratId($resolvedOptions['contratId'])
             ->setMontant($resolvedOptions['montant'])
             ->setModePaiement($resolvedOptions['modePaiement'])
+            ->setDestinationDesFonds($resolvedOptions['destinationDesFonds'])
             ->setDonneesBancaires($resolvedOptions['donneesBancaires'])
             ->setModeDesinvestissement($resolvedOptions['modeDesinvestissement'])
             ->setRepartitionDesinvestissement($resolvedOptions['repartitionDesinvestissement'])
@@ -375,6 +367,86 @@ class RachatDto
     public function setTypeSignature(?string $typeSignature): self
     {
         $this->typeSignature = $typeSignature;
+
+        return $this;
+    }
+
+    /**
+     * @return  DestinationDesFondsDto|null
+     */
+    public function getDestinationDesFonds(): ?DestinationDesFondsDto
+    {
+        return $this->destinationDesFonds;
+    }
+
+    /**
+     * @param  DestinationDesFondsDto|null  $destinationDesFonds
+     *
+     * @return  self
+     */
+    public function setDestinationDesFonds(?DestinationDesFondsDto $destinationDesFonds): self
+    {
+        $this->destinationDesFonds = $destinationDesFonds;
+
+        return $this;
+    }
+
+    /**
+     * @return  \DateTime|null
+     */
+    public function getDateEffet(): ?\DateTime
+    {
+        return $this->dateEffet;
+    }
+
+    /**
+     * @param  \DateTime|null  $dateEffet
+     *
+     * @return  self
+     */
+    public function setDateEffet(?\DateTime $dateEffet): self
+    {
+        $this->dateEffet = $dateEffet;
+
+        return $this;
+    }
+
+    /**
+     * @return  bool|null
+     */
+    public function getConserverIban(): ?bool
+    {
+        return $this->conserverIban;
+    }
+
+    /**
+     * @param  bool|null  $conserverIban
+     *
+     * @return  self
+     */
+    public function setConserverIban(?bool $conserverIban): self
+    {
+        $this->conserverIban = $conserverIban;
+
+        return $this;
+    }
+
+    /**
+     * @return  string|null
+     */
+    public function getFormeReglement(): ?string
+    {
+        return $this->formeReglement;
+    }
+
+    /**
+     * @param  string|null  $formeReglement
+     *
+     * @return  self
+     */
+    public function setFormeReglement(?string $formeReglement): self
+    {
+        $this->formeReglement = $formeReglement;
 
         return $this;
     }

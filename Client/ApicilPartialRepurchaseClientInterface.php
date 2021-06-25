@@ -7,8 +7,9 @@ use Mpp\ApicilClientBundle\Model\ActeRetourCreationDto;
 use Mpp\ApicilClientBundle\Model\DtoEligibilite;
 use Mpp\ApicilClientBundle\Model\EmailPropositionActeDto;
 use Mpp\ApicilClientBundle\Model\OperationEnCoursDto;
-use Mpp\ApicilClientBundle\Model\RachatDto;
+use Mpp\ApicilClientBundle\Model\RachatPartielDto;
 use Mpp\ApicilClientBundle\Model\RachatPartielDtoDeConsultation;
+use Mpp\ApicilClientBundle\Model\RecuperationActeDocSousCategorieDto;
 use Mpp\ApicilClientBundle\Model\TelephoneDto;
 use Symfony\Component\HttpFoundation\File\File;
 
@@ -53,9 +54,11 @@ interface ApicilPartialRepurchaseClientInterface
      *
      * @method createFromModel
      *
-     * @param RachatDto $repurchase
+     * @param RachatPartielDto $repurchase
+     *
+     * @return int
      */
-    public function createFromModel(RachatDto $repurchase);
+    public function createFromModel(RachatPartielDto $repurchase): int;
 
     /**
      * Retrieve a partial repurchase request.
@@ -93,13 +96,26 @@ interface ApicilPartialRepurchaseClientInterface
     /**
      * Retrieve partial repurchase document.
      *
-     * @method getDocument
+     * @method getDocumentByCategory
      *
      * @param int $id
+     * @param string $category
+     *
+     * @return RecuperationActeDocSousCategorieDto
+     */
+    public function getDocumentByCategory(int $id, string $category): RecuperationActeDocSousCategorieDto;
+
+    /**
+     * Retrieve partial repurchase document.
+     *
+     * @method getDocumentById
+     *
+     * @param int $id
+     * @param int $documentId
      *
      * @return File
      */
-    public function getDocument(int $id, int $documentId): File;
+    public function getDocumentById(int $id, int $documentId): File;
 
     /**
      * Retrieve partial repurchase documents.
@@ -108,9 +124,9 @@ interface ApicilPartialRepurchaseClientInterface
      *
      * @param int $id
      *
-     * @return ActeDocumentDto
+     * @return array
      */
-    public function getDocuments(int $id): ActeDocumentDto;
+    public function getDocuments(int $id): array;
 
     /**
      * Retrieve partial purchase email template.
@@ -133,7 +149,7 @@ interface ApicilPartialRepurchaseClientInterface
     public function giveUp(int $id);
 
     /**
-     * Verify if a partial repurchase    request exist for a contract.
+     * Verify if a partial repurchase request exist for a contract.
      *
      * @method hasContract
      *
@@ -175,6 +191,18 @@ interface ApicilPartialRepurchaseClientInterface
     public function remove(int $id): bool;
 
     /**
+     * Remove partial repurchase request.
+     *
+     * @method removeDocument
+     *
+     * @param int $id
+     * @param int $documentId
+     *
+     * @return bool
+     */
+    public function removeDocument(int $id, int $documentId): bool;
+
+    /**
      * Restart the partial repurchase request.
      *
      * @method restart
@@ -201,8 +229,6 @@ interface ApicilPartialRepurchaseClientInterface
      * @method sendSignatureBySms
      *
      * @param int $id
-     *
-     * @return bool
      */
     public function sendSignatureBySms(int $id);
 
@@ -232,11 +258,11 @@ interface ApicilPartialRepurchaseClientInterface
      * @method updateFromModel
      *
      * @param int       $id
-     * @param RachatDto $repurchase
+     * @param RachatPartielDto $repurchase
      *
-     * @return RachatDto
+     * @return RachatPartielDto
      */
-    public function updateFromModel(int $id, RachatDto $repurchase): RachatDto;
+    public function updateFromModel(int $id, RachatPartielDto $repurchase): RachatPartielDto;
 
     /**
      * Update the customer's phone number for a partial repurchase request.
