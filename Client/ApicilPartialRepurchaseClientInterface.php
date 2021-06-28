@@ -157,7 +157,7 @@ interface ApicilPartialRepurchaseClientInterface
      *
      * @return OperationEnCoursDto
      */
-    public function hasContract(int $contractId): OperationEnCoursDto;
+    public function hasContract(int $contractId): ?OperationEnCoursDto;
 
     /**
      * Verify if a contract is eligible to partial repurchase request.
