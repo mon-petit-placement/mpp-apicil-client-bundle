@@ -128,7 +128,7 @@ class ApicilTotalRepurchaseClient extends AbstractApicilClientDomain implements 
     /**
      * {@inheritdoc}
      */
-    public function hasContract(int $contractId): OperationEnCoursDto
+    public function hasContract(int $contractId): ?OperationEnCoursDto
     {
         return $this->requestAndPopulate(OperationEnCoursDto::class, 'GET', sprintf('/contrat/%s/existe', $contractId));
     }

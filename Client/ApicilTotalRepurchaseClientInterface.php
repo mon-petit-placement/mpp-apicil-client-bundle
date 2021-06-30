@@ -144,7 +144,7 @@ interface ApicilTotalRepurchaseClientInterface
      *
      * @return OperationEnCoursDto
      */
-    public function hasContract(int $contractId): OperationEnCoursDto;
+    public function hasContract(int $contractId): ?OperationEnCoursDto;
 
     /**
      * Verify if a contract is eligible to total repurchase request.
