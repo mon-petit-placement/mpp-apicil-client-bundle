@@ -226,9 +226,9 @@ class ApicilPartialRepurchaseClient extends AbstractApicilClientDomain implement
     /**
      * {@inheritdoc}
      */
-    public function updateFromModel(int $id, RachatPartielDto $repurchase): RachatPartielDto
+    public function updateFromModel(int $id, RachatPartielDto $repurchase)
     {
-        return $this->requestAndPopulate(RachatPartielDto::class, 'PUT', sprintf('/asigner/%s', $id), [
+        return $this->request('PUT', sprintf('/asigner/%s', $id), [
             'body' => $this->serializer->serialize($repurchase, 'json'),
         ]);
     }
