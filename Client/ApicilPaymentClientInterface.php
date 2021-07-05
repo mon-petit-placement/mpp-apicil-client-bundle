@@ -387,10 +387,8 @@ interface ApicilPaymentClientInterface
      *
      * @param int               $id
      * @param ModeleDeVersementLibre $paymentModel
-     *
-     * @return ModeleDeVersementLibre
      */
-    public function updateFromModel(int $id, ModeleDeVersementLibre $paymentModel): ModeleDeVersementLibre;
+    public function updateFromModel(int $id, ModeleDeVersementLibre $paymentModel);
 
     /**
      * Update the customer's phone number for a payment request.

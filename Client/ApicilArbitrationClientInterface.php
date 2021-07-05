@@ -308,10 +308,8 @@ interface ApicilArbitrationClientInterface
      *
      * @param int            $id
      * @param ArbitrageDto $arbitration
-     *
-     * @return ArbitrageDto
      */
-    public function updateFromModel(int $id, ArbitrageDto $arbitration): ArbitrageDto;
+    public function updateFromModel(int $id, ArbitrageDto $arbitration);
 
     /**
      * Update the customer's phone number.

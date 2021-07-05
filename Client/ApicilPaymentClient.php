@@ -348,9 +348,9 @@ class ApicilPaymentClient extends AbstractApicilClientDomain implements ApicilPa
     /**
      * {@inheritdoc}
      */
-    public function updateFromModel(int $id, ModeleDeVersementLibre $paymentModel): ModeleDeVersementLibre
+    public function updateFromModel(int $id, ModeleDeVersementLibre $paymentModel)
     {
-        return $this->requestAndPopulate(ModeleDeVersementLibre::class, 'PUT', sprintf('/asigner/%s', $id), [
+        return $this->request('PUT', sprintf('/asigner/%s', $id), [
             'body' => $this->serializer->serialize($paymentModel, 'json'),
         ]);
     }

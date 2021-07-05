@@ -259,10 +259,8 @@ interface ApicilPartialRepurchaseClientInterface
      *
      * @param int       $id
      * @param RachatPartielDto $repurchase
-     *
-     * @return RachatPartielDto
      */
-    public function updateFromModel(int $id, RachatPartielDto $repurchase): RachatPartielDto;
+    public function updateFromModel(int $id, RachatPartielDto $repurchase);
 
     /**
      * Update the customer's phone number for a partial repurchase request.

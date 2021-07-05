@@ -283,9 +283,9 @@ class ApicilArbitrationClient extends AbstractApicilClientDomain implements Apic
     /**
      * {@inheritdoc}
      */
-    public function updateFromModel(int $id, ArbitrageDto $arbitration): ArbitrageDto
+    public function updateFromModel(int $id, ArbitrageDto $arbitration)
     {
-        return $this->requestAndPopulate(ArbitrageDto::class, 'PUT', sprintf('/asigner/%s', $id), [
+        return $this->request('PUT', sprintf('/asigner/%s', $id), [
             'body' => $this->serializer->serialize($arbitration, 'json'),
         ]);
     }

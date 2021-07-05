@@ -248,10 +248,8 @@ interface ApicilTotalRepurchaseClientInterface
      *
      * @param int       $id
      * @param RachatTotalDto $repurchase
-     *
-     * @return RachatTotalDto
      */
-    public function updateFromModel(int $id, RachatTotalDto $repurchase): RachatTotalDto;
+    public function updateFromModel(int $id, RachatTotalDto $repurchase);
 
     /**
      * Update the customer's phone number for a total repurchase request.
