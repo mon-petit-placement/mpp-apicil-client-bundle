@@ -124,6 +124,15 @@ class ApicilPaymentClientOptionResolver
         return $resolver->resolve($options);
     }
 
+    public static function resolveIsContractEligible(array $options): array
+    {
+        $resolver = (new OptionsResolver())
+            ->setRequired('type')->setAllowedTypes('type', ['string'])->setAllowedValues('type', ['COMPLEMENTAIRE', 'PROGRAMME', 'SUPPRESSION_PROGRAMME'])
+        ;
+
+        return $resolver->resolve($options);
+    }
+
     public static function resolveRefuseOptions(array $options): array
     {
         $resolver = (new OptionsResolver())

@@ -154,10 +154,11 @@ interface ApicilPartialRepurchaseClientInterface
      * @method hasContract
      *
      * @param int $contractId
+     * @param array $options
      *
      * @return OperationEnCoursDto
      */
-    public function hasContract(int $contractId): ?OperationEnCoursDto;
+    public function hasContract(int $contractId, array $options = []): ?OperationEnCoursDto;
 
     /**
      * Verify if a contract is eligible to partial repurchase request.
@@ -165,10 +166,11 @@ interface ApicilPartialRepurchaseClientInterface
      * @method isContractEligible
      *
      * @param int $contractId
+     * @param array $options
      *
      * @return DtoEligibilite
      */
-    public function isContractEligible(int $contractId): DtoEligibilite;
+    public function isContractEligible(int $contractId, array $options = []): DtoEligibilite;
 
     /**
      * Refuse a partial repurchase request.

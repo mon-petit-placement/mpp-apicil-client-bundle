@@ -138,17 +138,21 @@ class ApicilPartialRepurchaseClient extends AbstractApicilClientDomain implement
     /**
      * {@inheritdoc}
      */
-    public function hasContract(int $contractId): ?OperationEnCoursDto
+    public function hasContract(int $contractId, array $options = []): ?OperationEnCoursDto
     {
-        return $this->requestAndPopulate(OperationEnCoursDto::class, 'GET', sprintf('/contrat/%s/existe', $contractId));
+        return $this->requestAndPopulate(OperationEnCoursDto::class, 'GET', sprintf('/contrat/%s/existe', $contractId), [
+            'query' => ApicilPartialRepurchaseClientOptionResolver::resolveHasContractOptions($options),
+        ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isContractEligible(int $contractId): DtoEligibilite
+    public function isContractEligible(int $contractId, array $options = []): DtoEligibilite
     {
-        return $this->requestAndPopulate(DtoEligibilite::class, 'GET', sprintf('/contrat/%s/eligible', $contractId));
+        return $this->requestAndPopulate(DtoEligibilite::class, 'GET', sprintf('/contrat/%s/eligible', $contractId), [
+            'query' => ApicilPartialRepurchaseClientOptionResolver::resolveIsContractEligible($options),
+        ]);
     }
 
     /**
