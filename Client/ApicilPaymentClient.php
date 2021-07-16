@@ -226,7 +226,9 @@ class ApicilPaymentClient extends AbstractApicilClientDomain implements ApicilPa
      */
     public function isContractEligible(int $contractId, array $options = []): DtoEligibilite
     {
-        return $this->requestAndPopulate(DtoEligibilite::class, 'GET', sprintf('/contrat/%s/eligible', $contractId));
+        return $this->requestAndPopulate(DtoEligibilite::class, 'GET', sprintf('/contrat/%s/eligible', $contractId), [
+            'query' => ApicilPaymentClientOptionResolver::resolveIsContractEligible($options),
+        ]);
     }
 
     /**

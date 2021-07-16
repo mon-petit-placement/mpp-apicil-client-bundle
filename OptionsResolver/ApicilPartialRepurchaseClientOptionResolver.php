@@ -63,6 +63,24 @@ class ApicilPartialRepurchaseClientOptionResolver
         return $resolver->resolve($options);
     }
 
+    public static function resolveHasContractOptions(array $options): array
+    {
+        $resolver = (new OptionsResolver())
+            ->setRequired('type')->setAllowedTypes('type', ['string'])->setAllowedValues('type', ['PONCTUEL', 'PROGRAMME', 'SUPPRESSION_PROGRAMME'])
+        ;
+
+        return $resolver->resolve($options);
+    }
+
+    public static function resolveIsContractEligible(array $options): array
+    {
+        $resolver = (new OptionsResolver())
+            ->setRequired('type')->setAllowedTypes('type', ['string'])->setAllowedValues('type', ['PONCTUEL', 'PROGRAMME', 'SUPPRESSION_PROGRAMME'])
+        ;
+
+        return $resolver->resolve($options);
+    }
+
     public static function resolveRefuseOptions(array $options): array
     {
         $resolver = (new OptionsResolver())
