@@ -129,6 +129,11 @@ class ModeleDeVersementLibre
     private $typeSignature;
 
     /**
+     * @var float|null
+     */
+    private $tauxDerogatoire;
+
+    /**
      * @param OptionsResolver $resolver
      */
     public static function configureData(OptionsResolver $resolver)
@@ -213,6 +218,7 @@ class ModeleDeVersementLibre
             ->setRequired('typeSignature')->setAllowedTypes('typeSignature', ['string'])->setAllowedValues('typeSignature', function ($value) {
                 return in_array($value, [ProjetInvestissement::TYPE_SIGNATURE_ELECTRONIQUE, ProjetInvestissement::TYPE_SIGNATURE_PAPIER]);
             })
+            ->setDefault('tauxDerogatoire', null)->setAllowedTypes('tauxDerogatoire', ['float'])
         ;
     }
 
@@ -253,6 +259,7 @@ class ModeleDeVersementLibre
             ->setRum($resolvedOptions['rum'])
             ->setTypeVersement($resolvedOptions['typeVersement'])
             ->setTypeSignature($resolvedOptions['typeSignature'])
+            ->setTauxDerogatoire($resolvedOptions['tauxDerogatoire'])
         ;
     }
 
@@ -632,6 +639,30 @@ class ModeleDeVersementLibre
     public function setTypeSignature(?string $typeSignature): self
     {
         $this->typeSignature = $typeSignature;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of tauxDerogatoire
+     *
+     * @return  float|null
+     */
+    public function getTauxDerogatoire(): ?float
+    {
+        return $this->tauxDerogatoire;
+    }
+
+    /**
+     * Set the value of tauxDerogatoire
+     *
+     * @param  float|null  $tauxDerogatoire
+     *
+     * @return  self
+     */
+    public function setTauxDerogatoire(?float $tauxDerogatoire): self
+    {
+        $this->tauxDerogatoire = $tauxDerogatoire;
 
         return $this;
     }
