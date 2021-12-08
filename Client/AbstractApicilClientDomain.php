@@ -2,8 +2,10 @@
 
 namespace Mpp\ApicilClientBundle\Client;
 
+use Exception;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\Psr7\Response as GuzzleResponse;
 use GuzzleHttp\RequestOptions;
@@ -76,25 +78,27 @@ abstract class AbstractApicilClientDomain implements ApicilClientDomainInterface
      *
      * @param string $method
      * @param string $path
-     * @param array  $options
-     * @param bool   $isSign
+     * @param array $options
+     * @param bool $isSign
      *
      * @return GuzzleResponse
      *
      * @throws ApicilApiError
+     * @throws Exception|GuzzleException
      */
     public function request(string $method, string $path, array $options = [], bool $isSign = false): ResponseInterface
     {
-        try {
-            $fullPath = sprintf('%s%s', $this->getBasePath(), $path);
-            $url = sprintf('%s%s', $this->httpClient->getConfig('base_uri'), $fullPath);
-            $className = (new \ReflectionClass($this))->getName();
+        $fullPath = sprintf('%s%s', $this->getBasePath(), $path);
+        $url = sprintf('%s%s', $this->httpClient->getConfig('base_uri'), $fullPath);
+        $className = (new \ReflectionClass($this))->getName();
 
-            $this->logger->info(sprintf('%s api call', $className), [
-                'method' => $method,
-                'url' => $url,
-                'headers' => $this->httpClient->getConfig('headers'),
-            ]);
+        $this->logger->info(sprintf('%s api call', $className), [
+            'method' => $method,
+            'url' => $url,
+            'headers' => $this->httpClient->getConfig('headers'),
+        ]);
+
+        try {
             if ($isSign) {
                 return $this->signHttpClient->request($method, $fullPath, $options);
             } else {
@@ -109,19 +113,31 @@ abstract class AbstractApicilClientDomain implements ApicilClientDomainInterface
                 ;
             }
 
-            $apicilApiError = $this->serializer->deserialize($e->getResponse()->getBody()->getContents(), ApicilApiError::class, 'json');
+            try {
+                $apicilApiError = $this->serializer->deserialize($e->getResponse()->getBody()->getContents(), ApicilApiError::class, 'json');
+            } catch (Exception $exception) {
+                $this->logger->error(sprintf('%s error', $className), [
+                    'method' => $method,
+                    'url' => $url,
+                    'headers' => $this->httpClient->getConfig('headers'),
+                    'boby' => $e->getRequest()->getBody()->getContents(),
+                    'response_code' => $e->getResponse()->getStatusCode(),
+                ]);
+
+                throw $exception;
+            }
 
             $this->logger->error(sprintf('%s error', $className), [
                 'method' => $method,
                 'url' => $url,
                 'headers' => $this->httpClient->getConfig('headers'),
-                'boby' => $e->getRequest()->getBody(),
+                'boby' => $e->getRequest()->getBody()->getContents(),
                 'response_code' => $e->getResponse()->getStatusCode(),
-                'error_code' => $apicilApiError->getCode(),
+                'error_code' => $apicilApiError?->getCode(),
                 'error_messages' => (string) $apicilApiError,
             ]);
 
-            throw $apicilApiError->getException();
+            throw $apicilApiError?->getException();
         }
     }
 
