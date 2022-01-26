@@ -2,6 +2,9 @@
 
 namespace Mpp\ApicilClientBundle\OptionsResolver;
 
+use Mpp\ApicilClientBundle\Model\ListProjetItem;
+use Mpp\ApicilClientBundle\Model\ModeleDeVersement;
+use Mpp\ApicilClientBundle\Model\ProjetInvestissement;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -57,6 +60,39 @@ class ApicilProjectClientOptionResolver
 
                     return $value;
                 })
+        ;
+
+        return $resolver->resolve($options);
+    }
+
+    public static function resolveListProjetOptions(array $options): array
+    {
+        $resolver = (new OptionsResolver())
+            ->setDefault('page',1)->setAllowedTypes('page', ['int'])
+            ->setDefault('elementsPerPage',10)->setAllowedTypes('elementsPerPage', ['int'])
+            ->setDefined('motCle')->setAllowedTypes('motCle', ['string'])
+            ->setDefined('codeProduit')->setAllowedTypes('codeProduit', ['string'])
+            ->setDefined('statuts')->setAllowedTypes('statuts', ['string[]'])
+            ->setDefined('typeSignature')->setAllowedTypes('typeSignature', ['string'])
+            ->setAllowedValues('typeSignature', [
+                ProjetInvestissement::TYPE_SIGNATURE_ELECTRONIQUE, ProjetInvestissement::TYPE_SIGNATURE_PAPIER
+            ])
+            ->setDefined('modeReglement')->setAllowedTypes('modeReglement', ['string'])
+            ->setAllowedValues('modeReglement', [
+                ModeleDeVersement::MODE_PAIEMENT_P,
+                ModeleDeVersement::MODE_PAIEMENT_C,
+                ModeleDeVersement::MODE_PAIEMENT_V,
+                ModeleDeVersement::MODE_PAIEMENT_T
+            ])
+            ->setDefined('trier')->setAllowedTypes('trier', ['string'])
+            ->setDefined('ordre')->setAllowedTypes('ordre', ['string'])
+            ->setDefined('typeSouscription')->setAllowedTypes('typeSouscription', ['string[]'])
+            ->setAllowedValues('typeSignature', [
+                ListProjetItem::TYPE_SOUSCRIPTION_SELFCARE, ListProjetItem::TYPE_SOUSCRIPTION_PROPOSITION
+            ])
+            ->setDefined('idProduit')->setAllowedTypes('idProduit', ['int'])
+            ->setDefined('idCourtier')->setAllowedTypes('idCourtier', ['int'])
+            ->setDefined('contratId')->setAllowedTypes('contratId', ['int'])
         ;
 
         return $resolver->resolve($options);
