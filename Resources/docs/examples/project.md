@@ -57,6 +57,14 @@ $project = $apicilClientRegistry->getProject()->createFromInvestmentProject($inv
 $project = $apicilClientRegistry->getProject()->get(12);
 ```
 
+#### list(array $search = []): ListProjet
+
+```php
+<?php
+
+$project = $apicilClientRegistry->getProject()->list(["contratId" => 123456789]);
+```
+
 #### getBulletin(int $id): File
 
 ```php

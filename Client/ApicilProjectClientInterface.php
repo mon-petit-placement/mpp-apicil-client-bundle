@@ -3,8 +3,9 @@
 namespace Mpp\ApicilClientBundle\Client;
 
 use Mpp\ApicilClientBundle\Model\ConnaissanceClientProjet;
-use Mpp\ApicilClientBundle\Model\EmailPropositionSouscriptionDto;
+use Mpp\ApicilClientBundle\Model\EmailPropositionActeDto;
 use Mpp\ApicilClientBundle\Model\ListDocumentDto;
+use Mpp\ApicilClientBundle\Model\ListProjet;
 use Mpp\ApicilClientBundle\Model\ProjetInvestissement;
 use Mpp\ApicilClientBundle\Model\ProjetInvestissementRetour;
 use Mpp\ApicilClientBundle\Model\ReponseProjetDto;
@@ -67,6 +68,17 @@ interface ApicilProjectClientInterface
     public function get(int $id): ProjetInvestissementRetour;
 
     /**
+     * List projects.
+     *
+     * @method list
+     *
+     * @param array $search
+     *
+     * @return ListProjet
+     */
+    public function list(array $search = []): ListProjet;
+
+    /**
      * Retrieve the project bulletin.
      *
      * @method getBulletin
@@ -122,9 +134,9 @@ interface ApicilProjectClientInterface
      * @method sendToCustomer
      *
      * @param int                             $id
-     * @param EmailPropositionSouscriptionDto $email
+     * @param EmailPropositionActeDto $email
      */
-    public function sendToCustomer(int $id, EmailPropositionSouscriptionDto $email);
+    public function sendToCustomer(int $id, EmailPropositionActeDto $email);
 
     /**
      * Attach new document to the project.

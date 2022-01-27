@@ -3,8 +3,9 @@
 namespace Mpp\ApicilClientBundle\Client;
 
 use Mpp\ApicilClientBundle\Model\ConnaissanceClientProjet;
-use Mpp\ApicilClientBundle\Model\EmailPropositionSouscriptionDto;
+use Mpp\ApicilClientBundle\Model\EmailPropositionActeDto;
 use Mpp\ApicilClientBundle\Model\ListDocumentDto;
+use Mpp\ApicilClientBundle\Model\ListProjet;
 use Mpp\ApicilClientBundle\Model\ProjetInvestissement;
 use Mpp\ApicilClientBundle\Model\ProjetInvestissementRetour;
 use Mpp\ApicilClientBundle\Model\ReponseProjetDto;
@@ -71,6 +72,16 @@ class ApicilProjectClient extends AbstractApicilClientDomain implements ApicilPr
     /**
      * {@inheritdoc}
      */
+    public function list(array $search = []): ListProjet
+    {
+        return $this->requestAndPopulate(ListProjet::class, 'GET', '/', [
+            'query' => ApicilProjectClientOptionResolver::resolveListProjetOptions($search),
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getBulletin(int $id): File
     {
         return $this->download('GET', sprintf('/%s/bulletin?return-type=pdf', $id));
@@ -113,7 +124,7 @@ class ApicilProjectClient extends AbstractApicilClientDomain implements ApicilPr
     /**
      * {@inheritdoc}
      */
-    public function sendToCustomer(int $id, EmailPropositionSouscriptionDto $email)
+    public function sendToCustomer(int $id, EmailPropositionActeDto $email)
     {
         $this->request('POST', sprintf('/transmettre/%s', $id), [
             'body' => $this->serializer->serialize($email, 'json'),

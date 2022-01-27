@@ -24,6 +24,7 @@ class ModeleDeVersement
     public const MODE_PAIEMENT_C = 'C';
     public const MODE_PAIEMENT_P = 'P';
     public const MODE_PAIEMENT_V = 'V';
+    public const MODE_PAIEMENT_T = 'T';
 
     public const TYPE_VERSEMENT_COMPLEMENTAIRE = 'COMPLEMENTAIRE';
     public const TYPE_VERSEMENT_PROGRAMME = 'PROGRAMME';
