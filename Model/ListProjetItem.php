@@ -148,7 +148,7 @@ class ListProjetItem
     private $versionProduit;
 
     /**
-     * @var string
+     * @var bool
      */
     private $transfertBanque;
 
@@ -493,12 +493,12 @@ class ListProjetItem
         return $this;
     }
 
-    public function getTransfertBanque(): string
+    public function getTransfertBanque(): bool
     {
         return $this->transfertBanque;
     }
 
-    public function setTransfertBanque(string $transfertBanque): ListProjetItem
+    public function setTransfertBanque(bool $transfertBanque): ListProjetItem
     {
         $this->transfertBanque = $transfertBanque;
 
