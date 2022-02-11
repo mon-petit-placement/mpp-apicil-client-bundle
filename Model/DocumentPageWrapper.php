@@ -2,10 +2,13 @@
 
 namespace Mpp\ApicilClientBundle\Model;
 
+/**
+ * @template T
+ */
 class DocumentPageWrapper
 {
     /**
-     * @var array|null
+     * @var T[]|null
      */
     private $content;
 
@@ -25,7 +28,7 @@ class DocumentPageWrapper
     private $totalElements;
 
     /**
-     * @return array|null
+     * @return T[]|null
      */
     public function getContent(): ?array
     {
@@ -33,7 +36,7 @@ class DocumentPageWrapper
     }
 
     /**
-     * @param array|null $content
+     * @param T[]|null $content
      *
      * @return self
      */

@@ -4,7 +4,7 @@ namespace Mpp\ApicilClientBundle\Client;
 
 use Mpp\ApicilClientBundle\Model\ClauseBeneficiareDto;
 use Mpp\ApicilClientBundle\Model\ContratDto;
-use Mpp\ApicilClientBundle\Model\DocumentMetadataDto;
+use Mpp\ApicilClientBundle\Model\DocumentList;
 use Mpp\ApicilClientBundle\Model\IndicateursContratDto;
 use Mpp\ApicilClientBundle\Model\ListContratDto;
 use Mpp\ApicilClientBundle\Model\OperationDto;
@@ -51,9 +51,9 @@ class ApicilContractClient extends AbstractApicilClientDomain implements ApicilC
     /**
      * {@inheritdoc}
      */
-    public function getDocuments(int $id, array $options = []): DocumentMetadataDto
+    public function getDocuments(int $id, array $options = []): DocumentList
     {
-        return $this->requestAndPopulate(DocumentMetadataDto::class, 'GET', sprintf('/%s/documents', $id), [
+        return $this->requestAndPopulate(DocumentList::class, 'GET', sprintf('/%s/documents', $id), [
             'query' => ApicilContractClientOptionResolver::resolveGetDocumentsOptions($options),
         ]);
     }

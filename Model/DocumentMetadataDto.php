@@ -4,6 +4,9 @@ namespace Mpp\ApicilClientBundle\Model;
 
 class DocumentMetadataDto
 {
+    public const DIRECTION_IN = 'ENTRANT';
+    public const DIRECTION_OUT = 'SORTANT';
+
     /**
      * @var string|null
      */

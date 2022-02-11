@@ -4,7 +4,7 @@ namespace Mpp\ApicilClientBundle\Client;
 
 use Mpp\ApicilClientBundle\Model\ClauseBeneficiareDto;
 use Mpp\ApicilClientBundle\Model\ContratDto;
-use Mpp\ApicilClientBundle\Model\DocumentMetadataDto;
+use Mpp\ApicilClientBundle\Model\DocumentList;
 use Mpp\ApicilClientBundle\Model\IndicateursContratDto;
 use Mpp\ApicilClientBundle\Model\ListContratDto;
 use Mpp\ApicilClientBundle\Model\OperationDto;
@@ -65,9 +65,9 @@ interface ApicilContractClientInterface
      * @param array $id
      * @param array $options
      *
-     * @return DocumentMetadataDto
+     * @return DocumentList
      */
-    public function getDocuments(int $id, array $options = []): DocumentMetadataDto;
+    public function getDocuments(int $id, array $options = []): DocumentList;
 
     /**
      * Retrieve indicators of a contract.
