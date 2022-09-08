@@ -272,7 +272,7 @@ class ContratDto
     private $personnePolitiqueExposee;
 
     /**
-     * @var array<Mpp\ApicilClientBundle\Model\SupportContratDto>|null
+     * @var SupportContratDto[]|null
      */
     private $portefeuille;
 
@@ -350,6 +350,11 @@ class ContratDto
      * @var string|null
      */
     private $statut;
+
+    /**
+     * @var string|null
+     */
+    private $statutCode;
 
     /**
      * @var float|null
@@ -1797,6 +1802,26 @@ class ContratDto
     public function setStatut(?string $statut): self
     {
         $this->statut = $statut;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getStatutCode(): ?string
+    {
+        return $this->statutCode;
+    }
+
+    /**
+     * @param string|null $statutCode
+     *
+     * @return self
+     */
+    public function setStatutCode(?string $statutCode): self
+    {
+        $this->statutCode = $statutCode;
 
         return $this;
     }
