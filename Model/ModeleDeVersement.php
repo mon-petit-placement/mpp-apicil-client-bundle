@@ -138,11 +138,11 @@ class ModeleDeVersement
                 }
 
                 foreach ($value as &$questionnaireStructuresReponse) {
-                    if ($questionnaireStructuresReponse instanceof QuestionnaireStructuresReponse) {
+                    if ($questionnaireStructuresReponse instanceof QuestionnaireStructuresReponses) {
                         continue;
                     }
 
-                    $questionnaireStructuresReponse = PortefeuilleDto::createFromArray($questionnaireStructuresReponse);
+                    $questionnaireStructuresReponse = QuestionnaireStructuresReponses::createFromArray($questionnaireStructuresReponse);
                 }
 
                 return $value;
