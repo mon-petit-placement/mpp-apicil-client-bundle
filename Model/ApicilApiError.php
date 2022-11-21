@@ -17,7 +17,7 @@ class ApicilApiError
     protected $errorCode;
 
     /**
-     * @var string|null
+     * @var string|string[]|null
      */
     protected $message;
 
@@ -71,15 +71,19 @@ class ApicilApiError
      */
     public function getMessage(): ?string
     {
+        if (is_array($this->message)) {
+            return join(', ', $this->message);
+        }
+
         return $this->message;
     }
 
     /**
-     * @param string|null $message
+     * @param string|string[]|null $message
      *
      * @return self
      */
-    public function setMessage(?string $message): self
+    public function setMessage(string|array|null $message): self
     {
         $this->message = $message;
 
