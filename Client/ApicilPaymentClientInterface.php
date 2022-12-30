@@ -208,7 +208,7 @@ interface ApicilPaymentClientInterface
      * @method getInvestmentEligibleSupports
      *
      * @param int   $contractId
-     * @param array $query
+     * @param array $options
      *
      * @return array
      */
@@ -220,7 +220,7 @@ interface ApicilPaymentClientInterface
      * @method getInvestmentEligibleSupportDetails
      *
      * @param int   $contractId
-     * @param array $query
+     * @param array $options
      *
      * @return array
      */

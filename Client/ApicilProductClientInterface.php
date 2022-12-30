@@ -14,7 +14,7 @@ interface ApicilProductClientInterface
      * @method getDic
      *
      * @param string $reference
-     * @param array  $query
+     * @param array  $options
      *
      * @return File
      */
@@ -27,7 +27,7 @@ interface ApicilProductClientInterface
      *
      * @param string $productReference
      * @param int    $contractId
-     * @param array  $query
+     * @param array  $options
      *
      * @return array<ModeGestionDto>
      */
@@ -39,7 +39,7 @@ interface ApicilProductClientInterface
      * @method getGestionModes
      *
      * @param string $reference
-     * @param array  $query
+     * @param array  $options
      *
      * @return array<ModeGestionDto>
      */

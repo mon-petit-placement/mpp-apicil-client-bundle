@@ -210,7 +210,6 @@ interface ApicilAccClientInterface
      * @method isEligible
      *
      * @param int   $id
-     * @param array $options
      *
      * @return DtoEligibilite
      */
@@ -222,7 +221,6 @@ interface ApicilAccClientInterface
      * @method isEligibleByContract
      *
      * @param int   $contractId
-     * @param array $options
      *
      * @return DtoEligibilite
      */

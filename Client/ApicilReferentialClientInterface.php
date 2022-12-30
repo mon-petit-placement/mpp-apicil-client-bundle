@@ -409,7 +409,7 @@ interface ApicilReferentialClientInterface
      * @method getSupportPdf
      *
      * @param string $isin
-     * @param  $options $acceptLanguage
+     * @param string $acceptLanguage
      *
      * @return SupportDto
      */

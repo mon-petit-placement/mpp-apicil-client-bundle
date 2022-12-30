@@ -75,7 +75,7 @@ interface ApicilFinancialProfileClientInterface
      *
      * @param int            $contractId
      * @param RepartitionDto $wallet
-     * @param array          $query
+     * @param array          $options
      *
      * @return ResultatAdequationProfilFinancierDto
      */

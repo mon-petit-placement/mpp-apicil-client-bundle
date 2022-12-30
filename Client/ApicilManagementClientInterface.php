@@ -23,7 +23,7 @@ interface ApicilManagementClientInterface
      *
      * @param int    $id
      * @param string $category
-     * @param array  $query
+     * @param array  $options
      *
      * @return ActeRetourCreationDto
      */
@@ -164,7 +164,7 @@ interface ApicilManagementClientInterface
      * @method getInvestmentEligibleSupports
      *
      * @param int   $contractId
-     * @param array $query
+     * @param array $options
      *
      * @return ListeDesSupports
      */
@@ -176,7 +176,7 @@ interface ApicilManagementClientInterface
      * @method getInvestmentEligibleSupportDetails
      *
      * @param int   $contractId
-     * @param array $query
+     * @param array $options
      *
      * @return ListeDesSupports
      */
