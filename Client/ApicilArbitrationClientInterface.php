@@ -25,7 +25,7 @@ interface ApicilArbitrationClientInterface
      *
      * @param int    $id
      * @param string $documentCategory
-     * @param array  $query
+     * @param array  $options
      *
      * @return RecuperationActeDocSousCategorieDto
      */
@@ -68,7 +68,6 @@ interface ApicilArbitrationClientInterface
      *
      * @method createFromModel
      *
-     * @param int          $id
      * @param ArbitrageDto $arbitration
      */
     public function createFromModel(ArbitrageDto $arbitration);
@@ -123,7 +122,7 @@ interface ApicilArbitrationClientInterface
      * @method getDocuments
      *
      * @param int    $id
-     * @param string $documentCategory
+     * @param string $documentId
      *
      * @return RecuperationActeDocSousCategorieDto
      */
@@ -135,7 +134,6 @@ interface ApicilArbitrationClientInterface
      * @method getDocumentTypes
      *
      * @param int    $id
-     * @param string $documentId
      *
      * @return array<RecuperationActeDocSousCategorieDto>
      */
@@ -283,7 +281,7 @@ interface ApicilArbitrationClientInterface
      * @method testEmail
      *
      * @param int   $id
-     * @param array $options
+     * @param EmailPropositionActeDto $email
      *
      * @return bool
      */

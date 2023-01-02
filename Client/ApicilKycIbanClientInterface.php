@@ -20,7 +20,7 @@ interface ApicilKycIbanClientInterface
      *
      * @param int    $id
      * @param string $category
-     * @param array  $query
+     * @param array  $options
      *
      * @return ActeRetourCreationDto
      */
