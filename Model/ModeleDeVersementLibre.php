@@ -218,7 +218,7 @@ class ModeleDeVersementLibre
             ->setRequired('typeSignature')->setAllowedTypes('typeSignature', ['string'])->setAllowedValues('typeSignature', function ($value) {
                 return in_array($value, [ProjetInvestissement::TYPE_SIGNATURE_ELECTRONIQUE, ProjetInvestissement::TYPE_SIGNATURE_PAPIER]);
             })
-            ->setDefault('tauxDerogatoire', null)->setAllowedTypes('tauxDerogatoire', ['float'])
+            ->setDefault('tauxDerogatoire', null)->setAllowedTypes('tauxDerogatoire', ['float', 'null'])
         ;
     }
 

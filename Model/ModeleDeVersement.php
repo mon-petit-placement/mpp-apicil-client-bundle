@@ -147,7 +147,7 @@ class ModeleDeVersement
 
                 return $value;
             })
-            ->setDefault('tauxDerogatoire', null)->setAllowedTypes('tauxDerogatoire', ['float'])
+            ->setDefault('tauxDerogatoire', null)->setAllowedTypes('tauxDerogatoire', ['float', 'null'])
             ->setRequired('vpRepartitionSpecifique')->setAllowedTypes('vpRepartitionSpecifique', ['bool'])
         ;
     }
