@@ -104,7 +104,7 @@ class ModeleDeVersementInitial
 
                 return $value;
             })
-            ->setDefault('tauxDerogatoire', null)->setAllowedTypes('tauxDerogatoire', ['float'])
+            ->setDefault('tauxDerogatoire', null)->setAllowedTypes('tauxDerogatoire', ['float', 'null'])
         ;
     }
 
