@@ -21,8 +21,8 @@
       "symfony/dependency-injection": "^4.0 | ^5.0 | ^6.0",
       "symfony/framework-bundle": "^4.0 | ^5.0 | ^6.0",
       "symfony/options-resolver": "^4.0 | ^5.0 | ^6.0",
-      "symfony/property-info": "^4.0 | ^5. 0| ^6.0",
-      "symfony/serializer": "^4.0 | ^5.0 | ^6.0",
+      "symfony/property-info": "^4.0 | ^5.0 | ^6.0",
+      "symfony/serializer": "^4.0 | ^5.3.12 | ^6.0",
       "ext-json": "*"
     },
     "autoload":{
