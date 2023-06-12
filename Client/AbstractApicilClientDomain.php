@@ -191,6 +191,8 @@ abstract class AbstractApicilClientDomain implements ApicilClientDomainInterface
             return $this->serializer->deserialize($response, $className, 'json');
         } catch (ExceptionInterface $e) {
             $this->logger->error(sprintf('Error during deserialization: %s', $e->getMessage()));
+
+            throw $e;
         }
     }
 
