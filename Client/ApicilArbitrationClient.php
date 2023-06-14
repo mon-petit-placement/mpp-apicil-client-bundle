@@ -176,7 +176,13 @@ class ApicilArbitrationClient extends AbstractApicilClientDomain implements Apic
      */
     public function hasContract(int $contractId): ?OperationEnCoursDto
     {
-        return $this->requestAndPopulate(OperationEnCoursDto::class, 'GET', sprintf('/contrat/%s/existe', $contractId));
+        $content = $this->request('GET', sprintf('/contrat/%s/existe', $contractId))->getBody()->getContents();
+
+        if (empty($content)) {
+            return null;
+        }
+
+        return $this->deserialize($content, OperationEnCoursDto::class);
     }
 
     /**

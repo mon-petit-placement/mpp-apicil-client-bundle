@@ -140,7 +140,13 @@ class ApicilPaymentClient extends AbstractApicilClientDomain implements ApicilPa
      */
     public function getContractOption(int $contractId): ?DetailOptionVPExterne
     {
-        return $this->requestAndPopulate(DetailOptionVPExterne::class, 'GET', sprintf('/contrat/%s/option', $contractId));
+        $content = $this->request('GET', sprintf('/contrat/%s/option', $contractId))->getBody()->getContents();
+
+        if (empty($content)) {
+            return null;
+        }
+
+        return $this->deserialize($content, DetailOptionVPExterne::class);
     }
 
     /**
@@ -216,9 +222,15 @@ class ApicilPaymentClient extends AbstractApicilClientDomain implements ApicilPa
      */
     public function hasContract(int $contractId, array $options = []): ?OperationEnCoursDto
     {
-        return $this->requestAndPopulate(OperationEnCoursDto::class, 'GET', sprintf('/contrat/%s/existe', $contractId), [
+        $content = $this->request('GET', sprintf('/contrat/%s/existe', $contractId), [
             'query' => ApicilPaymentClientOptionResolver::resolveHasContractOptions($options),
-        ]);
+        ])->getBody()->getContents();
+
+        if (empty($content)) {
+            return null;
+        }
+
+        return $this->deserialize($content, OperationEnCoursDto::class);
     }
 
     /**

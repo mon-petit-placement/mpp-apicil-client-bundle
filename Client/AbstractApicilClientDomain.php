@@ -142,6 +142,35 @@ abstract class AbstractApicilClientDomain implements ApicilClientDomainInterface
     }
 
     /**
+     * Deserialize a json to an object of the given class name.
+     *
+     * @method deserialize
+     *
+     * @param string $content
+     * @param string $className
+     *
+     * @return mixed
+     */
+    public function deserialize(string $content, string $className)
+    {
+        if ('bool' === $className) {
+            return filter_var($content, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+        }
+
+        if ('array' === $className) {
+            return json_decode($content, true);
+        }
+
+        try {
+            return $this->serializer->deserialize($content, $className, 'json');
+        } catch (ExceptionInterface $e) {
+            $this->logger->error(sprintf('Error during deserialization: %s', $e->getMessage()));
+
+            throw $e;
+        }
+    }
+
+    /**
      * Make and request and return the response ressource as file.
      *
      * @method download
@@ -175,25 +204,16 @@ abstract class AbstractApicilClientDomain implements ApicilClientDomainInterface
      *
      * @return mixed
      */
-    public function requestAndPopulate(string $className, string $method, string $path, array $options = [], bool $isSign = false)
-    {
+    public function requestAndPopulate(
+        string $className,
+        string $method,
+        string $path,
+        array $options = [],
+        bool $isSign = false,
+    ) {
         $response = $this->request($method, $path, $options, $isSign)->getBody()->getContents();
 
-        if ('bool' === $className) {
-            return filter_var($response, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
-        }
-
-        if ('array' === $className) {
-            return json_decode($response, true);
-        }
-
-        try {
-            return $this->serializer->deserialize($response, $className, 'json');
-        } catch (ExceptionInterface $e) {
-            $this->logger->error(sprintf('Error during deserialization: %s', $e->getMessage()));
-
-            throw $e;
-        }
+        return $this->deserialize($response, $className);
     }
 
     /**
