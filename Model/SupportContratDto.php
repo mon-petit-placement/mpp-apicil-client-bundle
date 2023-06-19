@@ -15,7 +15,7 @@ class SupportContratDto
     public const TYPESUPPORT_ETF = 'ETF';
 
     /**
-     * @var float|null
+     * @var bool|null
      */
     private $afficherEuroPerf;
 
@@ -525,19 +525,19 @@ class SupportContratDto
     }
 
     /**
-     * @return  float|null
+     * @return  bool|null
      */
-    public function getAfficherEuroPerf(): ?float
+    public function getAfficherEuroPerf(): ?bool
     {
         return $this->afficherEuroPerf;
     }
 
     /**
-     * @param  float|null  $afficherEuroPerf
+     * @param  bool|null  $afficherEuroPerf
      *
      * @return  self
      */
-    public function setAfficherEuroPerf(?float $afficherEuroPerf): self
+    public function setAfficherEuroPerf(?bool $afficherEuroPerf): self
     {
         $this->afficherEuroPerf = $afficherEuroPerf;
 
