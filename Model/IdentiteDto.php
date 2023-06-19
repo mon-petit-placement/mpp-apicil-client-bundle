@@ -65,6 +65,11 @@ class IdentiteDto
     private $ville;
 
     /**
+     * @var string|null
+     */
+    private $email;
+
+    /**
      * @return string|null
      */
     public function getAdresse1(): ?string
@@ -300,6 +305,26 @@ class IdentiteDto
     public function setVille(?string $ville): self
     {
         $this->ville = $ville;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string|null $email
+     *
+     * @return self
+     */
+    public function setEmail(?string $email): self
+    {
+        $this->email = $email;
 
         return $this;
     }
