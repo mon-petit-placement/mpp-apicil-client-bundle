@@ -59,8 +59,8 @@ class RepartitionReponseDto
             ->setRequired('codeIsinSupport')->setAllowedTypes('codeIsinSupport', ['string'])
             ->setDefault('desinvestissement', null)->setAllowedTypes('desinvestissement', ['bool', 'null'])
             ->setDefault('eligibleVP', null)->setAllowedTypes('eligibleVP', ['bool', 'null'])
-            ->setAllowedTypes('montant', ['float'])
-            ->setAllowedTypes('pourcentage', ['float'])
+            ->setDefault('montant', null)->setAllowedTypes('montant', ['float'])
+            ->setDefault('pourcentage', null)->setAllowedTypes('pourcentage', ['float'])
         ;
     }
 
