@@ -55,7 +55,7 @@ interface ApicilContractClientInterface
      *
      * @return File
      */
-    public function getDocument(int $id): File;
+    public function getDocument(string $id): File;
 
     /**
      * Retrieve all documents from a contract.

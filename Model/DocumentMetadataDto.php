@@ -33,7 +33,7 @@ class DocumentMetadataDto
     private $direction;
 
     /**
-     * @var int|null
+     * @var string|null
      */
     private $docId;
 
@@ -188,19 +188,19 @@ class DocumentMetadataDto
     }
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getDocId(): ?int
+    public function getDocId(): ?string
     {
         return $this->docId;
     }
 
     /**
-     * @param int|null $docId
+     * @param string|null $docId
      *
      * @return self
      */
-    public function setDocId(?int $docId): self
+    public function setDocId(?string $docId): self
     {
         $this->docId = $docId;
 
