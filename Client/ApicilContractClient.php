@@ -43,7 +43,7 @@ class ApicilContractClient extends AbstractApicilClientDomain implements ApicilC
     /**
      * {@inheritdoc}
      */
-    public function getDocument(int $id): File
+    public function getDocument(string $id): File
     {
         return $this->download('GET', sprintf('/document/%s', $id));
     }
