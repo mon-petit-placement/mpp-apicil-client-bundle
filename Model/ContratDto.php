@@ -6,6 +6,14 @@ use DateTime;
 
 class ContratDto
 {
+    const  LIBELLE_SITUATION_RENONCE = 'RENONCE';
+
+    const LIBELLE_SITUATION_RACHAT_TOTAL = 'RACHAT_TOTAL';
+
+    const LIBELLE_SITUATION_SANS_ANNULE = 'ANNULE';
+
+    const LIBELLE_SITUATION_ACTIF = 'ACTIF';
+
     /**
      * @var bool|null
      */
