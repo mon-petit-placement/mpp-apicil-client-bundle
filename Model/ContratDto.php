@@ -6,11 +6,11 @@ use DateTime;
 
 class ContratDto
 {
-    public const  LIBELLE_SITUATION_RENONCE = 'RENONCE';
+    public const LIBELLE_SITUATION_RENONCE = 'RENONCE';
 
     public const LIBELLE_SITUATION_RACHAT_TOTAL = 'RACHAT_TOTAL';
 
-    public const LIBELLE_SITUATION_SANS_ANNULE = 'ANNULE';
+    public const LIBELLE_SITUATION_ANNULE = 'ANNULE';
 
     public const LIBELLE_SITUATION_ACTIF = 'ACTIF';
 
