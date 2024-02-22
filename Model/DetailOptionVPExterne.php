@@ -27,7 +27,7 @@ class DetailOptionVPExterne
     private $supports;
 
     /**
-     * @var string|null
+     * @var array|null
      */
     private $typeGarantie;
 
@@ -97,19 +97,19 @@ class DetailOptionVPExterne
     }
 
     /**
-     * @return string|null
+     * @return array|null
      */
-    public function getTypeGarantie(): ?string
+    public function getTypeGarantie(): ?array
     {
         return $this->typeGarantie;
     }
 
     /**
-     * @param string|null $typeGarantie
+     * @param array|null $typeGarantie
      *
      * @return self
      */
-    public function setTypeGarantie(?string $typeGarantie): self
+    public function setTypeGarantie(?array $typeGarantie): self
     {
         $this->typeGarantie = $typeGarantie;
 
