@@ -13,10 +13,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ModeleDeVersement
 {
-    public const PERIODICITE_MENSUELLE = 'Mensuelle';
-    public const PERIODICITE_TRIMESTRIELLE = 'Trimestrielle';
-    public const PERIODICITE_SEMESTRIELLE = 'Semestrielle';
-    public const PERIODICITE_ANNUELLE = 'Annuelle';
+    public const PERIODICITE_MENSUELLE = 'mensuelle';
+    public const PERIODICITE_TRIMESTRIELLE = 'trimestrielle';
+    public const PERIODICITE_SEMESTRIELLE = 'semestrielle';
+    public const PERIODICITE_ANNUELLE = 'annuelle';
 
     public const MODE_INVESTISSEMENT_CHOIX = 'CHOIX';
     public const MODE_INVESTISSEMENT_PRORATA = 'PRORATA';

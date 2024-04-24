@@ -27,10 +27,10 @@ class ModeleDeVersementLibre
     public const TYPE_VERSEMENT_PROGRAMME = 'PROGRAMME';
     public const TYPE_VERSEMENT_SUPPRESSION_PROGRAMME     = 'SUPPRESSION_PROGRAMME';
 
-    public const PERIODICITE_MENSUELLE = 'Mensuelle';
-    public const PERIODICITE_TRIMESTRIELLE = 'Trimestrielle';
-    public const PERIODICITE_SEMESTRIELLE = 'Semestrielle';
-    public const PERIODICITE_ANNUELLE = 'Annuelle';
+    public const PERIODICITE_MENSUELLE = 'mensuelle';
+    public const PERIODICITE_TRIMESTRIELLE = 'trimestrielle';
+    public const PERIODICITE_SEMESTRIELLE = 'semestrielle';
+    public const PERIODICITE_ANNUELLE = 'annuelle';
 
 
     /**
