@@ -142,7 +142,13 @@ class ModeleDeVersementLibre
             ->setDefault('alliance', null)->setAllowedTypes('alliance', ['string', 'null'])
             ->setDefault('bulletinPartenaire', null)->setAllowedTypes('bulletinPartenaire', ['bool', 'null'])
             ->setDefault('conserverIban', null)->setAllowedTypes('conserverIban', ['bool', 'null'])
-            ->setRequired('contratId')->setAllowedTypes('contratId', ['int'])
+            ->setRequired('contratId')->setAllowedTypes('contratId', ['int', 'string', 'null'])->setNormalizer('contratId', function (Options $options, $value) {
+                if (is_int($value)) {
+                    return (string) $value;
+                }
+
+                return $value;
+            })
             ->setDefault('dateSignatureSepa', null)->setAllowedTypes('dateSignatureSepa', [\DateTime::class, 'string', 'null'])->setNormalizer('dateSignatureSepa', function (Options $options, $value) {
                 if ($value instanceof \DateTime || null === $value) {
                     return $value;

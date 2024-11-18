@@ -77,7 +77,13 @@ class ArbitrageDto
             ->setDefault('alliance', null)->setAllowedTypes('alliance', ['string', 'null'])
             ->setDefault('bulletinPartenaire', null)->setAllowedTypes('bulletinPartenaire', ['bool', 'null'])
             ->setDefault('codeFiscal', null)->setAllowedTypes('codeFiscal', ['string', 'null'])
-            ->setRequired('contratId')->setAllowedTypes('contratId', ['int'])
+            ->setRequired('contratId')->setAllowedTypes('contratId', ['string', 'int', 'null'])->setNormalizer('contratId', function (Options $options, $value) {
+                if (is_int($value)) {
+                    return (string) $value;
+                }
+
+                return $value;
+            })
             ->setDefault('fraisDerogatoireArbitrage', null)->setAllowedTypes('fraisDerogatoireArbitrage', ['float', 'null'])
             ->setDefault('horizonInvestissement', null)->setAllowedTypes('horizonInvestissement', ['array', TrHorizonInvestissementDto::class])->setNormalizer('horizonInvestissement', function (Options $options, $value) {
                 if ($value instanceof TrHorizonInvestissementDto) {

@@ -28,7 +28,13 @@ class DtoDeLaSuppressionDeLOption
     public static function configureData(OptionsResolver $resolver)
     {
         $resolver
-            ->setRequired('contratId')->setAllowedTypes('contratId', ['int', 'null'])
+            ->setRequired('contratId')->setAllowedTypes('contratId', ['int', 'string', 'null'])->setNormalizer('contratId', function (Options $options, $value) {
+                if (is_int($value)) {
+                    return (string) $value;
+                }
+
+                return $value;
+            })
             ->setRequired('typeSignature', null)->setAllowedTypes('typeSignature', ['string', 'null'])
         ;
     }
