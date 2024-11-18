@@ -29,7 +29,7 @@ class ArbitrageDto
     private $codeFiscal;
 
     /**
-     * @var int|null
+     * @var string|null
      */
     private $contratId;
 
@@ -204,19 +204,19 @@ class ArbitrageDto
     }
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getContratId(): ?int
+    public function getContratId(): ?string
     {
         return $this->contratId;
     }
 
     /**
-     * @param int|null $contratId
+     * @param string|null $contratId
      *
      * @return self
      */
-    public function setContratId(?int $contratId): self
+    public function setContratId(?string $contratId): self
     {
         $this->contratId = $contratId;
 
