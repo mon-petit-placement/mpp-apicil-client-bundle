@@ -92,7 +92,13 @@ class RachatTotalDto
     public static function configureData(OptionsResolver $resolver)
     {
         $resolver
-            ->setRequired('contratId')->setAllowedTypes('contratId', ['int'])
+            ->setRequired('contratId')->setAllowedTypes('contratId', ['int', 'string', 'null'])->setNormalizer('contratId', function (Options $options, $value) {
+                if (is_int($value)) {
+                    return (string) $value;
+                }
+
+                return $value;
+            })
             ->setDefault('conserverIban', null)->setAllowedTypes('conserverIban', ['bool', 'null'])
             ->setDefault('dateEffet', null)->setAllowedTypes('dateEffet', [\DateTime::class, null])
             ->setRequired('modePaiement')->setAllowedTypes('modePaiement', ['string'])

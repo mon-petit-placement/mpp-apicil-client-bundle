@@ -102,7 +102,13 @@ class RachatPartielDto
     public static function configureData(OptionsResolver $resolver)
     {
         $resolver
-            ->setRequired('contratId')->setAllowedTypes('contratId', ['int'])
+            ->setRequired('contratId')->setAllowedTypes('contratId', ['int', 'string', 'null'])->setNormalizer('contratId', function (Options $options, $value) {
+                if (is_int($value)) {
+                    return (string) $value;
+                }
+
+                return $value;
+            })
             ->setRequired('montant')->setAllowedTypes('montant', ['float'])
             ->setRequired('modePaiement')->setAllowedTypes('modePaiement', ['string'])
             ->setRequired('destinationDesFonds')->setAllowedTypes('destinationDesFonds', ['array', DestinationDesFondsDto::class])->setNormalizer('destinationDesFonds', function (Options $options, $value) {
