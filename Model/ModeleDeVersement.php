@@ -349,12 +349,16 @@ class ModeleDeVersement
     }
 
     /**
-     * @param string|null $contratId
+     * @param int|string|null $contratId
      *
      * @return self
      */
-    public function setContratId(?string $contratId): self
+    public function setContratId(int|string|null $contratId): self
     {
+        if (is_int($contratId)) {
+            $contratId = (string) $contratId;
+        }
+
         $this->contratId = $contratId;
 
         return $this;
