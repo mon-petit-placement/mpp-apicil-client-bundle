@@ -5,7 +5,7 @@ namespace Mpp\ApicilClientBundle\Model;
 class DtoDeLaSuppressionDeLOptionPourLaConsultation
 {
     /**
-     * @var string|null
+     * @var int|string|null
      */
     private $contratId;
 

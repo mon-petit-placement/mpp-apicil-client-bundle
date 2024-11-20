@@ -30,7 +30,7 @@ class VersementComplementaireDtoDeConsultation
     private $conserverIban;
 
     /**
-     * @var string|null
+     * @var int|string|null
      */
     private $contratId;
 

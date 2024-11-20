@@ -8,7 +8,7 @@ class NoteDto
     public const NOTESTATUT_FERME = 'FERME';
 
     /**
-     * @var string|null
+     * @var int|string|null
      */
     private $contratId;
 
