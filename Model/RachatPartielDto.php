@@ -37,7 +37,7 @@ class RachatPartielDto
     public const TYPE_SIGNATURE_ELECTRONIQUE = 'ELECTRONIQUE';
 
     /**
-     * @var string|null
+     * @var int|string|null
      */
     private $contratId;
 

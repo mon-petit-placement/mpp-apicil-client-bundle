@@ -34,7 +34,7 @@ class ArbitrageDtoDeConsultation
     private $compartiment;
 
     /**
-     * @var string|null
+     * @var int|string|null
      */
     private $contratId;
 
@@ -247,7 +247,7 @@ class ArbitrageDtoDeConsultation
      */
     public function setPorteFeuilleCible(?array $porteFeuilleCible): self
     {
-        $this->porteFeuilleCible = $porteFeuilleCible;
+        $this->portefeuilleCible = $porteFeuilleCible;
 
         return $this;
     }

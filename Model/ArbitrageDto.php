@@ -29,7 +29,7 @@ class ArbitrageDto
     private $codeFiscal;
 
     /**
-     * @var string|null
+     * @var int|string|null
      */
     private $contratId;
 
