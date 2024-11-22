@@ -124,7 +124,7 @@ interface ApicilPartialRepurchaseClientInterface
      *
      * @param int $id
      *
-     * @return array
+     * @return array<ActeDocumentDto>
      */
     public function getDocuments(int $id): array;
 
