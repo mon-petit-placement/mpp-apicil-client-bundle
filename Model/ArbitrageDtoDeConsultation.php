@@ -235,19 +235,19 @@ class ArbitrageDtoDeConsultation
     /**
      * @return array|null
      */
-    public function getPorteFeuilleCible(): ?array
+    public function getPortefeuilleCible(): ?array
     {
         return $this->portefeuilleCible;
     }
 
     /**
-     * @param array|null $porteFeuilleCible
+     * @param array|null $portefeuilleCible
      *
      * @return self
      */
-    public function setPorteFeuilleCible(?array $porteFeuilleCible): self
+    public function setPortefeuilleCible(?array $portefeuilleCible): self
     {
-        $this->portefeuilleCible = $porteFeuilleCible;
+        $this->portefeuilleCible = $portefeuilleCible;
 
         return $this;
     }

@@ -2,6 +2,7 @@
 
 namespace Mpp\ApicilClientBundle\Client;
 
+use Mpp\ApicilClientBundle\Model\ActeDocumentDto;
 use Mpp\ApicilClientBundle\Model\ActeRetourCreationDto;
 use Mpp\ApicilClientBundle\Model\ArbitrageDto;
 use Mpp\ApicilClientBundle\Model\ArbitrageDtoDeConsultation;
@@ -17,7 +18,6 @@ use Mpp\ApicilClientBundle\Model\ReponseGenererCodeSecuriteHorsMursDto;
 use Mpp\ApicilClientBundle\Model\TelephoneDto;
 use Mpp\ApicilClientBundle\OptionsResolver\ApicilAccClientOptionResolver;
 use Mpp\ApicilClientBundle\OptionsResolver\ApicilArbitrationClientOptionResolver;
-use Mpp\ApicilClientBundle\OptionsResolver\ApicilReferentialClientOptionsResolver;
 use Symfony\Component\HttpFoundation\File\File;
 
 class ApicilArbitrationClient extends AbstractApicilClientDomain implements ApicilArbitrationClientInterface
@@ -132,9 +132,9 @@ class ApicilArbitrationClient extends AbstractApicilClientDomain implements Apic
     /**
      * {@inheritdoc}
      */
-    public function getDocumentTypes(int $id): array
+    public function getDocuments(int $id): array
     {
-        return $this->requestAndPopulate(sprintf('%s[]', RecuperationActeDocSousCategorieDto::class), 'GET', sprintf('/%s/documents', $id));
+        return $this->requestAndPopulate(sprintf('%s[]', ActeDocumentDto::class), 'GET', sprintf('/%s/documents', $id)) ?? [];
     }
 
     /**

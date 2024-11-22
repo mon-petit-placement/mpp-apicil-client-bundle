@@ -2,6 +2,7 @@
 
 namespace Mpp\ApicilClientBundle\Client;
 
+use Mpp\ApicilClientBundle\Model\ActeDocumentDto;
 use Mpp\ApicilClientBundle\Model\ActeRetourCreationDto;
 use Mpp\ApicilClientBundle\Model\ArbitrageDto;
 use Mpp\ApicilClientBundle\Model\ArbitrageDtoDeConsultation;
@@ -129,15 +130,15 @@ interface ApicilArbitrationClientInterface
     public function getDocument(int $id, int $documentId): RecuperationActeDocSousCategorieDto;
 
     /**
-     * Retrieve the list of document types open for uploading for arbitration.
+     * Retrieve arbitrage request documents.
      *
-     * @method getDocumentTypes
+     * @method getDocuments
      *
-     * @param int    $id
+     * @param int $id
      *
-     * @return array<RecuperationActeDocSousCategorieDto>
+     * @return array<ActeDocumentDto>
      */
-    public function getDocumentTypes(int $id): array;
+    public function getDocuments(int $id): array;
 
     /**
      * Retrieve arbitration email proposal.

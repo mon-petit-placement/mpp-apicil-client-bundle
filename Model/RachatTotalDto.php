@@ -2,7 +2,6 @@
 
 namespace Mpp\ApicilClientBundle\Model;
 
-use phpDocumentor\Reflection\Types\Self_;
 use Symfony\Component\OptionsResolver\Exception\AccessException;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
@@ -143,14 +142,9 @@ class RachatTotalDto
 
         return (new self())
             ->setContratId($resolvedOptions['contratId'])
-            ->setMontant($resolvedOptions['montant'])
             ->setModePaiement($resolvedOptions['modePaiement'])
             ->setDestinationDesFonds($resolvedOptions['destinationDesFonds'])
             ->setDonneesBancaires($resolvedOptions['donneesBancaires'])
-            ->setModeDesinvestissement($resolvedOptions['modeDesinvestissement'])
-            ->setRepartitionDesinvestissement($resolvedOptions['repartitionDesinvestissement'])
-            ->setTypeRachatPartiel($resolvedOptions['typeRachatPartiel'])
-            ->setTypeRachat($resolvedOptions['typeRachat'])
             ->setOptionFiscale($resolvedOptions['optionFiscale'])
             ->setCommentaireClientRachatPrecoce($resolvedOptions['commentaireClientRachatPrecoce'])
             ->setTypeSignature($resolvedOptions['typeSignature'])
@@ -200,26 +194,6 @@ class RachatTotalDto
     /**
      * @return string|null
      */
-    public function getModeDesinvestissement(): ?string
-    {
-        return $this->modeDesinvestissement;
-    }
-
-    /**
-     * @param string|null $modeDesinvestissement
-     *
-     * @return self
-     */
-    public function setModeDesinvestissement(?string $modeDesinvestissement): self
-    {
-        $this->modeDesinvestissement = $modeDesinvestissement;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
     public function getModePaiement(): ?string
     {
         return $this->modePaiement;
@@ -237,85 +211,6 @@ class RachatTotalDto
         return $this;
     }
 
-    /**
-     * @return float|null
-     */
-    public function getMontant(): ?float
-    {
-        return $this->montant;
-    }
-
-    /**
-     * @param float|null $montant
-     *
-     * @return self
-     */
-    public function setMontant(?float $montant): self
-    {
-        $this->montant = $montant;
-
-        return $this;
-    }
-
-    /**
-     * @return array|null
-     */
-    public function getRepartitionDesinvestissement(): ?array
-    {
-        return $this->repartitionDesinvestissement;
-    }
-
-    /**
-     * @param array|null $repartitionDesinvestissement
-     *
-     * @return self
-     */
-    public function setRepartitionDesinvestissement(?array $repartitionDesinvestissement): self
-    {
-        $this->repartitionDesinvestissement = $repartitionDesinvestissement;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getTypeRachat(): ?string
-    {
-        return $this->typeRachat;
-    }
-
-    /**
-     * @param string|null $typeRachat
-     *
-     * @return self
-     */
-    public function setTypeRachat(?string $typeRachat): self
-    {
-        $this->typeRachat = $typeRachat;
-
-        return $this;
-    }
-
-    /**
-     * @return  string|null
-     */
-    public function getTypeRachatPartiel(): ?string
-    {
-        return $this->typeRachatPartiel;
-    }
-
-    /**
-     * @param  string|null  $typeRachatPartiel
-     *
-     * @return  self
-     */
-    public function setTypeRachatPartiel(?string $typeRachatPartiel): self
-    {
-        $this->typeRachatPartiel = $typeRachatPartiel;
-
-        return $this;
-    }
 
     /**
      * @return  string|null

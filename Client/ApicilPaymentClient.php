@@ -8,7 +8,6 @@ use Mpp\ApicilClientBundle\Model\DetailOptionVPExterne;
 use Mpp\ApicilClientBundle\Model\DtoDeLaSuppressionDeLOption;
 use Mpp\ApicilClientBundle\Model\DtoEligibilite;
 use Mpp\ApicilClientBundle\Model\EmailPropositionActeDto;
-use Mpp\ApicilClientBundle\Model\EmailPropositionDto;
 use Mpp\ApicilClientBundle\Model\ListeDesSupports;
 use Mpp\ApicilClientBundle\Model\ModeleDeVersementLibre;
 use Mpp\ApicilClientBundle\Model\MontantVCDto;
