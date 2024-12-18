@@ -137,7 +137,11 @@ abstract class AbstractApicilClientDomain implements ApicilClientDomainInterface
                 'error_messages' => (string) $apicilApiError,
             ]);
 
-            throw $apicilApiError?->getException();
+            if (null !== $apicilApiError && null === $apicilApiError->getErrorCode()) {
+                $apicilApiError->setErrorCode($e->getResponse()->getStatusCode());
+            }
+
+            throw $apicilApiError?->getException() ?? $e;
         }
     }
 
