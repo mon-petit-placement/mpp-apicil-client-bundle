@@ -85,7 +85,11 @@ class ArbitrageDto
                 return $value;
             })
             ->setDefault('fraisDerogatoireArbitrage', null)->setAllowedTypes('fraisDerogatoireArbitrage', ['float', 'null'])
-            ->setDefault('horizonInvestissement', null)->setAllowedTypes('horizonInvestissement', ['array', TrHorizonInvestissementDto::class])->setNormalizer('horizonInvestissement', function (Options $options, $value) {
+            ->setDefault('horizonInvestissement', null)->setAllowedTypes('horizonInvestissement', ['array', TrHorizonInvestissementDto::class, 'null'])->setNormalizer('horizonInvestissement', function (Options $options, $value) {
+                if (null === $value) {
+                    return $value;
+                }
+
                 if ($value instanceof TrHorizonInvestissementDto) {
                     return $value;
                 }
